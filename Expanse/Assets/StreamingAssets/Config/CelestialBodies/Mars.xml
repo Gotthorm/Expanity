@@ -1,0 +1,15 @@
+<!-- Mars configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<Planet value="Mars">
+  <GeometryPrefab value="Prefabs/CelestialBodies/Mars"/>
+  <Radius value="3390"/>
+  <MaximumScale value="1000"/>
+
+  <MeanLongitude value="293.737334 19141.69551 0.0003107"/>
+  <SemiMajorAxisOfOrbit value="1.5236883"/>
+  <EccentricityOfOrbit value="0.09331290 0.000092064 -0.000000077"/>
+  <InclinationOnPlaneOfEcliptic value="1.850333 -0.0006750 0.0000126"/>
+  <ArgumentOfPerihelion value="285.431761 1.0697667 0.0001313 0.00000414"/>
+  <LongitudeOfAscendingNode value="48.786442 0.7709917 -0.0000014 -0.00000533"/>
+</Planet>

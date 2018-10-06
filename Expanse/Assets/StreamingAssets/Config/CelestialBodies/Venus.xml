@@ -1,0 +1,15 @@
+<!-- Venus configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<Planet value="Venus">
+  <GeometryPrefab value="Prefabs/CelestialBodies/Venus"/>
+  <Radius value="6052"/>
+  <MaximumScale value="1000"/>
+
+  <MeanLongitude value="342.767053 58519.21191 0.0003097"/>
+  <SemiMajorAxisOfOrbit value="0.7233316"/>
+  <EccentricityOfOrbit value="0.00682069 -0.00004774 0.000000091"/>
+  <InclinationOnPlaneOfEcliptic value="3.393631 0.0010058 -0.0000010"/>
+  <ArgumentOfPerihelion value="54.384186 0.5081861 -0.0013864"/>
+  <LongitudeOfAscendingNode value="75.779647 0.8998500 0.0004100"/>
+</Planet>

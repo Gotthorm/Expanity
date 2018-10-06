@@ -1,0 +1,14 @@
+<!-- Sol configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<Planet value="Sol">
+  <GeometryPrefab value="Prefabs/CelestialBodies/Sol"/>
+  <Radius value="695700"/>
+  <MaximumScale value="10"/>
+
+  <MeanLongitude value="0.0 0.0 0.0"/>
+  <SemiMajorAxisOfOrbit value="0.0"/>
+  <EccentricityOfOrbit value="0.0 0.0 0.0"/>
+  <InclinationOnPlaneOfEcliptic value="0"/>
+  <MeanAnomaly value="0.0 0.0 0.0 0.0"/>
+</Planet>

@@ -1,0 +1,103 @@
+<!-- Propulsion controls configuration -->
+
+<!-- Update the version any time the format changes -->
+<PropulsionControlConfig version="1">
+  <ManueveringControl name="Rotation">
+    <ThrusterControl name="Roll">
+      <Ying>
+        <Thruster name="StarboardTopBow"/>
+        <Thruster name="StarboardTopStern"/>
+        <Thruster name="PortBottomBow"/>
+        <Thruster name="PortBottomStern"/>
+      </Ying>
+      <Yang>
+        <Thruster name="PortTopBow"/>
+        <Thruster name="PortTopStern"/>
+        <Thruster name="StarboardBottomBow"/>
+        <Thruster name="StarboardBottomStern"/>
+      </Yang>
+    </ThrusterControl>
+    <ThrusterControl name="Pitch">
+      <Ying>
+        <Thruster name="BowTopPort"/>
+        <Thruster name="BowTopStarboard"/>
+        <Thruster name="SternBottomPort"/>
+        <Thruster name="SternBottomStarboard"/>
+      </Ying>
+      <Yang>
+        <Thruster name="SternTopPort"/>
+        <Thruster name="SternTopStarboard"/>
+        <Thruster name="BowBottomPort"/>
+        <Thruster name="BowBottomStarboard"/>
+      </Yang>
+    </ThrusterControl>
+    <ThrusterControl name="Yaw">
+      <Ying>
+        <Thruster name="BowTopPort"/>
+        <Thruster name="BowBottomPort"/>
+        <Thruster name="SternTopStarboard"/>
+        <Thruster name="SternBottomStarboard"/>
+        <Thruster name="PortTopStern"/>
+        <Thruster name="PortBottomStern"/>
+        <Thruster name="StarboardTopBow"/>
+        <Thruster name="StarboardBottomBow"/>
+      </Ying>
+      <Yang>
+        <Thruster name="BowTopStarboard"/>
+        <Thruster name="BowBottomStarboard"/>
+        <Thruster name="SternTopPort"/>
+        <Thruster name="SternBottomPort"/>
+        <Thruster name="PortTopBow"/>
+        <Thruster name="PortBottomBow"/>
+        <Thruster name="StarboardTopStern"/>
+        <Thruster name="StarboardBottomStern"/>
+      </Yang>
+    </ThrusterControl>
+  </ManueveringControl>
+  <ManueveringControl name="Lateral">
+    <ThrusterControl name="ForwardBackward">
+      <Ying>
+        <Thruster name="SternTopPort"/>
+        <Thruster name="SternBottomPort"/>
+        <Thruster name="SternTopStarboard"/>
+        <Thruster name="SternBottomStarboard"/>
+      </Ying>
+      <Yang>
+        <Thruster name="BowTopPort"/>
+        <Thruster name="BowBottomPort"/>
+        <Thruster name="BowTopStarboard"/>
+        <Thruster name="BowBottomStarboard"/>
+      </Yang>
+    </ThrusterControl>
+    <ThrusterControl name="LeftRight">
+      <Ying>
+        <Thruster name="PortTopStern"/>
+        <Thruster name="PortBottomStern"/>
+        <Thruster name="PortTopBow"/>
+        <Thruster name="PortBottomBow"/>
+      </Ying>
+      <Yang>
+        <Thruster name="StarboardTopBow"/>
+        <Thruster name="StarboardBottomBow"/>
+        <Thruster name="StarboardTopStern"/>
+        <Thruster name="StarboardBottomStern"/>
+      </Yang>
+    </ThrusterControl>
+    <ThrusterControl name="UpDown">
+      <Ying>
+        <Thruster name="TopBowStarboard"/>
+        <Thruster name="TopBowPort"/>
+        <Thruster name="TopSternStarboard"/>
+        <Thruster name="TopSternPort"/>
+      </Ying>
+      <Yang>
+        <Thruster name="BottomBowStarboard"/>
+        <Thruster name="BottomBowPort"/>
+        <Thruster name="BottomSternStarboard"/>
+        <Thruster name="BottomSternPort"/>
+      </Yang>
+    </ThrusterControl>
+  </ManueveringControl>
+  <PropulsionControl name="Main">
+  </PropulsionControl>
+</PropulsionControlConfig>

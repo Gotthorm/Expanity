@@ -1,0 +1,15 @@
+<!-- Jupiter configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<Planet value="Jupiter">
+  <GeometryPrefab value="Prefabs/CelestialBodies/Jupiter"/>
+  <Radius value="69911"/>
+  <MaximumScale value="1000"/>
+
+  <MeanLongitude value="238.049257 3036.301986 0.0003347 -0.00000165"/>
+  <SemiMajorAxisOfOrbit value="5.202561"/>
+  <EccentricityOfOrbit value="0.04833475 0.000164180 -0.0000004676 -0.0000000017"/>
+  <InclinationOnPlaneOfEcliptic value="1.308736 -0.0056961 0.0000039"/>
+  <ArgumentOfPerihelion value="273.277558 0.5594317 0.00070405 0.00000508"/>
+  <LongitudeOfAscendingNode value="99.443414 1.0105300 0.00035222 -0.00000851"/>
+</Planet>

@@ -1,0 +1,15 @@
+<!-- Uranus configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<Planet value="Uranus">
+  <GeometryPrefab value="Prefabs/CelestialBodies/Uranus"/>
+  <Radius value="25362"/>
+  <MaximumScale value="1000"/>
+
+  <MeanLongitude value="244.1974707 429.863546 0.0003160 -0.00000060"/>
+  <SemiMajorAxisOfOrbit value="19.21814"/>
+  <EccentricityOfOrbit value="0.0463444 -0.00002658 0.000000077"/>
+  <InclinationOnPlaneOfEcliptic value="0.772464 0.0006253 0.0000395"/>
+  <ArgumentOfPerihelion value="98.071581 0.9857650 -0.0010745 -0.00000061"/>
+  <LongitudeOfAscendingNode value="73.477111 0.4986678 0.0013117"/>
+</Planet>

@@ -1,0 +1,104 @@
+<!-- Thruster control system configuration -->
+
+<!-- Update the version any time the format changes -->
+<ThrusterControlSystem token="2">
+  <ManueveringSystem token="Rotation">
+    <ThrusterControl token="Roll">
+      <Ying>
+        <Thruster token="StarboardTopBow"/>
+        <Thruster token="StarboardTopStern"/>
+        <Thruster token="PortBottomBow"/>
+        <Thruster token="PortBottomStern"/>
+      </Ying>
+      <Yang>
+        <Thruster token="PortTopBow"/>
+        <Thruster token="PortTopStern"/>
+        <Thruster token="StarboardBottomBow"/>
+        <Thruster token="StarboardBottomStern"/>
+      </Yang>
+    </ThrusterControl>
+    <ThrusterControl token="Pitch">
+      <Ying>
+        <Thruster token="BowTopPort"/>
+        <Thruster token="BowTopStarboard"/>
+        <Thruster token="SternBottomPort"/>
+        <Thruster token="SternBottomStarboard"/>
+      </Ying>
+      <Yang>
+        <Thruster token="SternTopPort"/>
+        <Thruster token="SternTopStarboard"/>
+        <Thruster token="BowBottomPort"/>
+        <Thruster token="BowBottomStarboard"/>
+      </Yang>
+    </ThrusterControl>
+    <ThrusterControl token="Yaw">
+      <Ying>
+        <Thruster token="BowTopPort"/>
+        <Thruster token="BowBottomPort"/>
+        <Thruster token="SternTopStarboard"/>
+        <Thruster token="SternBottomStarboard"/>
+        <Thruster token="PortTopStern"/>
+        <Thruster token="PortBottomStern"/>
+        <Thruster token="StarboardTopBow"/>
+        <Thruster token="StarboardBottomBow"/>
+      </Ying>
+      <Yang>
+        <Thruster token="BowTopStarboard"/>
+        <Thruster token="BowBottomStarboard"/>
+        <Thruster token="SternTopPort"/>
+        <Thruster token="SternBottomPort"/>
+        <Thruster token="PortTopBow"/>
+        <Thruster token="PortBottomBow"/>
+        <Thruster token="StarboardTopStern"/>
+        <Thruster token="StarboardBottomStern"/>
+      </Yang>
+    </ThrusterControl>
+  </ManueveringSystem>
+  <ManueveringSystem token="Lateral">
+    <ThrusterControl token="ForwardBackward">
+      <Ying>
+        <Thruster token="SternTopPort"/>
+        <Thruster token="SternBottomPort"/>
+        <Thruster token="SternTopStarboard"/>
+        <Thruster token="SternBottomStarboard"/>
+      </Ying>
+      <Yang>
+        <Thruster token="BowTopPort"/>
+        <Thruster token="BowBottomPort"/>
+        <Thruster token="BowTopStarboard"/>
+        <Thruster token="BowBottomStarboard"/>
+      </Yang>
+    </ThrusterControl>
+    <ThrusterControl token="LeftRight">
+      <Ying>
+        <Thruster token="PortTopStern"/>
+        <Thruster token="PortBottomStern"/>
+        <Thruster token="PortTopBow"/>
+        <Thruster token="PortBottomBow"/>
+      </Ying>
+      <Yang>
+        <Thruster token="StarboardTopBow"/>
+        <Thruster token="StarboardBottomBow"/>
+        <Thruster token="StarboardTopStern"/>
+        <Thruster token="StarboardBottomStern"/>
+      </Yang>
+    </ThrusterControl>
+    <ThrusterControl token="UpDown">
+      <Ying>
+        <Thruster token="TopBowStarboard"/>
+        <Thruster token="TopBowPort"/>
+        <Thruster token="TopSternStarboard"/>
+        <Thruster token="TopSternPort"/>
+      </Ying>
+      <Yang>
+        <Thruster token="BottomBowStarboard"/>
+        <Thruster token="BottomBowPort"/>
+        <Thruster token="BottomSternStarboard"/>
+        <Thruster token="BottomSternPort"/>
+      </Yang>
+    </ThrusterControl>
+  </ManueveringSystem>
+  <PropulsionSystem>
+    <Engine token="BottomCenter" />
+  </PropulsionSystem>
+</ThrusterControlSystem>

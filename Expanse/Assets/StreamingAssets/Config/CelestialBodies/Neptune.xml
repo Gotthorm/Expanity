@@ -1,0 +1,15 @@
+<!-- Neptune configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<Planet value="Neptune">
+  <GeometryPrefab value="Prefabs/CelestialBodies/Neptune"/>
+  <Radius value="24622"/>
+  <MaximumScale value="1000"/>
+
+  <MeanLongitude value="84.457994 219.885914 0.0003205 -0.00000060"/>
+  <SemiMajorAxisOfOrbit value="30.10957"/>
+  <EccentricityOfOrbit value="0.00899704 0.000006330 -0.000000002"/>
+  <InclinationOnPlaneOfEcliptic value="1.779242 -0.0095436 -0.0000091"/>
+  <ArgumentOfPerihelion value="276.045975 0.3256394 0.00014095 0.000004113"/>
+  <LongitudeOfAscendingNode value="130.681389 1.0989350 0.00024987 -0.000004718"/>
+</Planet>

@@ -1,0 +1,206 @@
+fileFormatVersion: 2
+guid: 349f0ceb9c2dc8847936641c657c9e37
+timeCreated: 1511627470
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: Mesh1
+    100002: //RootNode
+    100004: Camera
+    100006: Lamp
+    100008: SketchUp
+    100010: SketchUp.001
+    100012: SketchUp.002
+    100014: SketchUp.003
+    100016: SketchUp.004
+    100018: SketchUp.005
+    100020: SketchUp.006
+    100022: SketchUp.007
+    100024: SketchUp.008
+    100026: SketchUp.009
+    100028: SketchUp.010
+    100030: SketchUp.011
+    100032: skp_camera_Last_Saved_SketchUp_View
+    400000: Mesh1
+    400002: //RootNode
+    400004: Camera
+    400006: Lamp
+    400008: SketchUp
+    400010: SketchUp.001
+    400012: SketchUp.002
+    400014: SketchUp.003
+    400016: SketchUp.004
+    400018: SketchUp.005
+    400020: SketchUp.006
+    400022: SketchUp.007
+    400024: SketchUp.008
+    400026: SketchUp.009
+    400028: SketchUp.010
+    400030: SketchUp.011
+    400032: skp_camera_Last_Saved_SketchUp_View
+    2000000: Camera
+    2000002: skp_camera_Last_Saved_SketchUp_View
+    2300000: Mesh1
+    2300002: SketchUp
+    2300004: SketchUp.001
+    2300006: SketchUp.002
+    2300008: SketchUp.003
+    2300010: SketchUp.004
+    2300012: SketchUp.005
+    2300014: SketchUp.006
+    2300016: SketchUp.007
+    2300018: SketchUp.008
+    2300020: SketchUp.009
+    2300022: SketchUp.010
+    2300024: SketchUp.011
+    3300000: Mesh1
+    3300002: SketchUp
+    3300004: SketchUp.001
+    3300006: SketchUp.002
+    3300008: SketchUp.003
+    3300010: SketchUp.004
+    3300012: SketchUp.005
+    3300014: SketchUp.006
+    3300016: SketchUp.007
+    3300018: SketchUp.008
+    3300020: SketchUp.009
+    3300022: SketchUp.010
+    3300024: SketchUp.011
+    4300000: Mesh1
+    4300002: SketchUp.011
+    4300004: SketchUp.010
+    4300006: SketchUp.009
+    4300008: SketchUp.008
+    4300010: SketchUp.007
+    4300012: SketchUp.006
+    4300014: SketchUp.005
+    4300016: SketchUp.004
+    4300018: SketchUp.003
+    4300020: SketchUp.002
+    4300022: SketchUp.001
+    4300024: SketchUp
+    10800000: Lamp
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Hair
+    second: {fileID: 2100000, guid: cbba47b57f3d47d4b8fab71700fdeb38, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Shoe
+    second: {fileID: 2100000, guid: 4daf9c42e86ad0a44b7fa7bec4bd87c9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Shoe_Sole
+    second: {fileID: 2100000, guid: 66b86418c1b42e94e806d4cb1ea72185, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Chris_Skin
+    second: {fileID: 2100000, guid: 0352c232fe0376d41bca526691ae7524, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: FrontColor
+    second: {fileID: 2100000, guid: a5d079c7fc70bb14f9b18eabaa8e2205, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material
+    second: {fileID: 2100000, guid: 608390f661b0bbe488a41cf9f6a246f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material_1
+    second: {fileID: 2100000, guid: ee078fd4f2324e94e9bf1d90980c8447, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material_2
+    second: {fileID: 2100000, guid: ab3f36056a1d68d4a97299a6a468ee68, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: material_3
+    second: {fileID: 2100000, guid: 719112c54b87c5a40ba4a692579672a5, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

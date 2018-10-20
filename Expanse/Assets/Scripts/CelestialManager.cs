@@ -9,7 +9,6 @@ using UnityEngine.EventSystems;
 
 public class CelestialManager : MonoBehaviour
 {
-    //public ProximityControlNew m_ProximityControl = null;
     public Canvas m_Canvas = null;
 
     public CelestialCamera m_Camera = null;

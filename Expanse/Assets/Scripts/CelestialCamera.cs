@@ -36,7 +36,7 @@ public class CelestialCamera : MonoBehaviour
         {
             if ( m_SelectedGameObject != null )
             {
-                m_SelectedGameObject.Unselect();
+                //m_SelectedGameObject.Unselect();
 
                 SetTarget( null, true );
             }
@@ -48,7 +48,7 @@ public class CelestialCamera : MonoBehaviour
 
         if ( m_SelectedGameObject != null )
         {
-            m_SelectedGameObject.Select();
+            //m_SelectedGameObject.Select();
 
             if ( lookAtTarget && m_LookingAtTarget != true )
             {
@@ -235,7 +235,7 @@ public class CelestialCamera : MonoBehaviour
             if ( allowMovement )
             {
                 // Determine the current radius of the target 
-                float currentTargetRadius = targetCelestial.GetRadius() * targetCelestial.Scale;
+                float currentTargetRadius = targetCelestial.CelestialRadius * targetCelestial.Scale;
 
                 // Based on the target's current radius we will calculate an "ideal" viewing position of the target
                 targetPosition = originalTargetPosition;

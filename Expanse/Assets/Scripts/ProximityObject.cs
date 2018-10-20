@@ -12,7 +12,7 @@ public class ProximityObject : MonoBehaviour, IPointerClickHandler
     public Text m_DistanceTextField = null;
     public Byte m_SelectedAlpha = 0x80;
 
-    public void Set( CelestialBody celestialBody, bool selected )
+    public void Set( CelestialBody celestialBody, Vector3 cameraPosition, bool selected )
     {
         string distanceString = "";
         string name = "";
@@ -21,9 +21,9 @@ public class ProximityObject : MonoBehaviour, IPointerClickHandler
         {
             name = celestialBody.name;
 
-            if ( m_ParentControlPanel != null && m_ParentControlPanel.m_Camera != null )
+            if ( m_ParentControlPanel != null )
             {
-                float distance = ( m_ParentControlPanel.m_Camera.transform.position - celestialBody.transform.position ).magnitude;
+                float distance = ( cameraPosition - celestialBody.transform.position ).magnitude;
                 distanceString = GlobalHelpers.MakeSpaceDistanceString( distance );
             }
         }
@@ -71,7 +71,7 @@ public class ProximityObject : MonoBehaviour, IPointerClickHandler
 
             if( m_ParentControlPanel != null )
             {
-                m_ParentControlPanel.SelectProximityObject( this );
+                m_ParentControlPanel.SelectProximityObject( this, true );
             }
             //SetSelected?.Invoke( eventData.pointerCurrentRaycast.gameObject );
         }

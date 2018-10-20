@@ -29,15 +29,15 @@ public class CelestialBody : MonoBehaviour
         Unidentified = 16
     }
 
-    public void Select()
-    {
-        SetSelected( true );
-    }
+    //public void Select()
+    //{
+    //    SetSelected( true );
+    //}
 
-    public void Unselect()
-    {
-        SetSelected( false );
-    }
+    //public void Unselect()
+    //{
+    //    SetSelected( false );
+    //}
 
     public float Scale
     {
@@ -60,18 +60,44 @@ public class CelestialBody : MonoBehaviour
             float celestialScale = m_InitialScale * value;
             transform.localScale = new Vector3( celestialScale, celestialScale, celestialScale );
 
-            UpdateInfoText();
+            //UpdateInfoText();
+        }
+    }
+
+    public float Radius
+    {
+        get
+        {
+            return m_RadiusInKM;
+        }
+    }
+
+    public float CelestialRadius
+    {
+        get
+        {
+            return m_RadiusInKM / (float)GlobalConstants.CelestialUnit;
+        }
+    }
+
+    public float Velocity
+    {
+        get
+        {
+            return m_VelocityInKMS;
         }
     }
 
     public void SetCamera( CelestialCamera camera )
     {
         m_Camera = camera;
-        if ( null != m_HUDElement )
-        {
-            m_HUDElement.SetCamera( camera.GetComponent<Camera>() );
-        }
+        //if ( null != m_HUDElement )
+        //{
+        //    m_HUDElement.SetCamera( camera.GetComponent<Camera>() );
+        //}
     }
+
+    public bool GetIsVisible() { return GetComponent<Renderer>().isVisible; }
 
     public void UpdateCameraPosition( Vector3 position )
     {
@@ -80,19 +106,19 @@ public class CelestialBody : MonoBehaviour
 
         // If the celestial body is visible, ensure the HUD element is active and updated
         // Otherwise disable it 
-        if ( null != m_HUDElement )
-        {
-            if ( GetComponent<Renderer>().isVisible )
-            {
-                m_HUDElement.gameObject.SetActive( true );
-            }
-            else
-            {
-                m_HUDElement.gameObject.SetActive( false );
-            }
+        //if ( null != m_HUDElement )
+        //{
+        //    if ( GetComponent<Renderer>().isVisible )
+        //    {
+        //        m_HUDElement.gameObject.SetActive( true );
+        //    }
+        //    else
+        //    {
+        //        m_HUDElement.gameObject.SetActive( false );
+        //    }
 
-            UpdateInfoText();
-        }
+        //    UpdateInfoText();
+        //}
     }
 
     public Vector3 GetPosition( double julianDate )
@@ -166,8 +192,6 @@ public class CelestialBody : MonoBehaviour
     {
         return m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ][ 0 ] * ( GlobalConstants.AstronomicalUnit / GlobalConstants.CelestialUnit);
     }
-
-    public float GetRadius() { return m_RadiusInKM / (float)GlobalConstants.CelestialUnit; }
 
     public CelestialType GetCelestialType() { return CelestialType.Planet; }
 
@@ -259,73 +283,73 @@ public class CelestialBody : MonoBehaviour
         Scale = 1;
 
         // Load the HUD
-        UnityEngine.Object prefab = Resources.Load( "Prefabs/Celestial HUD", typeof( GameObject ) );
+        //UnityEngine.Object prefab = Resources.Load( "Prefabs/Celestial HUD", typeof( GameObject ) );
 
-        if ( null != prefab )
-        {
-            GameObject hudObject = Instantiate( prefab ) as GameObject;
+        //if ( null != prefab )
+        //{
+        //    GameObject hudObject = Instantiate( prefab ) as GameObject;
 
-            m_HUDElement = hudObject.GetComponent<CelestialBodyHUD>();
+        //    m_HUDElement = hudObject.GetComponent<CelestialBodyHUD>();
 
-            if ( null != prefab )
-            {
-                m_HUDElement.name = this.name + " HUD";
-                m_HUDElement.transform.localScale = new Vector3( 1, 1, 1 ); // Should check why this was necessary
+        //    if ( null != prefab )
+        //    {
+        //        m_HUDElement.name = this.name + " HUD";
+        //        m_HUDElement.transform.localScale = new Vector3( 1, 1, 1 ); // Should check why this was necessary
 
-                GameObject parentPanel = GameObject.Find( "View Panel" );
+        //        GameObject parentPanel = GameObject.Find( "View Panel" );
 
-                if ( null != parentPanel )
-                {
-                    m_HUDElement.transform.SetParent( parentPanel.transform );
-                }
-                else
-                {
-                    Debug.LogError( "CelestialBody has no parent!" );
-                }
+        //        if ( null != parentPanel )
+        //        {
+        //            m_HUDElement.transform.SetParent( parentPanel.transform );
+        //        }
+        //        else
+        //        {
+        //            Debug.LogError( "CelestialBody has no parent!" );
+        //        }
 
-                //CelestialBodyHUD celestialHUD = m_HUDElement.GetComponent<CelestialBodyHUD>();
+        //        //CelestialBodyHUD celestialHUD = m_HUDElement.GetComponent<CelestialBodyHUD>();
 
-                //celestialHUD.SetOwner( this );
-                m_HUDElement.SetOwner( this );
+        //        //celestialHUD.SetOwner( this );
+        //        m_HUDElement.SetOwner( this );
 
-                //celestialHUD.SetParent( canvas );
-                //m_HUDElement.SetParent( canvas );
+        //        //celestialHUD.SetParent( canvas );
+        //        //m_HUDElement.SetParent( canvas );
 
-                //m_HUDElement.SetCamera(m_Camera.GetComponent<Camera>());
+        //        //m_HUDElement.SetCamera(m_Camera.GetComponent<Camera>());
 
-                //GameObject fartyPants = GameObject.Find( "View Panel" );
+        //        //GameObject fartyPants = GameObject.Find( "View Panel" );
 
-                //m_HUDElement.SetFartyPants( fartyPants );
+        //        //m_HUDElement.SetFartyPants( fartyPants );
 
-                // Setup the HUD objects to notify us when clicked
-                CelestialClickable[] clickableGUIObjects = m_HUDElement.GetComponentsInChildren<CelestialClickable>();
+        //        // Setup the HUD objects to notify us when clicked
+        //        CelestialClickable[] clickableGUIObjects = m_HUDElement.GetComponentsInChildren<CelestialClickable>();
 
-                foreach ( CelestialClickable clickableGUIObject in clickableGUIObjects )
-                {
-                    //clickableGUIObject.ParentToNotify = this.gameObject;
-                    //clickableGUIObject.myDelegate = ChildHUDClicked;
-                    clickableGUIObject.SetSelected = ClickSelected;
-                    clickableGUIObject.SetTargeted = ClickTargeted;
-                    clickableGUIObject.DisableClickMiss = ClickDisableMiss;
-                    clickableGUIObject.MouseDrag = ClickDrag;
-                }
+        //        foreach ( CelestialClickable clickableGUIObject in clickableGUIObjects )
+        //        {
+        //            //clickableGUIObject.ParentToNotify = this.gameObject;
+        //            //clickableGUIObject.myDelegate = ChildHUDClicked;
+        //            clickableGUIObject.SetSelected = ClickSelected;
+        //            clickableGUIObject.SetTargeted = ClickTargeted;
+        //            clickableGUIObject.DisableClickMiss = ClickDisableMiss;
+        //            clickableGUIObject.MouseDrag = ClickDrag;
+        //        }
 
-                Unselect();
-            }
-            else
-            {
-                // error
-            }
-        }
+        //        Unselect();
+        //    }
+        //    else
+        //    {
+        //        // error
+        //    }
+        //}
 
-        CelestialClickable clickableObject = this.gameObject.GetComponent<CelestialClickable>();
-        if ( clickableObject != null )
-        {
-            clickableObject.SetSelected = ClickSelected;
-            clickableObject.SetTargeted = ClickTargeted;
-            clickableObject.DisableClickMiss = ClickDisableMiss;
-            clickableObject.MouseDrag = ClickDrag;
-        }
+        //CelestialClickable clickableObject = this.gameObject.GetComponent<CelestialClickable>();
+        //if ( clickableObject != null )
+        //{
+        //    clickableObject.SetSelected = ClickSelected;
+        //    clickableObject.SetTargeted = ClickTargeted;
+        //    clickableObject.DisableClickMiss = ClickDisableMiss;
+        //    clickableObject.MouseDrag = ClickDrag;
+        //}
     }
 
     private void ClickSelected( GameObject eventOwner )
@@ -356,51 +380,41 @@ public class CelestialBody : MonoBehaviour
         m_Camera.DragObject( this );
     }
 
-    private void ChildHUDClicked( GameObject eventOwner )
-    {
-        Debug.Log( "Child object clicked: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        SetSelected( true );
-    }
+    //private void ChildHUDClicked( GameObject eventOwner )
+    //{
+    //    Debug.Log( "Child object clicked: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
+    //    SetSelected( true );
+    //}
 
-    private void SetSelected( bool selected )
-    {
-        //Image imageObject = m_HUDElement.GetComponentInChildren<Image>();
-        //Text textObject = m_HUDElement.GetComponentInChildren<Text>();
+    //private void SetSelected( bool selected )
+    //{
+        //Color currentColor = selected ? Color.yellow : Color.red;
 
-        Color currentColor = selected ? Color.yellow : Color.red;
+        //m_HUDElement.m_TitleLabel.color = currentColor;
+        //m_HUDElement.m_PointerImage.color = currentColor;
+        //m_HUDElement.m_InfoLabel.color = currentColor;
+        //m_HUDElement.m_InfoText.color = currentColor;
 
-        //imageObject.color = currentColor;
+        //m_HUDElement.m_InfoLabel.enabled = selected;
+        //m_HUDElement.m_InfoText.enabled = selected;
+    //}
 
-        m_HUDElement.m_TitleLabel.color = currentColor;
-        m_HUDElement.m_PointerImage.color = currentColor;
-        m_HUDElement.m_InfoLabel.color = currentColor;
-        m_HUDElement.m_InfoText.color = currentColor;
+    //private void UpdateInfoText()
+    //{
+    //    if ( null != m_HUDElement )
+    //    {
+    //        string distanceString = GlobalHelpers.MakeSpaceDistanceString( m_Distance );
+    //        string infoText = m_Category + Environment.NewLine;
+    //        infoText += m_RadiusInKM.ToString() + " km" + Environment.NewLine;
+    //        infoText += distanceString;
+    //        infoText += m_VelocityInKMS.ToString() + " km/s" + Environment.NewLine;
+    //        infoText += m_Scale.ToString( ".#" ) + "X" + Environment.NewLine;
 
-        m_HUDElement.m_InfoLabel.enabled = selected;
-        m_HUDElement.m_InfoText.enabled = selected;
+    //        m_HUDElement.m_InfoText.text = infoText;
+    //    }
+    //}
 
-        //if ( selected )
-        //{
-        //    ProximityControlNew.SelectCelestialObject( this );
-        //}
-    }
-
-    private void UpdateInfoText()
-    {
-        if ( null != m_HUDElement )
-        {
-            string distanceString = GlobalHelpers.MakeSpaceDistanceString( m_Distance );
-            string infoText = m_Category + Environment.NewLine;
-            infoText += m_RadiusInKM.ToString() + " km" + Environment.NewLine;
-            infoText += distanceString;
-            infoText += m_VelocityInKMS.ToString() + " km/s" + Environment.NewLine;
-            infoText += m_Scale.ToString( ".#" ) + "X" + Environment.NewLine;
-
-            m_HUDElement.m_InfoText.text = infoText;
-        }
-    }
-
-    private CelestialBodyHUD m_HUDElement = null;
+    //private CelestialBodyHUD m_HUDElement = null;
 
     private string m_Category = "";
     private float m_Distance = 0;

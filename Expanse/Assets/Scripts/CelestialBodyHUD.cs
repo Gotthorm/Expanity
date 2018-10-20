@@ -19,32 +19,27 @@ public class CelestialBodyHUD : MonoBehaviour
 
     public void SetOwner( CelestialBody owner )
     {
-        m_ObjectToFollow = owner.transform;
+        m_Owner = owner;
     }
 
-    //public void SetParent( Canvas parent )
-    //{
-    //    //m_ParentCanvas = parent;
-    //}
-
-    //public void SetFartyPants( GameObject parentPanel )
-    //{
-    //    //m_FartyPants = parentPanel;
-    //}
+    public CelestialBody GetOwner() { return m_Owner; }
 
     public void SetCamera( Camera camera )
     {
         m_Camera = camera;
     }
 
-    public void UpdateDisplayScale( uint scale )
+    public void SetSelected( bool selected )
     {
+        Color currentColor = selected ? Color.yellow : Color.red;
 
-    }
+        m_TitleLabel.color = currentColor;
+        m_PointerImage.color = currentColor;
+        m_InfoLabel.color = currentColor;
+        m_InfoText.color = currentColor;
 
-    public void UpdateDisplayDistance( uint distance )
-    {
-
+        m_InfoLabel.enabled = selected;
+        m_InfoText.enabled = selected;
     }
 
     // Use this for initialization
@@ -53,32 +48,31 @@ public class CelestialBodyHUD : MonoBehaviour
         if ( null != transform.parent )
         {
             m_ParentRectTransform = transform.parent.GetComponent<RectTransform>();
-            //transform.SetParent( m_ParentCanvas.transform, false );
-
-            //transform.SetParent( m_FartyPants.transform );
         }
         else
         {
             Debug.LogError( "Parent canvas not set for UI Anchor" );
         }
 
-        if ( null != m_ObjectToFollow )
+        if ( null != m_Owner )
         {
             Text textObject = this.GetComponentInChildren<Text>();
-            textObject.text = m_ObjectToFollow.gameObject.name;
+            textObject.text = m_Owner.transform.gameObject.name;
         }
         else
         {
             Debug.LogError( "Object to follow not set for UI Anchor" );
         }
+
+        SetSelected( false );
     }
 
     private void LateUpdate()
     {
-        if ( null != m_ParentRectTransform && null != m_ObjectToFollow && m_Camera != null )
+        if ( null != m_ParentRectTransform && null != m_Owner && m_Camera != null )
         {
             // Translate our anchored position into world space.
-            Vector3 worldPoint = m_ObjectToFollow.TransformPoint( m_LocalOffset );
+            Vector3 worldPoint = m_Owner.transform.TransformPoint( m_LocalOffset );
 
             // Translate the world position into viewport space.
             Vector3 viewportPoint = m_Camera.WorldToViewportPoint( worldPoint );
@@ -86,6 +80,8 @@ public class CelestialBodyHUD : MonoBehaviour
             // Convert the viewport to account for the camera viewport not occupying the entire canvas
             viewportPoint.x = viewportPoint.x * m_Camera.rect.width + m_Camera.rect.x;
             viewportPoint.y = viewportPoint.y * m_Camera.rect.height + m_Camera.rect.y;
+
+            bool visible = viewportPoint.z >= 0;
 
             // Canvas local coordinates are relative to its center, 
             // so we offset by half. We also discard the depth.
@@ -101,12 +97,22 @@ public class CelestialBodyHUD : MonoBehaviour
 
             // Add the canvas space offset and apply the new position.
             transform.localPosition = viewportPoint + m_ScreenOffset;
+
+            // If the celestial body is visible, ensure the HUD element is active and updated
+            // Otherwise disable it 
+            if ( visible )
+            {
+                gameObject.SetActive( true );
+            }
+            else
+            {
+                gameObject.SetActive( false );
+            }
         }
     }
 
     // Both of these references must be set to a non null value before the first update (start)
-    private Transform m_ObjectToFollow = null;
-    //private Canvas m_ParentCanvas = null;
+    private CelestialBody m_Owner = null;
     private Camera m_Camera = null;
 
     private RectTransform m_ParentRectTransform = null;

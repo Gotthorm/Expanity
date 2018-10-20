@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class ProximityControlPanel : MonoBehaviour
 {
-    public Camera m_Camera = null;
+    //public Camera m_Camera = null;
     public bool m_AutoDefault = true;
+    public TacticalView m_TacticalView = null;
     public List<ProximityObject> m_TextBoxList = new List<ProximityObject>();
 
     // Called directly from the Auto Scale Button
@@ -38,7 +39,7 @@ public class ProximityControlPanel : MonoBehaviour
         m_CelestialFilter ^= CelestialBody.CelestialType.Unidentified;
     }
 
-    public void SelectProximityObject( ProximityObject proximityObject )
+    public void SelectProximityObject( ProximityObject proximityObject, bool lookAtTarget )
     {
         // Deselect old object
         if ( m_SelectedProximityObject != null )
@@ -56,8 +57,29 @@ public class ProximityControlPanel : MonoBehaviour
             m_SelectedCelestialBody = m_SelectedProximityObject.GetCelestialID();
 
             CelestialBody body = CelestialManager.GetInstance().GetCelestialBody( m_SelectedCelestialBody );
-            CelestialManager.GetInstance().m_Camera.SetSelectedObject( body, true );
+            CelestialManager.GetInstance().m_Camera.SetSelectedObject( body, lookAtTarget );
+
+            if( m_TacticalView != null )
+            {
+                m_TacticalView.SetSelectedCelestial( body.GetCelestialID() );
+            }
         }
+    }
+
+    public void SelectProximityObject( UInt32 celestialID )
+    {
+        ProximityObject proximityObject = null;
+
+        foreach ( ProximityObject proximityObjectCandidate in m_TextBoxList )
+        {
+            if( proximityObjectCandidate.GetCelestialID() == celestialID)
+            {
+                proximityObject = proximityObjectCandidate;
+                break;
+            }
+        }
+
+        SelectProximityObject( proximityObject, false );
     }
 
     public void TargetProximityObject( ProximityObject proximityObject )
@@ -96,22 +118,21 @@ public class ProximityControlPanel : MonoBehaviour
 	// Update is called once per frame
 	private void Update()
     {
-		if( null != m_Camera )
+        Vector3 cameraPosition = CelestialManager.GetInstance().m_Camera.transform.position;
+
+        int entryCount = m_TextBoxList.Count;
+
+        List<CelestialBody> bodyList = CelestialManager.GetInstance().GetClosestBodies( entryCount, m_CelestialFilter, cameraPosition );
+
+        for ( int index = 1; index <= entryCount; ++index )
         {
-            int entryCount = m_TextBoxList.Count;
+            ProximityObject proximityObject = m_TextBoxList[ index - 1 ];
 
-            List<CelestialBody> bodyList = CelestialManager.GetInstance().GetClosestBodies( entryCount, m_CelestialFilter, m_Camera.transform.position );
+            CelestialBody body = ( bodyList.Count >= index ) ? bodyList[ index - 1 ] : null;
+            bool selected = ( m_SelectedCelestialBody != 0 && proximityObject.GetCelestialID() == m_SelectedCelestialBody ) ? true : false;
 
-            for ( int index = 1; index <= entryCount; ++index )
-            {
-                ProximityObject proximityObject = m_TextBoxList[ index - 1 ];
-
-                CelestialBody body = ( bodyList.Count >= index ) ? bodyList[ index - 1 ] : null;
-                bool selected = ( m_SelectedCelestialBody != 0 && proximityObject.GetCelestialID() == m_SelectedCelestialBody ) ? true : false;
-
-                proximityObject.Set( body, selected );
-                m_CurrentCelestialBodies[ proximityObject ] = body;
-            }
+            proximityObject.Set( body, cameraPosition, selected );
+            m_CurrentCelestialBodies[ proximityObject ] = body;
         }
 	}
 

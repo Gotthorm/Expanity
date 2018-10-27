@@ -136,14 +136,23 @@ public class CelestialManager : MonoBehaviour
 
             AddPlanet( "Sol", julianDate, m_Canvas );
 
-            m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Mercury", julianDate, m_Canvas ) ) );
-            m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Venus", julianDate, m_Canvas ) ) );
-            m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Earth", julianDate, m_Canvas ) ) );
-            m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Mars", julianDate, m_Canvas ) ) );
-            m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Jupiter", julianDate, m_Canvas ) ) );
-            m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Saturn", julianDate, m_Canvas ) ) );
-            m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Uranus", julianDate, m_Canvas ) ) );
-            m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Neptune", julianDate, m_Canvas ) ) );
+            AddPlanet( "Mercury", julianDate, m_Canvas );
+            AddPlanet( "Venus", julianDate, m_Canvas );
+            AddPlanet( "Earth", julianDate, m_Canvas );
+            AddPlanet( "Mars", julianDate, m_Canvas );
+            AddPlanet( "Jupiter", julianDate, m_Canvas );
+            AddPlanet( "Saturn", julianDate, m_Canvas );
+            AddPlanet( "Uranus", julianDate, m_Canvas );
+            AddPlanet( "Neptune", julianDate, m_Canvas );
+
+            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Mercury", julianDate, m_Canvas ) ) );
+            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Venus", julianDate, m_Canvas ) ) );
+            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Earth", julianDate, m_Canvas ) ) );
+            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Mars", julianDate, m_Canvas ) ) );
+            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Jupiter", julianDate, m_Canvas ) ) );
+            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Saturn", julianDate, m_Canvas ) ) );
+            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Uranus", julianDate, m_Canvas ) ) );
+            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Neptune", julianDate, m_Canvas ) ) );
 
             //m_Camera.m_PositionUpdateCallback = CameraPositionUpdated;
 
@@ -287,7 +296,7 @@ public class CelestialManager : MonoBehaviour
 
     private Dictionary<UInt32, CelestialBody> m_CelestialBodies = new Dictionary<UInt32, CelestialBody>();
     private List<CelestialBody> m_Planets = new List<CelestialBody>();
-    private List<CelestialOrbit> m_CelestialOrbits = new List<CelestialOrbit>();
+    //private List<CelestialOrbit> m_CelestialOrbits = new List<CelestialOrbit>();
 
     private bool m_AutoScale = false;
 

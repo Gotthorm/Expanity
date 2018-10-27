@@ -9,6 +9,7 @@ public class CelestialBodyLoader : XmlLoader
     public string m_Name = "";
     public uint m_Radius = 0;
     public uint m_MaxScale = 0;
+    public bool m_Orbit = true;
     public List<float> m_MeanLongitude = new List<float>();
     public List<float> m_SemiMajorAxisOfOrbit = new List<float>();
     public List<float> m_EccentricityOfOrbit = new List<float>();
@@ -166,6 +167,11 @@ public class CelestialBodyLoader : XmlLoader
                     results = ProcessFloats( elementValue, m_MeanAnomaly );
                 }
                 break;
+            case m_OrbitFlagLabel:
+                {
+                    results = bool.TryParse( elementValue, out m_Orbit );
+                }
+                break;
 
             default:
                 {
@@ -206,6 +212,7 @@ public class CelestialBodyLoader : XmlLoader
         //m_GameObjectInstance = null;
         m_PrefabDataPath = "";
         m_StackSize = 0;
+        m_Orbit = true;
     }
 
     // Given an input string, attempt to convert it to a list of float values
@@ -253,4 +260,5 @@ public class CelestialBodyLoader : XmlLoader
     private const string m_ArgumentOfPerihelionLabel = "ArgumentOfPerihelion";
     private const string m_LongitudeOfAscendingNodeLabel = "LongitudeOfAscendingNode";
     private const string m_MeanAnomalyLabel = "MeanAnomaly";
+    private const string m_OrbitFlagLabel = "Orbit";
 }

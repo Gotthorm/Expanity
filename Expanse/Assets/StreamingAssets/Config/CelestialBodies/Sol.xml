@@ -2,6 +2,7 @@
 <!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
 
 <Planet value="Sol">
+  <Orbit value="false"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Sol"/>
   <Radius value="695700"/>
   <MaximumScale value="10"/>

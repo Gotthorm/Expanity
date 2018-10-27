@@ -48,6 +48,12 @@ public class TacticalView : MonoBehaviour
                 }
 
                 // Create orbit
+                if ( celestialBody.Orbit )
+                {
+                    CelestialOrbit orbit = CelestialOrbit.Create( celestialBody );
+                    orbit.transform.SetParent( this.gameObject.transform );
+                    m_CelestialOrbits.Add( orbit );
+                }
             }
         }
         else
@@ -196,4 +202,5 @@ public class TacticalView : MonoBehaviour
     private CelestialBodyHUD m_SelectedBodyHUD = null;
 
     private List<CelestialBodyHUD> m_HUDList = new List<CelestialBodyHUD>();
+    private List<CelestialOrbit> m_CelestialOrbits = new List<CelestialOrbit>();
 }

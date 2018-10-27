@@ -88,6 +88,14 @@ public class CelestialBody : MonoBehaviour
         }
     }
 
+    public bool Orbit
+    {
+        get
+        {
+            return m_HasOrbit;
+        }
+    }
+
     public void SetCamera( CelestialCamera camera )
     {
         m_Camera = camera;
@@ -233,6 +241,8 @@ public class CelestialBody : MonoBehaviour
                         newPlanet.Initialize( canvas );
 
                         newPlanet.transform.position = newPlanet.GetPosition( julianDate );
+
+                        newPlanet.m_HasOrbit = loader.m_Orbit;
 
                         //newPlanet.GetOrbit( julianDate, 50 );
                     }
@@ -426,6 +436,7 @@ public class CelestialBody : MonoBehaviour
     private uint m_VisualUnitsScale = 100;
     private uint m_RadiusInKM = 0;
     private float m_VelocityInKMS = 0.0f;
+    private bool m_HasOrbit = true;
 
     private List<List<float>> m_MeanEquinoxData = new List<List<float>>()
     {

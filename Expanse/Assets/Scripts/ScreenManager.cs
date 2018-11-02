@@ -59,6 +59,7 @@ public class ScreenManager : MonoBehaviour, IDragHandler/*, IBeginDragHandler*/,
             }
 
             // TODO : Disable rendering on current panel?
+            m_PanelList[ m_CurrentIndex ].Enabled = false;
         }
     }
 
@@ -129,6 +130,13 @@ public class ScreenManager : MonoBehaviour, IDragHandler/*, IBeginDragHandler*/,
                         rectTransform.SetSizeWithCurrentAnchors( RectTransform.Axis.Vertical, m_PanelHeight );
                         rectTransform.SetSizeWithCurrentAnchors( RectTransform.Axis.Horizontal, m_PanelWidth );
                     }
+
+                    // Ensure all child panels begin as disabled
+                    ScreenPanel panel = screenPanel.GetComponent<ScreenPanel>();
+                    if(panel != null)
+                    {
+                        panel.Enabled = false;
+                    }
                 }
 
                 // Set up this parent panel based on the number of children
@@ -151,6 +159,9 @@ public class ScreenManager : MonoBehaviour, IDragHandler/*, IBeginDragHandler*/,
                 m_CurrentIndex = 0;
                 m_TargetIndex = 0;
                 m_TransitionValue = 0.0f;
+
+                // Set the default panel as enabled
+                m_PanelList[ m_CurrentIndex ].Enabled = true;
             }
         }
     }
@@ -170,6 +181,7 @@ public class ScreenManager : MonoBehaviour, IDragHandler/*, IBeginDragHandler*/,
                 m_CurrentIndex = m_TargetIndex;
 
                 // TODO : Enable rendering on new target panel?
+                m_PanelList[ m_CurrentIndex ].Enabled = true;
             }
             else
             {

@@ -42,6 +42,22 @@ public class CelestialBodyHUD : MonoBehaviour
         m_InfoText.enabled = selected;
     }
 
+    public bool GetIsVisible()
+    {
+        if ( null != m_Owner && m_Camera != null )
+        {
+            // Translate our anchored position into world space.
+            Vector3 worldPoint = m_Owner.transform.TransformPoint( m_LocalOffset );
+
+            // Translate the world position into viewport space.
+            Vector3 viewportPoint = m_Camera.WorldToViewportPoint( worldPoint );
+
+            return (viewportPoint.z >= 0);
+        }
+
+        return false;
+    }
+
     // Use this for initialization
     private void Start ()
     {
@@ -81,7 +97,7 @@ public class CelestialBodyHUD : MonoBehaviour
             viewportPoint.x = viewportPoint.x * m_Camera.rect.width + m_Camera.rect.x;
             viewportPoint.y = viewportPoint.y * m_Camera.rect.height + m_Camera.rect.y;
 
-            bool visible = viewportPoint.z >= 0;
+            //bool visible = viewportPoint.z >= 0;
 
             // Canvas local coordinates are relative to its center, 
             // so we offset by half. We also discard the depth.
@@ -98,16 +114,16 @@ public class CelestialBodyHUD : MonoBehaviour
             // Add the canvas space offset and apply the new position.
             transform.localPosition = viewportPoint + m_ScreenOffset;
 
-            // If the celestial body is visible, ensure the HUD element is active and updated
-            // Otherwise disable it 
-            if ( visible )
-            {
-                gameObject.SetActive( true );
-            }
-            else
-            {
-                gameObject.SetActive( false );
-            }
+            //// If the celestial body is visible, ensure the HUD element is active and updated
+            //// Otherwise disable it 
+            //if ( visible )
+            //{
+            //    gameObject.SetActive( true );
+            //}
+            //else
+            //{
+            //    gameObject.SetActive( false );
+            //}
         }
     }
 

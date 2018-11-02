@@ -65,9 +65,13 @@ public class TacticalView : MonoBehaviour
 	// Update is called once per frame
 	private void Update ()
     {
+        bool active = GetComponentInParent<ScreenPanel>().Enabled;
+
+        m_ViewCamera.GetComponent<Camera>().enabled = active;
+
         foreach ( CelestialBodyHUD celestialBodyHUD in m_HUDList )
         {
-            UpdateHUDElement( celestialBodyHUD );
+            UpdateHUDElement( celestialBodyHUD, active );
         }
     }
 
@@ -114,11 +118,9 @@ public class TacticalView : MonoBehaviour
         return newHUD;
     }
 
-    private void UpdateHUDElement( CelestialBodyHUD celestialBodyHUD )
+    private void UpdateHUDElement( CelestialBodyHUD celestialBodyHUD, bool active )
     {
-        CelestialBody celestialBody = celestialBodyHUD.GetOwner();
-
-        if ( celestialBody.GetIsVisible() )
+        if ( celestialBodyHUD.GetIsVisible() && active )
         {
             celestialBodyHUD.gameObject.SetActive( true );
         }
@@ -129,6 +131,8 @@ public class TacticalView : MonoBehaviour
 
         Vector3 distanceVector = m_ViewCamera.transform.position - this.transform.position;
         float distance = distanceVector.magnitude;
+
+        CelestialBody celestialBody = celestialBodyHUD.GetOwner();
 
         string distanceString = GlobalHelpers.MakeSpaceDistanceString( distance );
         //string infoText = m_Category + Environment.NewLine;

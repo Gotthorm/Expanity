@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class ScreenPanel : MonoBehaviour
 {
+    public bool Enabled { get; set; }
 
 	// Use this for initialization
-	void Start ()
+	private void Awake ()
     {
-		
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-		
+        Enabled = false;
 	}
 }

@@ -25,9 +25,11 @@ public class SpaceShip : MonoBehaviour
         //GameObject gameObject = new GameObject( "Control System", typeof( ControlSystem ) );
         //gameObject.transform.SetParent( this.gameObject.transform );
 
-        //m_ControlSystem = gameObject.GetComponent<ControlSystem>();
-   
-        //m_ControlSystem.Initialize( this, thrusterList );
+        m_ControlSystem = gameObject.GetComponent<ControlSystem>();
+        if ( m_ControlSystem != null )
+        {
+            m_ControlSystem.Initialize( this, thrusterList );
+        }
     }
 
     // Update is called once per frame
@@ -54,7 +56,7 @@ public class SpaceShip : MonoBehaviour
     }
 
     // The control system that encapsulates all controls
-    //private ControlSystem m_ControlSystem = null;
+    private ControlSystem m_ControlSystem = null;
 
     #endregion
 }

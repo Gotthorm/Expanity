@@ -1,46 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class ExternalShipView : MonoBehaviour
+public class ExternalShipView : MonoBehaviour, IPointerClickHandler
 {
-    public Camera m_ViewCamera = null;
+    public SpaceShipExternalCamera m_ViewCamera = null;
 
-	// Use this for initialization
-	private void Start ()
-    {
-	}
-	
-	// Update is called once per frame
-	private void Update ()
-    {
-        bool active = GetComponentInParent<ScreenPanel>().Enabled;
+    public Sprite m_Unselected = null;
+    public Sprite m_Selected = null;
 
-        m_ViewCamera.GetComponent<Camera>().enabled = active;
+    public void OnPointerClick( PointerEventData eventData )
+    {
+        Debug.Log( "Object click selected: " + eventData.pointerCurrentRaycast.gameObject.name );
+
+        ExternalShipViewController.GetInstance().SetView( this );
+        Select( true );
     }
 
-    private void ClickSelected( GameObject eventOwner )
+    public void Select(bool select)
     {
-        Debug.Log( "Object click selected: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-    }
+        Sprite newSprite = select ? m_Selected : m_Unselected;
 
-    private void ClickTargeted( GameObject eventOwner )
-    {
-        Debug.Log( "Object click targeted: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        //m_Camera.SetTargetedObject( this );
-
-        // Notify the panel?
-    }
-
-    private void ClickDisableMiss( GameObject eventOwner )
-    {
-        Debug.Log( "Object click disable miss: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        //m_Camera.DisableClickMissDetectionForThisFrame();
-    }
-
-    private void ClickDrag( GameObject eventOwner )
-    {
-        Debug.Log( "Object click drag: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        //m_Camera.DragObject( this );
+        Image mask = GetComponentInChildren<Image>();
+        mask.sprite = newSprite;
     }
 }

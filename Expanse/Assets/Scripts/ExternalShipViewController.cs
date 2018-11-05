@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class ExternalShipViewController : MonoBehaviour
 {
+    public ExternalShipView m_DefaultView = null;
+
     public static ExternalShipViewController GetInstance() { return m_Instance; }
 
     public void SetView( ExternalShipView view )
@@ -33,11 +35,20 @@ public class ExternalShipViewController : MonoBehaviour
                 currentRawImage.texture = newRawImage.texture;
             }
         }
+
+        Text label = GetComponentInChildren<Text>();
+
+        if(label != null)
+        {
+            label.text = view.GetLabel();
+        }
     }
 
     private void Awake()
     {
         m_Instance = this;
+
+        SetView( m_DefaultView );
     }
 
     // Use this for initialization

@@ -26,4 +26,18 @@ public class ExternalShipView : MonoBehaviour, IPointerClickHandler
         Image mask = GetComponentInChildren<Image>();
         mask.sprite = newSprite;
     }
+
+    public string GetLabel()
+    {
+        Text label = GetComponentInChildren<Text>();
+
+        if( label != null )
+        {
+            return label.text;
+        }
+        else
+        {
+            return "";
+        }
+    }
 }

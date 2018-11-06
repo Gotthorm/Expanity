@@ -131,6 +131,8 @@ public class CelestialCamera : MonoBehaviour
             // Dragging motions are only active with the right mouse button depressed
             if ( Input.GetMouseButton( 1 ) )
             {
+                Debug.LogWarning("Mouse right clicked in view panel");
+
                 if ( Cursor.lockState != CursorLockMode.Locked )
                 {
                     Cursor.lockState = CursorLockMode.Locked;
@@ -408,17 +410,33 @@ public class CelestialCamera : MonoBehaviour
 
     private bool MouseScreenCheck()
     {
-        if ( Input.mousePosition.x >= 0 && Input.mousePosition.y >= 0 )
+        CameraPanel viewPanel = GetComponent<CameraPanel>();
+        if( viewPanel != null )
         {
-#if UNITY_EDITOR
-            if ( Input.mousePosition.x < Handles.GetMainGameViewSize().x - 1 && Input.mousePosition.y < Handles.GetMainGameViewSize().y - 1 )
-#else
-            if ( Input.mousePosition.x < Screen.width - 1 && Input.mousePosition.y < Screen.height - 1 )
-#endif
+            RectTransform rectTransform = viewPanel.m_ParentPanel.GetComponent<RectTransform>();
+
+            if( rectTransform != null )
             {
-                return true;
+                if ( RectTransformUtility.RectangleContainsScreenPoint( rectTransform, Input.mousePosition, null ) )
+                {
+                    return true;
+                }
             }
         }
+
+// Old method left for reference
+// This used the entire screen.  The new method above uses only the actual view panel
+//        if ( Input.mousePosition.x >= 0 && Input.mousePosition.y >= 0 )
+//        {
+//#if UNITY_EDITOR
+//            if ( Input.mousePosition.x < Handles.GetMainGameViewSize().x - 1 && Input.mousePosition.y < Handles.GetMainGameViewSize().y - 1 )
+//#else
+//            if ( Input.mousePosition.x < Screen.width - 1 && Input.mousePosition.y < Screen.height - 1 )
+//#endif
+//            {
+//                return true;
+//            }
+//        }
 
         return false;
     }

@@ -28,38 +28,41 @@ public class ScreenManager : MonoBehaviour, IDragHandler/*, IBeginDragHandler*/,
 
     public void OnEndDrag( PointerEventData eventData )
     {
-        Debug.Log( "PanelViewer : End drag" );
-
-        if ( m_TargetIndex == m_CurrentIndex )
+        // Restrict swipes to the left mouse button
+        if ( eventData.button == PointerEventData.InputButton.Left )
         {
-            Vector2 dragVectorDirection = ( eventData.position - eventData.pressPosition ).normalized;
+            Debug.Log( "PanelViewer : End drag" );
 
-            // Check the swipe direction
-            float dragDirectionTest = Vector2.Dot( Vector2.up, dragVectorDirection );
-
-            if ( dragDirectionTest > m_DragDirectionTolerance )
+            if ( m_TargetIndex == m_CurrentIndex )
             {
-                Debug.Log( "Swipe up" );
+                Vector2 dragVectorDirection = ( eventData.position - eventData.pressPosition ).normalized;
 
-                // Drag Up
-                if ( m_CurrentIndex > 0 )
+                // Check the swipe direction
+                float dragDirectionTest = Vector2.Dot( Vector2.up, dragVectorDirection );
+
+                if ( dragDirectionTest > m_DragDirectionTolerance )
                 {
-                    --m_TargetIndex;
+                    Debug.Log( "Swipe up" );
+
+                    // Drag Up
+                    if ( m_CurrentIndex > 0 )
+                    {
+                        --m_TargetIndex;
+                        m_PanelList[ m_CurrentIndex ].Enabled = false;
+                    }
+                }
+                else if ( dragDirectionTest < -m_DragDirectionTolerance )
+                {
+                    Debug.Log( "Swipe down" );
+
+                    // Drag Down
+                    if ( m_CurrentIndex < m_PanelList.Count - 1 )
+                    {
+                        ++m_TargetIndex;
+                        m_PanelList[ m_CurrentIndex ].Enabled = false;
+                    }
                 }
             }
-            else if ( dragDirectionTest < -m_DragDirectionTolerance )
-            {
-                Debug.Log( "Swipe down" );
-
-                // Drag Down
-                if ( m_CurrentIndex < m_PanelList.Count - 1 )
-                {
-                    ++m_TargetIndex;
-                }
-            }
-
-            // TODO : Disable rendering on current panel?
-            m_PanelList[ m_CurrentIndex ].Enabled = false;
         }
     }
 

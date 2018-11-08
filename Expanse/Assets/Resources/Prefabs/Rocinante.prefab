@@ -1743,7 +1743,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.01
   far clip plane: 100000
   field of view: 60
   orthographic: 0
@@ -2397,6 +2397,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bea0fbe2964cd458068fe605f59315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MaxZoom: 200
+  m_PanRange: {x: 90, y: 90}
 --- !u!114 &114088453327137592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2421,6 +2423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bea0fbe2964cd458068fe605f59315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MaxZoom: 200
+  m_PanRange: {x: 90, y: 90}
 --- !u!114 &114222942655402818
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2522,6 +2526,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bea0fbe2964cd458068fe605f59315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MaxZoom: 200
+  m_PanRange: {x: 90, y: 90}
 --- !u!114 &114436113008318092
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2557,6 +2563,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bea0fbe2964cd458068fe605f59315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MaxZoom: 200
+  m_PanRange: {x: 90, y: 90}
 --- !u!114 &114643648299079574
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2581,6 +2589,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bea0fbe2964cd458068fe605f59315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MaxZoom: 200
+  m_PanRange: {x: 90, y: 90}
 --- !u!114 &114661469313792298
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2657,6 +2667,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7bea0fbe2964cd458068fe605f59315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MaxZoom: 200
+  m_PanRange: {x: 30, y: 30}
 --- !u!114 &114850487882191582
 MonoBehaviour:
   m_ObjectHideFlags: 1

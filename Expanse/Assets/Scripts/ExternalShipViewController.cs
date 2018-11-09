@@ -13,18 +13,29 @@ public class ExternalShipViewController : MonoBehaviour
     [Tooltip( "A mouse speed scalar for how fast the camera will rotate" )]
     public float m_RotateSpeed = 3.5f;
 
+    public void ResetCamera()
+    {
+        if( m_CurrentView != null )
+        {
+            if( m_CurrentView.m_ViewCamera != null )
+            {
+                m_CurrentView.m_ViewCamera.Reset();
+            }
+        }
+    }
+
     public static ExternalShipViewController GetInstance() { return m_Instance; }
 
     public void SetView( ExternalShipView view )
     {
-        if ( m_View != view )
+        if ( m_CurrentView != view )
         {
-            if ( m_View != null )
+            if ( m_CurrentView != null )
             {
-                m_View.Select( false );
+                m_CurrentView.Select( false );
             }
 
-            m_View = view;
+            m_CurrentView = view;
         }
 
         //m_ViewCamera = view.m_ViewCamera;
@@ -54,11 +65,6 @@ public class ExternalShipViewController : MonoBehaviour
         SetView( m_DefaultView );
     }
 
-    // Use this for initialization
-    private void Start()
-    {
-    }
-
     // Update is called once per frame
     private void Update()
     {
@@ -66,10 +72,11 @@ public class ExternalShipViewController : MonoBehaviour
         {
             if ( m_DefaultView != null )
             {
-                SpaceShipExternalCamera camera = m_View.m_ViewCamera;
+                SpaceShipExternalCamera camera = m_CurrentView.m_ViewCamera;
 
                 if ( camera != null )
                 {
+                    // Pan control
                     if ( Input.GetMouseButton( 1 ) )
                     {
                         float mouseX = Input.GetAxis( "Mouse X" ) * m_RotateSpeed;
@@ -86,9 +93,7 @@ public class ExternalShipViewController : MonoBehaviour
                         }
                         else
                         {
-
                             // Add the new rotation delta to the current pan value
-                            //camera.Pan = new Vector2( m_MouseBase.y - mouseY, m_MouseBase.x - mouseX );
                             camera.Pan = new Vector2( mouseY, mouseX );
 
                             //UpdateFreeView( camera );
@@ -106,6 +111,14 @@ public class ExternalShipViewController : MonoBehaviour
                         {
                             Cursor.visible = true;
                         }
+                    }
+
+                    // Zoom control
+                    float mouseWheelValue = Input.GetAxis( "Mouse ScrollWheel" );
+                    if ( 0.0f != mouseWheelValue )
+                    {
+                        //float distance = mouseWheelValue * -m_RotationDistance;
+                        //UpdateTargetedView( 0, 0, distance );
                     }
                 }
             }
@@ -180,7 +193,7 @@ public class ExternalShipViewController : MonoBehaviour
         camera.Pan += new Vector2( mouseY, mouseX );
     }
 
-    private ExternalShipView m_View = null;
+    private ExternalShipView m_CurrentView = null;
     //private SpaceShipExternalCamera m_ViewCamera = null;
     private static ExternalShipViewController m_Instance = null;
     private Vector2 m_MouseBase = new Vector2();

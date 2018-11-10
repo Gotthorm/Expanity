@@ -9,9 +9,13 @@ public class ExternalShipViewController : MonoBehaviour
     public ExternalShipView m_DefaultView = null;
 
     public Text m_LabelName = null;
+    public Text m_LabelZoom = null;
 
-    [Tooltip( "A mouse speed scalar for how fast the camera will rotate" )]
-    public float m_RotateSpeed = 3.5f;
+    [Tooltip( "A mouse speed scalar for how fast the camera will pan" )]
+    public float m_PanSpeed = 3.5f;
+
+    [Tooltip( "A mouse wheel scalar for how fast the camera will zoom" )]
+    public float m_ZoomSpeed = 20.0f;
 
     public void ResetCamera()
     {
@@ -56,6 +60,16 @@ public class ExternalShipViewController : MonoBehaviour
         {
             m_LabelName.text = view.GetLabel();
         }
+
+        if ( m_LabelZoom != null )
+        {
+            SpaceShipExternalCamera camera = m_CurrentView.m_ViewCamera;
+
+            if ( camera != null )
+            {
+                m_LabelZoom.text = "Zoom: x" + camera.GetZoom().ToString();
+            }
+        }
     }
 
     private void Awake()
@@ -79,8 +93,8 @@ public class ExternalShipViewController : MonoBehaviour
                     // Pan control
                     if ( Input.GetMouseButton( 1 ) )
                     {
-                        float mouseX = Input.GetAxis( "Mouse X" ) * m_RotateSpeed;
-                        float mouseY = Input.GetAxis( "Mouse Y" ) * -m_RotateSpeed;
+                        float mouseX = Input.GetAxis( "Mouse X" ) * m_PanSpeed;
+                        float mouseY = Input.GetAxis( "Mouse Y" ) * -m_PanSpeed;
 
                         if ( Cursor.lockState != CursorLockMode.Locked )
                         {
@@ -114,59 +128,28 @@ public class ExternalShipViewController : MonoBehaviour
                     }
 
                     // Zoom control
+                    uint currentZoom = camera.GetZoom();
+
                     float mouseWheelValue = Input.GetAxis( "Mouse ScrollWheel" );
                     if ( 0.0f != mouseWheelValue )
                     {
-                        //float distance = mouseWheelValue * -m_RotationDistance;
-                        //UpdateTargetedView( 0, 0, distance );
+                        int zoomChange = (int)(mouseWheelValue * m_ZoomSpeed);
+
+                        camera.ChangeZoom(zoomChange);
+
+                        currentZoom = camera.GetZoom();
+                    }
+
+                    if( m_OldZoom != currentZoom )
+                    {
+                        m_LabelZoom.text = "Zoom: x" + currentZoom.ToString();
+
+                        m_OldZoom = currentZoom;
                     }
                 }
             }
 
         }
-        //bool active = GetComponentInParent<ScreenPanel>().Enabled;
-
-        //m_ViewCamera.GetComponent<Camera>().enabled = active;
-        /*
-         *
-        if ( MouseScreenCheck() )
-        {
-            // Dragging motions are only active with the right mouse button depressed
-            if ( Input.GetMouseButton( 1 ) )
-            {
-                if ( Cursor.lockState != CursorLockMode.Locked )
-                {
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
-                if ( Cursor.visible )
-                {
-                    Cursor.visible = false;
-                }
-
-                float mouseX = Input.GetAxis( "Mouse X" ) * m_RotateSpeed;
-                float mouseY = Input.GetAxis( "Mouse Y" ) * -m_RotateSpeed;
-
-                if ( m_Target == null )
-                {
-                    UpdateFreeView( mouseX, mouseY );
-                    transform.Rotate( new Vector3( mouseY, mouseX, 0 ) );
-                    float X = transform.rotation.eulerAngles.x;
-                    float Y = transform.rotation.eulerAngles.y;
-                    transform.rotation = Quaternion.Euler( X, Y, 0 );
-                }
-            }
-            else
-            {
-                if ( Cursor.lockState == CursorLockMode.Locked )
-                {
-                    Cursor.lockState = CursorLockMode.None;
-                }
-                if( Cursor.visible == false )
-                {
-                    Cursor.visible = true;
-                }
-            }
-         */
     }
 
     private bool MouseScreenCheck()
@@ -186,15 +169,15 @@ public class ExternalShipViewController : MonoBehaviour
 
     private void UpdateFreeView( SpaceShipExternalCamera camera )
     {
-        float mouseX = Input.GetAxis( "Mouse X" ) * m_RotateSpeed;
-        float mouseY = Input.GetAxis( "Mouse Y" ) * -m_RotateSpeed;
+        float mouseX = Input.GetAxis( "Mouse X" ) * m_PanSpeed;
+        float mouseY = Input.GetAxis( "Mouse Y" ) * -m_PanSpeed;
 
         // Add the new rotation delta to the current pan value
         camera.Pan += new Vector2( mouseY, mouseX );
     }
 
     private ExternalShipView m_CurrentView = null;
-    //private SpaceShipExternalCamera m_ViewCamera = null;
     private static ExternalShipViewController m_Instance = null;
     private Vector2 m_MouseBase = new Vector2();
+    private uint m_OldZoom = 0;
 }

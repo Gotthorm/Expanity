@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -48,7 +49,7 @@ public class CelestialManager : MonoBehaviour
 
     public int GetPlanetCount() { return m_Planets.Count; }
 
-    public CelestialBody GetPlanet( int planetIndex )
+    public CelestialPlanet GetPlanet( int planetIndex )
     {
         if(planetIndex < m_Planets.Count)
         {
@@ -74,14 +75,6 @@ public class CelestialManager : MonoBehaviour
             SetScale( 1.0f );
         }
         m_AutoScale = enabled;
-    }
-
-    public void CameraPositionUpdated( Vector3 cameraPosition )
-    {
-        foreach( KeyValuePair<UInt32, CelestialBody> body in m_CelestialBodies )
-        {
-            body.Value.UpdateCameraPosition( cameraPosition );
-        }
     }
 
     public List<CelestialBody> GetClosestBodies( int count, CelestialBody.CelestialType types, Vector3 position )
@@ -122,60 +115,40 @@ public class CelestialManager : MonoBehaviour
     // Use this for initialization
     public void Init ()
     {
-        //if ( m_Camera != null )
+        DirectoryInfo info = new DirectoryInfo( Application.dataPath + "/StreamingAssets/Config/CelestialBodies/" );
+        FileInfo[] fileInfo = info.GetFiles( "*.xml");
+
+        foreach ( FileInfo file in fileInfo )
         {
-            //CelestialBody.SetCamera( m_Camera );
+            // Load
+            CelestialBody newBody = CelestialBody.Create( file );
 
-            // Calculate the JD corresponding to 1976 - July - 20, 12:00 UT.
-            //DateTime desiredTime = new DateTime( 1976, 7, 20, 12, 0, 0 );
-            //DateTime desiredTime = new DateTime( 2018, 2, 26, 12, 0, 0 );
-            //DateTime desiredTime = new DateTime( 2000, 1, 1, 0, 0, 0 );
-            DateTime desiredTime = DateTime.Now;
+            if ( newBody != null )
+            {
+                m_CelestialBodies.Add( newBody.GetCelestialID(), newBody );
 
-            double julianDate = PlanetPosition.GetJulianDate( desiredTime );
+                // Specific processing and storage based on celestial type
+                if ( newBody is CelestialPlanet )
+                {
+                    m_Planets.Add( newBody as CelestialPlanet );
+                }
 
-            AddPlanet( "Sol", julianDate, m_Canvas );
-
-            AddPlanet( "Mercury", julianDate, m_Canvas );
-            AddPlanet( "Venus", julianDate, m_Canvas );
-            AddPlanet( "Earth", julianDate, m_Canvas );
-            AddPlanet( "Mars", julianDate, m_Canvas );
-            AddPlanet( "Jupiter", julianDate, m_Canvas );
-            AddPlanet( "Saturn", julianDate, m_Canvas );
-            AddPlanet( "Uranus", julianDate, m_Canvas );
-            AddPlanet( "Neptune", julianDate, m_Canvas );
-
-            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Mercury", julianDate, m_Canvas ) ) );
-            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Venus", julianDate, m_Canvas ) ) );
-            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Earth", julianDate, m_Canvas ) ) );
-            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Mars", julianDate, m_Canvas ) ) );
-            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Jupiter", julianDate, m_Canvas ) ) );
-            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Saturn", julianDate, m_Canvas ) ) );
-            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Uranus", julianDate, m_Canvas ) ) );
-            //m_CelestialOrbits.Add( CelestialOrbit.Create( AddPlanet( "Neptune", julianDate, m_Canvas ) ) );
-
-            //m_Camera.m_PositionUpdateCallback = CameraPositionUpdated;
-
-            //// Setup the start position of the camera as opposite Mars
-            //// and a 20 degree inclination, looking towards Sol
-            //CelestialBody mars = GetCelestialBody( "Mars" );
-
-            //// Since Sol is at origin, the Jupiter's position is essentially the vector Sol => Jupiter
-            //Vector3 position = mars.gameObject.transform.position;
-
-            //// Determine the position above Jupiter that would be 20 degrees
-            //float height = (float)(Math.Tan( 20 * GlobalConstants.DegreesToRadians ) * position.magnitude);
-
-            //position.y += height;
-
-            //m_Camera.transform.position = Quaternion.AngleAxis( 180, Vector3.up ) * position;
-            //m_Camera.transform.LookAt( Vector3.zero );        
+                Debug.Log( file );
+            }
         }
-        //else
-        //{
-        //    // Camera must be setup in the editor
-        //    Debug.LogError("No camera was assigned to Celestial Manager");
-        //}
+
+        // Calculate the JD corresponding to 1976 - July - 20, 12:00 UT.
+        //DateTime desiredTime = new DateTime( 1976, 7, 20, 12, 0, 0 );
+        //DateTime desiredTime = new DateTime( 2018, 2, 26, 12, 0, 0 );
+        //DateTime desiredTime = new DateTime( 2000, 1, 1, 0, 0, 0 );
+        DateTime desiredTime = DateTime.Now;
+
+        double julianDate = PlanetPosition.GetJulianDate( desiredTime );
+
+        foreach( CelestialPlanet planet in m_Planets )
+        {
+            planet.UpdatePosition( julianDate );
+        }
     }
 
     public CelestialCamera SetActiveCamera( CelestialCamera camera )
@@ -186,26 +159,14 @@ public class CelestialManager : MonoBehaviour
 
         if( null != m_Camera )
         {
-            if ( null != oldCamera )
-            {
-                oldCamera.m_PositionUpdateCallback = null;
-            }
-
-            foreach ( KeyValuePair<UInt32, CelestialBody> body in m_CelestialBodies )
-            {
-                body.Value.SetCamera( m_Camera );
-            }
-
-            m_Camera.m_PositionUpdateCallback = CameraPositionUpdated;
-
             // Setup the start position of the camera as opposite Mars
             // and a 20 degree inclination, looking towards Sol
             CelestialBody mars = GetCelestialBody( "Mars" );
 
-            // Since Sol is at origin, the Jupiter's position is essentially the vector Sol => Jupiter
-            Vector3 position = mars.gameObject.transform.position;
+            // Since Sol is at origin, the Mars' position is essentially the vector Sol => Mar
+            Vector3 position = ( mars != null ) ? mars.gameObject.transform.position : new Vector3( 100, 200, 100 );
 
-            // Determine the position above Jupiter that would be 20 degrees
+            // Determine the position above Mars that would be 20 degrees
             float height = (float)( Math.Tan( 20 * GlobalConstants.DegreesToRadians ) * position.magnitude );
 
             position.y += height;
@@ -281,22 +242,8 @@ public class CelestialManager : MonoBehaviour
         }
     }
 
-    private CelestialBody AddPlanet( string planetName, double jd, Canvas canvas )
-    {
-        CelestialBody newPlanet = CelestialBody.Create( planetName, jd, canvas );
-
-        if ( null != newPlanet )
-        {
-            m_CelestialBodies.Add( newPlanet.GetCelestialID(), newPlanet );
-            m_Planets.Add( newPlanet );
-        }
-
-        return newPlanet;
-    }
-
     private Dictionary<UInt32, CelestialBody> m_CelestialBodies = new Dictionary<UInt32, CelestialBody>();
-    private List<CelestialBody> m_Planets = new List<CelestialBody>();
-    //private List<CelestialOrbit> m_CelestialOrbits = new List<CelestialOrbit>();
+    private List<CelestialPlanet> m_Planets = new List<CelestialPlanet>();
 
     private bool m_AutoScale = false;
 

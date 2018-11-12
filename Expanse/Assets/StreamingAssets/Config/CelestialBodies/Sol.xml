@@ -1,15 +1,19 @@
 <!-- Sol configuration -->
 <!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
 
-<Planet value="Sol">
-  <Orbit value="false"/>
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Sol"/>
+  <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Sol"/>
-  <Radius value="695700"/>
-  <MaximumScale value="10"/>
+  <Radius value="695700.0"/>
 
+  <!-- Planet Specific -->
+  <Orbit value="false"/>
+  <MaximumScale value="10"/>
   <MeanLongitude value="0.0 0.0 0.0"/>
   <SemiMajorAxisOfOrbit value="0.0"/>
   <EccentricityOfOrbit value="0.0 0.0 0.0"/>
-  <InclinationOnPlaneOfEcliptic value="0"/>
+  <InclinationOnPlaneOfEcliptic value="0.0"/>
   <MeanAnomaly value="0.0 0.0 0.0 0.0"/>
-</Planet>
+</CelestialBody>

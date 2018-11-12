@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 7de2430ddb7fc394589c5c36cc092e86, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: a8c03b4e8ec1ec548bc58380ca4d7deb, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.006807848, g: 0.0389361, b: 0.08400937, a: 1}
+  m_IndirectSpecularColor: {r: 0.045313485, g: 0.039047346, b: 0.040586762, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -1823,6 +1823,7 @@ GameObject:
   - component: {fileID: 568487951}
   - component: {fileID: 568487950}
   - component: {fileID: 568487952}
+  - component: {fileID: 568487946}
   m_Layer: 0
   m_Name: Solar System Camera
   m_TagString: MainCamera
@@ -1830,6 +1831,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!45 &568487946
+Skybox:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 568487945}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 7de2430ddb7fc394589c5c36cc092e86, type: 2}
 --- !u!124 &568487947
 Behaviour:
   m_ObjectHideFlags: 0
@@ -1861,7 +1870,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 4294967039
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: e992ecb345bd03c4aa960e8778123ca9, type: 2}
   m_TargetDisplay: 0
@@ -2479,7 +2488,7 @@ GameObject:
   - component: {fileID: 1012960744}
   - component: {fileID: 1012960743}
   - component: {fileID: 1012960742}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SolarSystemGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6572,31 +6581,6 @@ Prefab:
     - target: {fileID: 1695338104613110, guid: 4352974ce541cd440a48c5d8d78d22ea, type: 2}
       propertyPath: m_Name
       value: Main Ship
-      objectReference: {fileID: 0}
-    - target: {fileID: 114660482358937940, guid: 4352974ce541cd440a48c5d8d78d22ea,
-        type: 2}
-      propertyPath: m_MaxZoom
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114035512350144426, guid: 4352974ce541cd440a48c5d8d78d22ea,
-        type: 2}
-      propertyPath: m_MaxZoom
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114551547599753806, guid: 4352974ce541cd440a48c5d8d78d22ea,
-        type: 2}
-      propertyPath: m_MaxZoom
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114431504286392130, guid: 4352974ce541cd440a48c5d8d78d22ea,
-        type: 2}
-      propertyPath: m_MaxZoom
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114164977375792848, guid: 4352974ce541cd440a48c5d8d78d22ea,
-        type: 2}
-      propertyPath: m_MaxZoom
-      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4352974ce541cd440a48c5d8d78d22ea, type: 2}

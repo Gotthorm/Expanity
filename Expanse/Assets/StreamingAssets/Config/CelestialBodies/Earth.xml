@@ -1,14 +1,18 @@
 <!-- Earth configuration -->
 <!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
 
-<Planet value="Earth">
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Earth"/>
+  <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Earth"/>
-  <Radius value="6371"/>
-  <MaximumScale value="1000"/>
+  <Radius value="6371.0"/>
 
+  <!-- Planet Specific -->
+  <MaximumScale value="1000"/>
   <MeanLongitude value="99.69668 36000.76892 0.0003025"/>
   <SemiMajorAxisOfOrbit value="1.0000002"/>
   <EccentricityOfOrbit value="0.01675104 -0.0000418 -0.000000126"/>
-  <InclinationOnPlaneOfEcliptic value="0"/>
+  <InclinationOnPlaneOfEcliptic value="0.0"/>
   <MeanAnomaly value="358.47583 35999.04975 -0.000150 -0.0000033"/>
-</Planet>
+</CelestialBody>

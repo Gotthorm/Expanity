@@ -12,7 +12,7 @@ public class CelestialOrbit : MonoBehaviour
     public float m_MinRange = 1.0f;
     public float m_MaxRange = 30000.0f;
 
-    public static CelestialOrbit Create( CelestialBody celestialBody )
+    public static CelestialOrbit Create( CelestialPlanet celestialPlanet )
     {
         CelestialOrbit orbit = null;
 
@@ -20,11 +20,17 @@ public class CelestialOrbit : MonoBehaviour
 
         if ( null != gameObject )
         {
-            gameObject.name = celestialBody.name + "_Orbit";
+            gameObject.name = celestialPlanet.name + "_Orbit";
 
             orbit = gameObject.AddComponent<CelestialOrbit>();
 
-            orbit.m_CelestialBody = celestialBody;
+            orbit.m_CelestialPlanet = celestialPlanet;
+
+            int layerID = LayerMask.NameToLayer( "Virtual Universe" );
+            if( layerID != -1 )
+            {
+                gameObject.layer = layerID;
+            }
         }
 
         return orbit;
@@ -47,7 +53,7 @@ public class CelestialOrbit : MonoBehaviour
     // Update is called once per frame
     private void LateUpdate ()
     {
-        if ( null != m_CelestialBody )
+        if ( null != m_CelestialPlanet )
         {
             Camera camera = Camera.main;
             if ( camera != null )
@@ -56,7 +62,7 @@ public class CelestialOrbit : MonoBehaviour
 
                 if ( m_Rebuild )
                 {
-                    m_OrbitPositions = m_CelestialBody.GetOrbit( PlanetPosition.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
+                    m_OrbitPositions = m_CelestialPlanet.GetOrbit( PlanetPosition.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
 
                     m_LineRenderer.positionCount = m_OrbitPositions.Length;
 
@@ -65,31 +71,20 @@ public class CelestialOrbit : MonoBehaviour
                     m_Rebuild = false;
                 }
 
-
-
-                Vector3 closestApproximateOrbitPosition = GetClosestApproximateOrbitPosition( cameraPosition, m_OrbitPositions );
-
-                float distance = ( closestApproximateOrbitPosition - cameraPosition ).magnitude;
-
-                //Debug.Log( "CameraPosition(" + cameraPosition.ToString(".00") + ") ClosestPointOnOrbit(" + m_OrbitPositions[ closestPositionIndex ].ToString(".00") + ") Distance(" + distance.ToString(".00") + ")" );
-
-                float lineWidth = Mathf.Min( m_MaxWidth, Mathf.Max( m_MinWidth, ( ( distance - m_MinRange ) / m_MaxRange ) * m_MaxWidth ) );
-
-                m_LineRenderer.widthMultiplier = lineWidth;
-                m_LineRenderer.startWidth = lineWidth;
-                m_LineRenderer.endWidth = lineWidth;
-
-
-#if false       // DEBUG
-            if( m_CelestialBody.name == "Mercury" )
-            {
-                GameObject gameObject = GameObject.Find( "DebugSphere" );
-                if( gameObject != null )
+                if ( m_OrbitPositions.Length > 0 )
                 {
-                    gameObject.transform.position = closestApproximateOrbitPosition;
+                    Vector3 closestApproximateOrbitPosition = GetClosestApproximateOrbitPosition( cameraPosition, m_OrbitPositions );
+
+                    float distance = ( closestApproximateOrbitPosition - cameraPosition ).magnitude;
+
+                    //Debug.Log( "CameraPosition(" + cameraPosition.ToString(".00") + ") ClosestPointOnOrbit(" + m_OrbitPositions[ closestPositionIndex ].ToString(".00") + ") Distance(" + distance.ToString(".00") + ")" );
+
+                    float lineWidth = Mathf.Min( m_MaxWidth, Mathf.Max( m_MinWidth, ( ( distance - m_MinRange ) / m_MaxRange ) * m_MaxWidth ) );
+
+                    m_LineRenderer.widthMultiplier = lineWidth;
+                    m_LineRenderer.startWidth = lineWidth;
+                    m_LineRenderer.endWidth = lineWidth;
                 }
-            }
-#endif
             }
         }
     }
@@ -173,7 +168,7 @@ public class CelestialOrbit : MonoBehaviour
     // Calculating the orbital period around the sun
     // orbitalPeriodInYears = Sqr( averageAU * averageAU * averageAU );
 
-    private CelestialBody m_CelestialBody = null;
+    private CelestialPlanet m_CelestialPlanet = null;
 
     private LineRenderer m_LineRenderer = null;
 

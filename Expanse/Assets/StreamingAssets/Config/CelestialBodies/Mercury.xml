@@ -1,15 +1,19 @@
 <!-- Mercury configuration -->
 <!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
 
-<Planet value="Mercury">
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Mercury"/>
+  <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Mercury"/>
-  <Radius value="2440"/>
-  <MaximumScale value="1000"/>
+  <Radius value="2440.0"/>
 
+  <!-- Planet Specific -->
+  <MaximumScale value="1000"/>
   <MeanLongitude value="178.179078 149474.07078 0.0003011"/>
   <SemiMajorAxisOfOrbit value="0.3870986"/>
   <EccentricityOfOrbit value="0.20561421 0.00002046 -0.000000030"/>
   <InclinationOnPlaneOfEcliptic value="7.002881 0.0018608 -0.0000183"/>
   <ArgumentOfPerihelion value="28.753753 0.3702806 0.0001208"/>
   <LongitudeOfAscendingNode value="47.145944 1.1852083 0.0001739"/>
-</Planet>
+</CelestialBody>

@@ -30,7 +30,7 @@ public class TacticalView : MonoBehaviour
             int planetCount = celestialManager.GetPlanetCount();
             for ( int planetIndex = 0; planetIndex < planetCount; ++planetIndex )
             {
-                CelestialBody celestialBody = celestialManager.GetPlanet( planetIndex );
+                CelestialPlanet celestialBody = celestialManager.GetPlanet( planetIndex );
 
                 // Create HUD element
                 CelestialBodyHUD celestialBodyHUD = CreateHUDElement( celestialBody );

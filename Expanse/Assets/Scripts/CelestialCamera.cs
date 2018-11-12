@@ -102,15 +102,6 @@ public class CelestialCamera : MonoBehaviour
         this.transform.position += worldPositionOffset;
     }
 
-    public delegate void CameraPositionUpdate( Vector3 cameraPosition );
-    public CameraPositionUpdate m_PositionUpdateCallback = null;
-
-    // Use this for initialization
-    private void Start()
-    {
-        m_PositionUpdateCallback?.Invoke( this.transform.position );
-    }
-
     private void Update()
     {
         // Test for an unselect event
@@ -217,9 +208,6 @@ public class CelestialCamera : MonoBehaviour
 
         // Update our distance to the closest celestial body
         // This is used by the auto scale
-
-        // Notify anyone interested of the camera's current position
-        m_PositionUpdateCallback?.Invoke( this.transform.position );
     }
 
     private void SetTarget( CelestialBody targetCelestial, bool allowMovement )

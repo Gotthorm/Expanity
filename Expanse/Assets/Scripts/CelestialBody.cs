@@ -46,6 +46,7 @@ public class CelestialBody : MonoBehaviour
         }
     }
 
+    // This is the radius in game units
     public float CelestialRadius
     {
         get
@@ -140,7 +141,9 @@ public class CelestialBody : MonoBehaviour
 
         m_RadiusInKM = loader.m_Radius;
 
-        m_InitialScale = CelestialRadius / m_VisualUnitsScale;
+        // TODO: This is a sphere shaped calculation so will need to support other types eventually?
+        // Initial scale is in game diameter (2 * radius)
+        m_InitialScale = CelestialRadius * 2;
 
         Scale = 1;
 

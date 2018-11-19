@@ -15,7 +15,11 @@ public class ProximityControlPanel : MonoBehaviour
     public void ToggleAutoScale()
     {
         m_AutoDefault = !m_AutoDefault;
-        CelestialManager.GetInstance().SetAutoScale( m_AutoDefault );
+
+        if ( m_TacticalView != null )
+        {
+            m_TacticalView.SetAutoScale( m_AutoDefault );
+        }
     }
 
     public void ToggleFilter_Planets()
@@ -45,7 +49,7 @@ public class ProximityControlPanel : MonoBehaviour
         if ( m_SelectedProximityObject != null )
         {
             m_SelectedProximityObject.SetSelected( false );
-            m_SelectedCelestialBody = 0;
+            m_SelectedCelestialID = 0;
         }
 
         // Select new object
@@ -54,19 +58,17 @@ public class ProximityControlPanel : MonoBehaviour
         if ( m_SelectedProximityObject != null )
         {
             m_SelectedProximityObject.SetSelected( true );
-            m_SelectedCelestialBody = m_SelectedProximityObject.GetCelestialID();
+            m_SelectedCelestialID = m_SelectedProximityObject.GetCelestialID();
 
-            CelestialBody body = CelestialManager.GetInstance().GetCelestialBody( m_SelectedCelestialBody );
-            CelestialManager.GetInstance().m_Camera.SetSelectedObject( body, lookAtTarget );
-
-            if( m_TacticalView != null )
+            //CelestialBody body = CelestialManager.GetInstance().GetCelestialBody( m_SelectedCelestialID );
+            if ( null != m_TacticalView )
             {
-                m_TacticalView.SetSelectedCelestial( body.GetCelestialID() );
+                m_TacticalView.SetSelected( m_SelectedCelestialID, lookAtTarget );
             }
         }
     }
 
-    public void SelectProximityObject( UInt32 celestialID )
+    public void SelectProximityObject( uint celestialID )
     {
         ProximityObject proximityObject = null;
 
@@ -87,8 +89,13 @@ public class ProximityControlPanel : MonoBehaviour
         // Target the object
         if ( m_SelectedProximityObject != null )
         {
-            CelestialBody body = CelestialManager.GetInstance().GetCelestialBody( m_SelectedProximityObject.GetCelestialID() );
-            CelestialManager.GetInstance().m_Camera.SetTargetedObject( body );
+            //CelestialBody body = CelestialManager.GetInstance().GetCelestialBody( m_SelectedProximityObject.GetCelestialID() );
+
+            if ( null != m_TacticalView )
+            {
+                m_TacticalView.SetTarget( m_SelectedProximityObject.GetCelestialID() );
+                //CelestialManager.GetInstance().m_Camera.SetTargetedObject( body );
+            }
         }
     }
 
@@ -103,41 +110,38 @@ public class ProximityControlPanel : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-        CelestialManager celestialManager = CelestialManager.GetInstance();
-
-        if ( celestialManager != null )
+        if ( m_TacticalView != null )
         {
-            celestialManager.SetAutoScale( m_AutoDefault );
-        }
-        else
-        {
-            Debug.LogError( "Celestial Manager does not exist!" );
+            m_TacticalView.SetAutoScale( m_AutoDefault );
         }
     }
 	
 	// Update is called once per frame
 	private void Update()
     {
-        Vector3 cameraPosition = CelestialManager.GetInstance().m_Camera.transform.position;
-
-        int entryCount = m_TextBoxList.Count;
-
-        List<CelestialBody> bodyList = CelestialManager.GetInstance().GetClosestBodies( entryCount, m_CelestialFilter, cameraPosition );
-
-        for ( int index = 1; index <= entryCount; ++index )
+        if ( m_TacticalView != null )
         {
-            ProximityObject proximityObject = m_TextBoxList[ index - 1 ];
+            Vector3 cameraPosition = m_TacticalView.GetCameraPosition();
 
-            CelestialBody body = ( bodyList.Count >= index ) ? bodyList[ index - 1 ] : null;
-            bool selected = ( m_SelectedCelestialBody != 0 && proximityObject.GetCelestialID() == m_SelectedCelestialBody ) ? true : false;
+            int entryCount = m_TextBoxList.Count;
 
-            proximityObject.Set( body, cameraPosition, selected );
-            m_CurrentCelestialBodies[ proximityObject ] = body;
+            List<CelestialBody> bodyList = m_TacticalView.GetClosestBodies( entryCount, m_CelestialFilter, cameraPosition );
+
+            for ( int index = 1; index <= entryCount; ++index )
+            {
+                ProximityObject proximityObject = m_TextBoxList[ index - 1 ];
+
+                CelestialBody body = ( bodyList.Count >= index ) ? bodyList[ index - 1 ] : null;
+                bool selected = ( m_SelectedCelestialID != 0 && proximityObject.GetCelestialID() == m_SelectedCelestialID ) ? true : false;
+
+                proximityObject.Set( body, cameraPosition, selected );
+                m_CurrentCelestialBodies[ proximityObject ] = body;
+            }
         }
 	}
 
     private ProximityObject m_SelectedProximityObject = null;
-    private UInt32 m_SelectedCelestialBody = 0;
+    private uint m_SelectedCelestialID = 0;
     private CelestialBody.CelestialType m_CelestialFilter = CelestialBody.CelestialType.Invalid;
     private Dictionary<ProximityObject, CelestialBody> m_CurrentCelestialBodies = new Dictionary<ProximityObject, CelestialBody>();
 }

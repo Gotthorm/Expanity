@@ -7,9 +7,9 @@
   <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Saturn"/>
   <Radius value="58232.0"/>
+  <Orbit value="true"/>
 
   <!-- Planet Specific -->
-  <MaximumScale value="1000"/>
   <MeanLongitude value="266.564377 1223.509884 0.0003245 -0.0000058"/>
   <SemiMajorAxisOfOrbit value="9.554747"/>
   <EccentricityOfOrbit value="0.05589232 -0.00034550 -0.000000728 0.00000000074"/>

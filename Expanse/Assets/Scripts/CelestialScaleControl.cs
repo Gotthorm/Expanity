@@ -43,7 +43,7 @@ public class CelestialScaleControl : MonoBehaviour
 
         EnableSlider( !m_AutoEnabled );
 
-        m_CelestialManager.SetAutoScale( m_AutoEnabled );
+        //m_CelestialManager.SetAutoScale( m_AutoEnabled );
     }
 
     // Called directly from the scale slider control
@@ -91,7 +91,7 @@ public class CelestialScaleControl : MonoBehaviour
 
         EnableSlider( true );
 
-        m_CelestialManager.SetScale( m_Scale );
+        //m_CelestialManager.SetScale( m_Scale );
 
         if ( m_StartEnabled )
         {

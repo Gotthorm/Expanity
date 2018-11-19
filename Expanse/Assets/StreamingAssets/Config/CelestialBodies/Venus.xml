@@ -7,9 +7,9 @@
   <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Venus"/>
   <Radius value="6052.0"/>
+  <Orbit value="true"/>
 
   <!-- Planet Specific -->
-  <MaximumScale value="1000"/>
   <MeanLongitude value="342.767053 58519.21191 0.0003097"/>
   <SemiMajorAxisOfOrbit value="0.7233316"/>
   <EccentricityOfOrbit value="0.00682069 -0.00004774 0.000000091"/>

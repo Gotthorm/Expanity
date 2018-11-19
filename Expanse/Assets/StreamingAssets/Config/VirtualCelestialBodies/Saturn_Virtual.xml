@@ -1,0 +1,12 @@
+<!-- Saturn configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Saturn"/>
+  <Type value="VirtualPlanet"/>
+  <GeometryPrefab value="Prefabs/CelestialBodies/Saturn_Virtual"/>
+  <Radius value="58232.0"/>
+  <Orbit value="true"/>
+  <MaximumScale value="100"/>
+</CelestialBody>

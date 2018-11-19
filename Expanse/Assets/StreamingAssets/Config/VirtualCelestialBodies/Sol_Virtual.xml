@@ -1,0 +1,12 @@
+<!-- Sol configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Sol"/>
+  <Type value="VirtualPlanet"/>
+  <GeometryPrefab value="Prefabs/CelestialBodies/Sol_Virtual"/>
+  <Radius value="695700.0"/>
+  <Orbit value="false"/>
+  <MaximumScale value="10"/>
+</CelestialBody>

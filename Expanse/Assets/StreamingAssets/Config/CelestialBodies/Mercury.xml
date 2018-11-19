@@ -7,9 +7,9 @@
   <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Mercury"/>
   <Radius value="2440.0"/>
+  <Orbit value="true"/>
 
   <!-- Planet Specific -->
-  <MaximumScale value="1000"/>
   <MeanLongitude value="178.179078 149474.07078 0.0003011"/>
   <SemiMajorAxisOfOrbit value="0.3870986"/>
   <EccentricityOfOrbit value="0.20561421 0.00002046 -0.000000030"/>

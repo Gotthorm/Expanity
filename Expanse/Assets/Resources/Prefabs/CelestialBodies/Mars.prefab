@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33666568400709156}
   - component: {fileID: 23548901427618126}
   - component: {fileID: 135063381647609112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mars
   m_TagString: Untagged
   m_Icon: {fileID: 0}

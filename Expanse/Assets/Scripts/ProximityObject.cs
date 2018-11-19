@@ -57,7 +57,7 @@ public class ProximityObject : MonoBehaviour, IPointerClickHandler
     {
         if ( eventData.clickCount == 2 )
         {
-            //Debug.Log( "ProximityObject double click: " + m_NameTextField.text );
+            Debug.Log( "ProximityObject double click: " + m_NameTextField.text );
 
             if ( m_ParentControlPanel != null )
             {
@@ -67,7 +67,7 @@ public class ProximityObject : MonoBehaviour, IPointerClickHandler
         }
         else if ( eventData.clickCount == 1 )
         {
-            //Debug.Log( "ProximityObject single click: " + m_NameTextField.text );
+            Debug.Log( "ProximityObject single click: " + m_NameTextField.text );
 
             if( m_ParentControlPanel != null )
             {

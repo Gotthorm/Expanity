@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33489305897327860}
   - component: {fileID: 23189954585164650}
   - component: {fileID: 135599568312766456}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Uranus
   m_TagString: Untagged
   m_Icon: {fileID: 0}

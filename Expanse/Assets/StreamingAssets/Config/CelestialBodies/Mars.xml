@@ -7,9 +7,9 @@
   <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Mars"/>
   <Radius value="3390.0"/>
+  <Orbit value="true"/>
 
   <!-- Planet Specific -->
-  <MaximumScale value="1000"/>
   <MeanLongitude value="293.737334 19141.69551 0.0003107"/>
   <SemiMajorAxisOfOrbit value="1.5236883"/>
   <EccentricityOfOrbit value="0.09331290 0.000092064 -0.000000077"/>

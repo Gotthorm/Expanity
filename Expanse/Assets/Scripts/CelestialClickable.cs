@@ -15,13 +15,13 @@ public class CelestialClickable : MonoBehaviour, IPointerClickHandler, IPointerD
     {
         if ( eventData.clickCount == 2 )
         {
-            Debug.Log( "ClickableGameObject double click: " + eventData.pointerCurrentRaycast.gameObject.name );
+            Debug.Log( "CelestialClickable double click: " + eventData.pointerCurrentRaycast.gameObject.name );
 
             SetTargeted?.Invoke( eventData.pointerCurrentRaycast.gameObject );
         }
         else if ( eventData.clickCount == 1 )
         {
-            Debug.Log( "ClickableGameObject single click: " + eventData.pointerCurrentRaycast.gameObject.name );
+            Debug.Log( "CelestialClickable single click: " + eventData.pointerCurrentRaycast.gameObject.name );
 
             SetSelected?.Invoke( eventData.pointerCurrentRaycast.gameObject );
         }

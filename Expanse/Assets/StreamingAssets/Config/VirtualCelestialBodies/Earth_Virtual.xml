@@ -1,0 +1,12 @@
+<!-- Earth configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Earth"/>
+  <Type value="VirtualPlanet"/>
+  <GeometryPrefab value="Prefabs/CelestialBodies/Earth_Virtual"/>
+  <Radius value="6371.0"/>
+  <Orbit value="true"/>
+  <MaximumScale value="100"/>
+</CelestialBody>

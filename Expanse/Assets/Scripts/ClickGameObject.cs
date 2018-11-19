@@ -9,13 +9,13 @@ public class ClickGameObject : MonoBehaviour, IPointerClickHandler, IPointerDown
     {
         if ( eventData.clickCount == 2 )
         {
-            Debug.Log( "ClickableGameObject double click: " + eventData.pointerCurrentRaycast.gameObject.name );
+            Debug.Log( "ClickGameObject double click: " + eventData.pointerCurrentRaycast.gameObject.name );
 
             //Camera.main.GetComponent<CelestialCamera>().SetTargetedObject( this );
         }
         else if ( eventData.clickCount == 1 )
         {
-            Debug.Log( "ClickableGameObject single click: " + eventData.pointerCurrentRaycast.gameObject.name );
+            Debug.Log( "ClickGameObject single click: " + eventData.pointerCurrentRaycast.gameObject.name );
 
             //Select();
 

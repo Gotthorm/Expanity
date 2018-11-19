@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33924767781017046}
   - component: {fileID: 23844369772619838}
   - component: {fileID: 135535182010247130}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Venus
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -7,9 +7,9 @@
   <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Earth"/>
   <Radius value="6371.0"/>
+  <Orbit value="true"/>
 
   <!-- Planet Specific -->
-  <MaximumScale value="1000"/>
   <MeanLongitude value="99.69668 36000.76892 0.0003025"/>
   <SemiMajorAxisOfOrbit value="1.0000002"/>
   <EccentricityOfOrbit value="0.01675104 -0.0000418 -0.000000126"/>

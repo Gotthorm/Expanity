@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33208738569244060}
   - component: {fileID: 23167315397755116}
   - component: {fileID: 135813069426242222}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Mercury
   m_TagString: Untagged
   m_Icon: {fileID: 0}

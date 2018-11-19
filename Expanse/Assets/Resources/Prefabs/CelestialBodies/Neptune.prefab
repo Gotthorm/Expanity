@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33995517953041342}
   - component: {fileID: 23414969950048238}
   - component: {fileID: 135262775975668784}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Neptune
   m_TagString: Untagged
   m_Icon: {fileID: 0}

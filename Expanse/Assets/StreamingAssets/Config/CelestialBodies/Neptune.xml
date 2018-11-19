@@ -7,9 +7,9 @@
   <Type value="Planet"/>
   <GeometryPrefab value="Prefabs/CelestialBodies/Neptune"/>
   <Radius value="24622.0"/>
+  <Orbit value="true"/>
 
   <!-- Planet Specific -->
-  <MaximumScale value="1000"/>
   <MeanLongitude value="84.457994 219.885914 0.0003205 -0.00000060"/>
   <SemiMajorAxisOfOrbit value="30.10957"/>
   <EccentricityOfOrbit value="0.00899704 0.000006330 -0.000000002"/>

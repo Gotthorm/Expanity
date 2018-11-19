@@ -4,34 +4,89 @@ using UnityEngine;
 
 public class TacticalView : MonoBehaviour
 {
-    public CelestialCamera m_ViewCamera = null;
     public ProximityControlPanel m_ProximityPanel = null;
 
-    public void SetSelectedCelestial(uint celestialID )
+    public void SetSelected( CelestialBody celestialBody, bool lookAtTarget )
     {
-        foreach(CelestialBodyHUD celestialHUD in m_HUDList)
+        if ( null != celestialBody && null != m_ViewCamera )
         {
-            if(celestialHUD.GetOwner().GetCelestialID() == celestialID)
+            m_ViewCamera.SetSelectedObject( celestialBody, lookAtTarget );
+        }
+
+        foreach ( CelestialBodyHUD celestialHUD in m_HUDList)
+        {
+            if( celestialHUD.GetOwner().GetCelestialID() == celestialBody.GetCelestialID() )
             {
                 SelectHUD( celestialHUD, false );
-                return;
+                break;
             }
         }
     }
 
-	// Use this for initialization
-	private void Start ()
+    public void SetSelected( uint celestialBodyID, bool lookAtTarget )
     {
-        // Find all of the planets
-        CelestialManager celestialManager = CelestialManager.GetInstance();
+        CelestialBody celestialBody = m_VirtualManager.GetCelestialBody( celestialBodyID );
 
-        if ( celestialManager != null )
+        SetSelected( celestialBody, lookAtTarget );
+    }
+
+    public void SetTarget( CelestialBody celestialBody )
+    {
+        if( null != celestialBody && null != m_ViewCamera )
         {
-            int planetCount = celestialManager.GetPlanetCount();
-            for ( int planetIndex = 0; planetIndex < planetCount; ++planetIndex )
-            {
-                CelestialPlanet celestialBody = celestialManager.GetPlanet( planetIndex );
+            m_ViewCamera.SetTargetedObject( celestialBody );
+        }
+    }
 
+    public void SetTarget( uint celestialBodyID )
+    {
+        CelestialBody celestialBody = m_VirtualManager.GetCelestialBody( celestialBodyID );
+
+        SetTarget( celestialBody );
+    }
+
+    public void SetAutoScale( bool enabled )
+    {
+        m_VirtualManager.SetAutoScale( enabled );
+    }
+
+    public Vector3 GetCameraPosition()
+    {
+        return m_ViewCamera.transform.position;
+    }
+
+    public List<CelestialBody> GetClosestBodies( int maxEntries, CelestialBody.CelestialType celestialFilter, Vector3 position )
+    {
+        return m_VirtualManager.GetClosestCelestialBodies( celestialFilter, maxEntries, position );
+    }
+
+    private void Awake()
+    {
+        // Find my camera
+        m_ViewCamera = GetComponentInChildren<CelestialCamera>();
+
+        if( null == m_ViewCamera )
+        {
+            Debug.LogError("TacticalView requires a child CelestialCamera!");
+        }
+    }
+
+    // Use this for initialization
+    private void Start ()
+    {
+        if ( m_VirtualManager.Init( transform ) )
+        {
+            // Setup the view camera to a default position
+            CelestialBody body = m_VirtualManager.GetCelestialBody( "Earth" );
+            if ( body )
+            {
+                m_ViewCamera.SetTargetedObject( body );
+            }
+
+            // Find all of the planets
+            List<CelestialBody> planets = m_VirtualManager.GetCelestialBodies( CelestialBody.CelestialType.Planet );
+            foreach ( CelestialBody celestialBody in planets )
+            {
                 // Create HUD element
                 CelestialBodyHUD celestialBodyHUD = CreateHUDElement( celestialBody );
 
@@ -50,7 +105,7 @@ public class TacticalView : MonoBehaviour
                 // Create orbit
                 if ( celestialBody.Orbit )
                 {
-                    CelestialOrbit orbit = CelestialOrbit.Create( celestialBody );
+                    CelestialOrbit orbit = CelestialOrbit.Create( celestialBody as VirtualCelestialPlanet );
                     orbit.transform.SetParent( this.gameObject.transform );
                     m_CelestialOrbits.Add( orbit );
                 }
@@ -58,13 +113,15 @@ public class TacticalView : MonoBehaviour
         }
         else
         {
-            Debug.LogError( "CelestialManager is unavailable!" );
+            Debug.LogError( "VirtualManager failed to initialize!" );
         }
 	}
 	
 	// Update is called once per frame
 	private void Update ()
     {
+        m_VirtualManager.Update( m_ViewCamera );
+
         bool active = GetComponentInParent<ScreenPanel>().Enabled;
 
         m_ViewCamera.GetComponent<Camera>().enabled = active;
@@ -129,10 +186,10 @@ public class TacticalView : MonoBehaviour
             celestialBodyHUD.gameObject.SetActive( false );
         }
 
-        Vector3 distanceVector = m_ViewCamera.transform.position - this.transform.position;
-        float distance = distanceVector.magnitude;
-
         CelestialBody celestialBody = celestialBodyHUD.GetOwner();
+
+        Vector3 distanceVector = m_ViewCamera.transform.position - celestialBody.transform.position;
+        float distance = distanceVector.magnitude;
 
         string distanceString = GlobalHelpers.MakeSpaceDistanceString( distance );
         //string infoText = m_Category + Environment.NewLine;
@@ -170,9 +227,10 @@ public class TacticalView : MonoBehaviour
         }
     }
 
+    // CelestialClickable.OnPointerClick => this.ClickSelected
     private void ClickSelected( GameObject eventOwner )
     {
-        Debug.Log( "Object click selected: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
+        Debug.Log( "TacticalView: Object click selected: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
         
         if(eventOwner.transform.parent != null)
         {
@@ -184,15 +242,22 @@ public class TacticalView : MonoBehaviour
 
     private void ClickTargeted( GameObject eventOwner )
     {
-        Debug.Log( "Object click targeted: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        //m_Camera.SetTargetedObject( this );
+        Debug.Log( "TacticalView: Object click targeted: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
 
-        // Notify the panel?
+        CelestialBodyHUD parent = eventOwner.transform.parent.GetComponent<CelestialBodyHUD>();
+        if(null != parent )
+        {
+            CelestialBody body = parent.GetOwner();
+            if( null != body )
+            {
+                SetTarget( body );
+            }
+        }
     }
 
     private void ClickDisableMiss( GameObject eventOwner )
     {
-        Debug.Log( "Object click disable miss: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
+        Debug.Log( "TacticalView: Object click disable miss: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
         //m_Camera.DisableClickMissDetectionForThisFrame();
     }
 
@@ -202,8 +267,11 @@ public class TacticalView : MonoBehaviour
         //m_Camera.DragObject( this );
     }
 
-    //private void SetSelected
     private CelestialBodyHUD m_SelectedBodyHUD = null;
+
+    private CelestialCamera m_ViewCamera = null;
+
+    private VirtualManager m_VirtualManager = new VirtualManager();
 
     private List<CelestialBodyHUD> m_HUDList = new List<CelestialBodyHUD>();
     private List<CelestialOrbit> m_CelestialOrbits = new List<CelestialOrbit>();

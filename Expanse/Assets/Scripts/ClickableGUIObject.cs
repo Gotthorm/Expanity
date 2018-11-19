@@ -12,7 +12,7 @@ public class ClickableGUIObject : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick( PointerEventData eventData )
     {
-        //Debug.Log( "ClickableGUIObject: " + eventData.pointerCurrentRaycast.gameObject.name );
+        Debug.Log( "ClickableGUIObject: " + eventData.pointerCurrentRaycast.gameObject.name );
 
         myDelegate?.Invoke( eventData.pointerCurrentRaycast.gameObject );
     }

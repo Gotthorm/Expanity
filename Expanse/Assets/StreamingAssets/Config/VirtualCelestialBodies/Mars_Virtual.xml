@@ -1,0 +1,12 @@
+<!-- Mars configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Mars"/>
+  <Type value="VirtualPlanet"/>
+  <GeometryPrefab value="Prefabs/CelestialBodies/Mars_Virtual"/>
+  <Radius value="3390.0"/>
+  <Orbit value="true"/>
+  <MaximumScale value="100"/>
+</CelestialBody>

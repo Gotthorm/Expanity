@@ -2,17 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent( typeof( CelestialClickable ) )]
-
 public class CelestialPlanet : CelestialBody
 {
-    public bool Orbit
-    {
-        get
-        {
-            return m_HasOrbit;
-        }
-    }
+    public override CelestialType GetCelestialType() { return CelestialType.Planet; }
 
     public void UpdatePosition( double julianDate )
     {
@@ -90,8 +82,6 @@ public class CelestialPlanet : CelestialBody
         return m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ][ 0 ] * ( GlobalConstants.AstronomicalUnit / GlobalConstants.CelestialUnit);
     }
 
-    public override CelestialType GetCelestialType() { return CelestialType.Planet; }
-
     public override bool Initialize( CelestialBodyLoader loader )
     {
         if ( base.Initialize( loader ) )
@@ -138,24 +128,13 @@ public class CelestialPlanet : CelestialBody
                 m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.LONGITUDE_OF_ASCENDING_NODE ].AddRange( floatList );
             }
 
-            // Has Orbit (optional)
-            List<bool> boolList = null;
-            if ( loader.GetData( m_OrbitFlagLabel, ref boolList ) )
-            {
-                if( boolList.Count != 1 )
-                {
-                    Debug.LogError( "Error" );
-                    return false;
-                }
-                m_HasOrbit = boolList[ 0 ];
-            }
-
             return true;
         }
 
         return false;
     }
 
+    // real only
     public Vector3 GetPositionFromHeliocentricEclipticalCoordinates( double radiusVector, double eclipticalLongitude, double eclipticLatitude )
     {
         Vector3 position = new Vector3( (float)( radiusVector * ( GlobalConstants.AstronomicalUnit / (double)GlobalConstants.CelestialUnit ) ), 0, 0 );
@@ -167,35 +146,33 @@ public class CelestialPlanet : CelestialBody
 
     #region Private Interface
 
-    private void ClickSelected( GameObject eventOwner )
-    {
-        //Debug.Log( "Object click selected: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        m_Camera.SetSelectedObject( this, false );
+    //private void ClickSelected( GameObject eventOwner )
+    //{
+    //    //Debug.Log( "Object click selected: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
+    //    m_Camera.SetSelectedObject( this, false );
 
-        // Notify the panel?
-    }
+    //    // Notify the panel?
+    //}
 
-    private void ClickTargeted( GameObject eventOwner )
-    {
-        Debug.Log( "Object click targeted: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        m_Camera.SetTargetedObject( this );
+    //private void ClickTargeted( GameObject eventOwner )
+    //{
+    //    Debug.Log( "Object click targeted: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
+    //    m_Camera.SetTargetedObject( this );
 
-        // Notify the panel?
-    }
+    //    // Notify the panel?
+    //}
 
-    private void ClickDisableMiss( GameObject eventOwner )
-    {
-        Debug.Log( "Object click disable miss: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        m_Camera.DisableClickMissDetectionForThisFrame();
-    }
+    //private void ClickDisableMiss( GameObject eventOwner )
+    //{
+    //    Debug.Log( "Object click disable miss: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
+    //    m_Camera.DisableClickMissDetectionForThisFrame();
+    //}
 
-    private void ClickDrag( GameObject eventOwner )
-    {
-        Debug.Log( "Object click drag: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        m_Camera.DragObject( this );
-    }
-
-    private bool m_HasOrbit = true;
+    //private void ClickDrag( GameObject eventOwner )
+    //{
+    //    Debug.Log( "Object click drag: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
+    //    m_Camera.DragObject( this );
+    //}
 
     private List<List<float>> m_MeanEquinoxData = new List<List<float>>()
     {
@@ -208,7 +185,7 @@ public class CelestialPlanet : CelestialBody
         //new List<float>(), // MEAN_ANOMALY
     };
 
-    private static CelestialCamera m_Camera = null;
+    //private static CelestialCamera m_Camera = null;
 
     private const string m_MeanLongitudeLabel = "MeanLongitude";
     private const string m_SemiMajorAxisOfOrbitLabel = "SemiMajorAxisOfOrbit";
@@ -217,7 +194,6 @@ public class CelestialPlanet : CelestialBody
     private const string m_ArgumentOfPerihelionLabel = "ArgumentOfPerihelion";
     private const string m_LongitudeOfAscendingNodeLabel = "LongitudeOfAscendingNode";
     private const string m_MeanAnomalyLabel = "MeanAnomaly";
-    private const string m_OrbitFlagLabel = "Orbit";
 
     #endregion
 }

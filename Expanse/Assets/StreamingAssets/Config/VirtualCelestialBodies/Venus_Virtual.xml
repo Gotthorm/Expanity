@@ -1,0 +1,12 @@
+<!-- Venus configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Venus"/>
+  <Type value="VirtualPlanet"/>
+  <GeometryPrefab value="Prefabs/CelestialBodies/Venus_Virtual"/>
+  <Radius value="6052.0"/>
+  <Orbit value="true"/>
+  <MaximumScale value="100"/>
+</CelestialBody>

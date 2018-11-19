@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33146074130621934}
   - component: {fileID: 23284234057566978}
   - component: {fileID: 135856268814129468}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Jupiter
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ public class CelestialPlanetPhysical : CelestialPlanet
         double eclipticalLongitude;
         double eclipticLatitude;
 
-        PlanetPosition.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
+        PlanetPositionUtility.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
 
         transform.position = GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
     }
@@ -21,7 +21,7 @@ public class CelestialPlanetPhysical : CelestialPlanet
 
         // Calculating the orbital period around Sol
         // orbitalPeriodInYears = Sqrt( averageAU * averageAU * averageAU );
-        double averageAUFromSun = m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ][ 0 ];
+        double averageAUFromSun = m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ][ 0 ];
 
         double orbitalPeriodInDays = Math.Sqrt( Math.Pow( averageAUFromSun, 3 ) ) * 365;
 
@@ -36,7 +36,7 @@ public class CelestialPlanetPhysical : CelestialPlanet
         double eclipticalLongitude;
         double eclipticLatitude;
 
-        PlanetPosition.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
+        PlanetPositionUtility.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
 
         // In case a planet makes it in here without an orbit, abort
         if ( radiusVector != 0.0f )
@@ -47,7 +47,7 @@ public class CelestialPlanetPhysical : CelestialPlanet
 
             while ( true )
             {
-                PlanetPosition.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
+                PlanetPositionUtility.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
                 double newDifference = Math.Abs( initialRotation - eclipticalLongitude );
 
                 if ( closing )
@@ -77,7 +77,7 @@ public class CelestialPlanetPhysical : CelestialPlanet
 
     public float GetAverageOrbitDistance()
     {
-        return m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ][ 0 ] * ( GlobalConstants.AstronomicalUnit / GlobalConstants.CelestialUnit);
+        return m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ][ 0 ] * ( GlobalConstants.AstronomicalUnit / GlobalConstants.CelestialUnit);
     }
 
     public override bool Initialize( CelestialBodyLoader loader )
@@ -91,39 +91,39 @@ public class CelestialPlanetPhysical : CelestialPlanet
                 Debug.LogError("Error");
                 return false;
             }
-            m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.MEAN_LONGITUDE_OF_PLANET ].AddRange( floatList );
+            m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.MEAN_LONGITUDE_OF_PLANET ].AddRange( floatList );
 
             if ( false == loader.GetData( m_SemiMajorAxisOfOrbitLabel, ref floatList ) )
             {
                 Debug.LogError( "Error" );
                 return false;
             }
-            m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ].AddRange( floatList );
+            m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ].AddRange( floatList );
 
             if ( false == loader.GetData( m_EccentricityOfOrbitLabel, ref floatList ) )
             {
                 Debug.LogError( "Error" );
                 return false;
             }
-            m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.ECCENTRICITY_OF_THE_ORBIT ].AddRange( floatList );
+            m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.ECCENTRICITY_OF_THE_ORBIT ].AddRange( floatList );
 
             if ( false == loader.GetData( m_InclinationOnPlaneOfEclipticLabel, ref floatList ) )
             {
                 Debug.LogError( "Error" );
                 return false;
             }
-            m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.INCLINATION_ON_PLANE_OF_ECLIPTIC ].AddRange( floatList );
+            m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.INCLINATION_ON_PLANE_OF_ECLIPTIC ].AddRange( floatList );
 
             // ArgumentOfPerihelion (optional)
             if ( loader.GetData( m_ArgumentOfPerihelionLabel, ref floatList ) )
             {
-                m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.ARGUMENT_OF_PERIHELION ].AddRange( floatList );
+                m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.ARGUMENT_OF_PERIHELION ].AddRange( floatList );
             }
 
             // LongitudeOfAscendingNode (optional)
             if ( loader.GetData( m_LongitudeOfAscendingNodeLabel, ref floatList ) )
             {
-                m_MeanEquinoxData[ (int)PlanetPosition.OrbitalElements.LONGITUDE_OF_ASCENDING_NODE ].AddRange( floatList );
+                m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.LONGITUDE_OF_ASCENDING_NODE ].AddRange( floatList );
             }
 
             return true;

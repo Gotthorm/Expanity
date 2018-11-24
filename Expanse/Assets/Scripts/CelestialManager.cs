@@ -50,7 +50,7 @@ public class CelestialManager : CelestialManagerBase
             //DateTime desiredTime = new DateTime( 2000, 1, 1, 0, 0, 0 );
             DateTime desiredTime = DateTime.Now;
 
-            double julianDate = PlanetPosition.GetJulianDate( desiredTime );
+            double julianDate = PlanetPositionUtility.GetJulianDate( desiredTime );
 
             List<CelestialBody> planets = GetCelestialBodies( CelestialBody.CelestialType.Planet );
 

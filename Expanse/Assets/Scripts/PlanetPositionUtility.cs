@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlanetPosition
+public class PlanetPositionUtility
 {
     //public enum Planet
     //{

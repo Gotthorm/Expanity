@@ -64,7 +64,7 @@ public class CelestialOrbit : MonoBehaviour
                 {
                     CelestialBody celestialBody = CelestialManager.Instance.GetCelestialBody( m_CelestialPlanet.ParentPlanetID );
                     CelestialPlanetPhysical celestialPlanet = celestialBody as CelestialPlanetPhysical;
-                    m_OrbitPositions = celestialPlanet.GetOrbit( PlanetPosition.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
+                    m_OrbitPositions = celestialPlanet.GetOrbit( PlanetPositionUtility.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
 
                     m_LineRenderer.positionCount = m_OrbitPositions.Length;
 

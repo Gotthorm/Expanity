@@ -12,7 +12,7 @@ public class CelestialOrbit : MonoBehaviour
     public float m_MinRange = 1.0f;
     public float m_MaxRange = 30000.0f;
 
-    public static CelestialOrbit Create( VirtualCelestialPlanet celestialPlanet )
+    public static CelestialOrbit Create( CelestialPlanetVirtual celestialPlanet )
     {
         CelestialOrbit orbit = null;
 
@@ -63,7 +63,7 @@ public class CelestialOrbit : MonoBehaviour
                 if ( m_Rebuild )
                 {
                     CelestialBody celestialBody = CelestialManager.Instance.GetCelestialBody( m_CelestialPlanet.ParentPlanetID );
-                    CelestialPlanet celestialPlanet = celestialBody as CelestialPlanet;
+                    CelestialPlanetPhysical celestialPlanet = celestialBody as CelestialPlanetPhysical;
                     m_OrbitPositions = celestialPlanet.GetOrbit( PlanetPosition.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
 
                     m_LineRenderer.positionCount = m_OrbitPositions.Length;
@@ -170,7 +170,7 @@ public class CelestialOrbit : MonoBehaviour
     // Calculating the orbital period around the sun
     // orbitalPeriodInYears = Sqr( averageAU * averageAU * averageAU );
 
-    private VirtualCelestialPlanet m_CelestialPlanet = null;
+    private CelestialPlanetVirtual m_CelestialPlanet = null;
 
     private LineRenderer m_LineRenderer = null;
 

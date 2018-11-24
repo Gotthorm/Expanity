@@ -94,8 +94,8 @@ public class CelestialBody : MonoBehaviour
                     gameObject.name = loader.m_Name;
 
                     if( loader.m_Type == "Planet" )
-                    { 
-                        CelestialPlanet newPlanet = gameObject.AddComponent<CelestialPlanet>();
+                    {
+                        CelestialPlanetPhysical newPlanet = gameObject.AddComponent<CelestialPlanetPhysical>();
 
                         if ( null != newPlanet )
                         {
@@ -107,7 +107,7 @@ public class CelestialBody : MonoBehaviour
                     }
                     else if ( loader.m_Type == "VirtualPlanet" )
                     {
-                        VirtualCelestialPlanet newPlanet = gameObject.AddComponent<VirtualCelestialPlanet>();
+                        CelestialPlanetVirtual newPlanet = gameObject.AddComponent<CelestialPlanetVirtual>();
 
                         if ( null != newPlanet )
                         {

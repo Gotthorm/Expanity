@@ -56,7 +56,7 @@ public class CelestialManager : CelestialManagerBase
 
             foreach ( CelestialBody body in planets )
             {
-                CelestialPlanet planet = body as CelestialPlanet;
+                CelestialPlanetPhysical planet = body as CelestialPlanetPhysical;
 
                 if ( null != planet )
                 {

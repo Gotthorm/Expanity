@@ -40,7 +40,7 @@ public class VirtualManager : CelestialManagerBase
 
             foreach ( CelestialBody realCelestialBody in realCelestialPlanets )
             {
-                CelestialPlanet realCelestialPlanet = realCelestialBody as CelestialPlanet;
+                CelestialPlanetPhysical realCelestialPlanet = realCelestialBody as CelestialPlanetPhysical;
 
                 if ( null != realCelestialPlanet )
                 {
@@ -56,7 +56,7 @@ public class VirtualManager : CelestialManagerBase
                         {
                             m_CelestialBodies.Add( virtualCelestialBody.GetCelestialID(), virtualCelestialBody );
 
-                            VirtualCelestialPlanet virtualCelestialPlanet = virtualCelestialBody as VirtualCelestialPlanet;
+                            CelestialPlanetVirtual virtualCelestialPlanet = virtualCelestialBody as CelestialPlanetVirtual;
 
                             if ( null != virtualCelestialPlanet )
                             {
@@ -70,7 +70,7 @@ public class VirtualManager : CelestialManagerBase
                             }
                             else
                             {
-                                Debug.LogError( "Virtual Manager failed to add valid VirtualCelestialPlanet: " + file.FullName );
+                                Debug.LogError( "Virtual Manager failed to add valid CelestialPlanetVirtual: " + file.FullName );
                             }
                         }
                     }
@@ -103,7 +103,7 @@ public class VirtualManager : CelestialManagerBase
         {
             CelestialBody closestBody = GetClosestCelestialBody( CelestialBody.CelestialType.Planet, camera.transform.position );
 
-            VirtualCelestialPlanet closestPlanet = closestBody as VirtualCelestialPlanet;
+            CelestialPlanetVirtual closestPlanet = closestBody as CelestialPlanetVirtual;
 
             if ( null != closestPlanet )
             {
@@ -133,7 +133,7 @@ public class VirtualManager : CelestialManagerBase
     {
         CelestialBody celestialBody = null;
 
-        VirtualCelestialPlanet planet = body as VirtualCelestialPlanet;
+        CelestialPlanetVirtual planet = body as CelestialPlanetVirtual;
 
         if ( null != planet )
         {

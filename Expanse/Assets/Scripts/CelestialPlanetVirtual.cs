@@ -4,11 +4,8 @@ using UnityEngine;
 
 [RequireComponent( typeof( CelestialClickable ) )]
 
-public class VirtualCelestialPlanet : CelestialBody
+public class CelestialPlanetVirtual : CelestialPlanet
 {
-    //?
-    public override CelestialType GetCelestialType() { return CelestialType.Planet; }
-
     public override bool Initialize( CelestialBodyLoader loader )
     {
         if ( base.Initialize( loader ) )

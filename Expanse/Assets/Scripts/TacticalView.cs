@@ -105,7 +105,7 @@ public class TacticalView : MonoBehaviour
                 // Create orbit
                 if ( celestialBody.Orbit )
                 {
-                    CelestialOrbit orbit = CelestialOrbit.Create( celestialBody as VirtualCelestialPlanet );
+                    CelestialOrbit orbit = CelestialOrbit.Create( celestialBody as CelestialPlanetVirtual );
                     orbit.transform.SetParent( this.gameObject.transform );
                     m_CelestialOrbits.Add( orbit );
                 }

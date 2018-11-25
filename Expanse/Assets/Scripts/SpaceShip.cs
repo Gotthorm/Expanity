@@ -8,8 +8,13 @@ public class SpaceShip : MonoBehaviour
 {
     #region Public Interface
 
-    [Tooltip( "The name of the ship" )]
-    public string Name;
+    public CelestialVector3 Position { get; set; }
+
+    public bool Init()
+    {
+        // TODO: Will load config data, initialize systems, etc.
+        return true;
+    }
 
     #endregion
 

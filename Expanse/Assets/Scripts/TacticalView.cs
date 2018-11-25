@@ -271,7 +271,7 @@ public class TacticalView : MonoBehaviour
 
     private CelestialCamera m_ViewCamera = null;
 
-    private VirtualManager m_VirtualManager = new VirtualManager();
+    private CelestialManagerVirtual m_VirtualManager = new CelestialManagerVirtual();
 
     private List<CelestialBodyHUD> m_HUDList = new List<CelestialBodyHUD>();
     private List<CelestialOrbit> m_CelestialOrbits = new List<CelestialOrbit>();

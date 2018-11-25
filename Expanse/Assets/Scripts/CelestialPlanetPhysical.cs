@@ -12,7 +12,9 @@ public class CelestialPlanetPhysical : CelestialPlanet
 
         PlanetPositionUtility.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
 
-        transform.position = GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
+        CelestialVector3 position = GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
+
+        SetPosition( position );
     }
 
     public List<Vector3> GetOrbit( double currentJulianDate, double resolution )
@@ -64,9 +66,9 @@ public class CelestialPlanetPhysical : CelestialPlanet
 
                 difference = newDifference;
 
-                Vector3 position = GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
+                CelestialVector3 position = GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
 
-                orbit.Add( position );
+                orbit.Add( (Vector3)( position / GlobalConstants.CelestialUnit ) );
 
                 julianDate += julianDaysPerPosition;
             }
@@ -132,17 +134,83 @@ public class CelestialPlanetPhysical : CelestialPlanet
         return false;
     }
 
-    // real only
-    public Vector3 GetPositionFromHeliocentricEclipticalCoordinates( double radiusVector, double eclipticalLongitude, double eclipticLatitude )
+    protected override void SetPosition( CelestialVector3 position )
     {
-        Vector3 position = new Vector3( (float)( radiusVector * ( GlobalConstants.AstronomicalUnit / (double)GlobalConstants.CelestialUnit ) ), 0, 0 );
-
-        Quaternion rotation = Quaternion.Euler( 0, -(float)eclipticalLongitude, -(float)eclipticLatitude );
-
-        return rotation * position;
+        // TODO: Apply dynamic scalar instead of celestial units
+        transform.localPosition = (Vector3)( position / GlobalConstants.CelestialUnit );
     }
 
     #region Private Interface
+
+    private CelestialVector3 GetPositionFromHeliocentricEclipticalCoordinates( double radiusVector, double eclipticalLongitude, double eclipticLatitude )
+    {
+        // radiusVector is in AU units
+
+        // If we were using only floats then all we would need to do here is this:
+        // *Notice* how we need to scale by astronomical units to keep data in range
+        // Vector3 position = new Vector3( (float)( radiusVector * GlobalConstants.AstronomicalUnit ), 0, 0 );
+        // Quaternion rotation = Quaternion.Euler( 0, -(float)eclipticalLongitude, -(float)eclipticLatitude );
+        // return position * rotation;
+
+        // Instead we are using doubles so we need to do this manually
+        // We do not need to scale the data using this method
+
+        CelestialVector3 position = new CelestialVector3( ( radiusVector * GlobalConstants.AstronomicalUnit ), 0, 0 );
+
+        Quaternion rotation = Quaternion.Euler( 0, -(float)eclipticalLongitude, -(float)eclipticLatitude );
+
+        // Algorithm for converting Euler angles to a quaternion
+        //public void rotate( double heading, double attitude, double bank )
+        //{
+        //    // Assuming the angles are in radians.
+        //    double c1 = Math.cos( heading / 2 );
+        //    double s1 = Math.sin( heading / 2 );
+        //    double c2 = Math.cos( attitude / 2 );
+        //    double s2 = Math.sin( attitude / 2 );
+        //    double c3 = Math.cos( bank / 2 );
+        //    double s3 = Math.sin( bank / 2 );
+        //    double c1c2 = c1 * c2;
+        //    double s1s2 = s1 * s2;
+        //    w = c1c2 * c3 - s1s2 * s3;
+        //    x = c1c2 * s3 + s1s2 * c3;
+        //    y = s1 * c2 * c3 + c1 * s2 * s3;
+        //    z = c1 * s2 * c3 - s1 * c2 * s3;
+        //}
+        
+        // Algorithm for rotation a vector by a quaternion
+        //void rotate_vector_by_quaternion(const Vector3&v, const Quaternion&q, Vector3 & vprime)
+        //{
+        //    // Extract the vector part of the quaternion
+        //    Vector3 u( q.x, q.y, q.z);
+        //    
+        //    // Extract the scalar part of the quaternion
+        //    float s = q.w;
+        //    
+        //    // Do the math
+        //    vprime = 2.0f * dot( u, v ) * u
+        //          + ( s * s - dot( u, u ) ) * v
+        //          + 2.0f * s * cross( u, v );
+        //}
+
+        // The algorithm can be simplified to this
+
+        double halfDegreesToRadians = GlobalConstants.DegreesToRadians / 2;
+
+        double c1 = Math.Cos( -eclipticalLongitude * halfDegreesToRadians );
+        double s1 = Math.Sin( -eclipticalLongitude * halfDegreesToRadians );
+        double c2 = Math.Cos( -eclipticLatitude * halfDegreesToRadians );
+        double s2 = Math.Sin( -eclipticLatitude * halfDegreesToRadians );
+
+        double w = c1 * c2;
+
+        CelestialVector3 u = new CelestialVector3( s1 * s2, s1 * c2, c1 * s2 );
+
+        CelestialVector3 part1 = u * ( 2.0 * CelestialVector3.Dot( u, position ) );
+        CelestialVector3 part2 = position * ( w * w - CelestialVector3.Dot( u, u ) );
+        CelestialVector3 part3 = CelestialVector3.Cross( u, position ) * ( 2.0 * w );
+
+        return part1 + part2 + part3;
+    }
 
     //private void ClickSelected( GameObject eventOwner )
     //{

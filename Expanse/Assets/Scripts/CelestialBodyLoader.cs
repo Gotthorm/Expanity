@@ -8,7 +8,7 @@ public class CelestialBodyLoader : XmlLoader
 {
     public string m_Name = "";
     public string m_Type = "";
-    public float m_Radius = 0.0f;
+    public double m_Radius = 0.0;
     public string m_PrefabDataPath = "";
 
     public bool Load( string filePath )
@@ -128,8 +128,8 @@ public class CelestialBodyLoader : XmlLoader
                 {
                     if ( 0 < elementValue.Length && 0.0 == m_Radius )
                     {
-                        float value;
-                        if ( float.TryParse( elementValue, out value ) )
+                        double value;
+                        if ( double.TryParse( elementValue, out value ) )
                         {
                             m_Radius = value;
                             results = true;

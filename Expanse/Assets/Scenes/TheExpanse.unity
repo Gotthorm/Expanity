@@ -5171,7 +5171,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Canvas: {fileID: 1171332285}
-  m_Camera: {fileID: 568487950}
+  m_SpaceShip: {fileID: 0}
+  m_PositionBase: Earth
+  m_Position:
+    x: 0
+    y: 0
+    z: 6371
 --- !u!4 &1525441011
 Transform:
   m_ObjectHideFlags: 0
@@ -6563,7 +6568,7 @@ Prefab:
       objectReference: {fileID: 2100000, guid: 608390f661b0bbe488a41cf9f6a246f1, type: 2}
     - target: {fileID: 1695338104613110, guid: 4352974ce541cd440a48c5d8d78d22ea, type: 2}
       propertyPath: m_Name
-      value: Main Ship
+      value: Rocinante
       objectReference: {fileID: 0}
     - target: {fileID: 4803174259762316, guid: 4352974ce541cd440a48c5d8d78d22ea, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y

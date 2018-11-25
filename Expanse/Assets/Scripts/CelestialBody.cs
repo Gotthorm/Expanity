@@ -40,11 +40,24 @@ public class CelestialBody : MonoBehaviour
         }
     }
 
-    public float Radius
+    public double Radius
     {
         get
         {
             return m_RadiusInKM;
+        }
+    }
+
+    public CelestialVector3 Position
+    {
+        get
+        {
+            return m_PositionInKM;
+        }
+
+        set
+        {
+            SetPosition( value );
         }
     }
 
@@ -53,7 +66,7 @@ public class CelestialBody : MonoBehaviour
     {
         get
         {
-            return m_RadiusInKM / GlobalConstants.CelestialUnit;
+            return (float)m_RadiusInKM / GlobalConstants.CelestialUnit;
         }
     }
 
@@ -208,6 +221,17 @@ public class CelestialBody : MonoBehaviour
         return true;
     }
 
+    #region Protected Interface
+
+    // This is the position in space using real units
+    protected virtual void SetPosition( CelestialVector3 position )
+    {
+        m_PositionInKM = position;
+        transform.localPosition = (Vector3)position;
+    }
+
+    #endregion
+
     #region Private Interface
 
     private void Awake()
@@ -222,8 +246,10 @@ public class CelestialBody : MonoBehaviour
 
     private uint m_MaximumScaleMultiplier = 1;
 
-    private float m_RadiusInKM = 0;
     private float m_VelocityInKMS = 0.0f;
+
+    private double m_RadiusInKM = 0;
+    private CelestialVector3 m_PositionInKM = new CelestialVector3( 0.0, 0.0, 0.0 );
 
     private uint m_CelestialID = 0;
 

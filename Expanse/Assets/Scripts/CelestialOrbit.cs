@@ -62,7 +62,7 @@ public class CelestialOrbit : MonoBehaviour
 
                 if ( m_Rebuild )
                 {
-                    CelestialBody celestialBody = CelestialManager.Instance.GetCelestialBody( m_CelestialPlanet.ParentPlanetID );
+                    CelestialBody celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialPlanet.ParentPlanetID );
                     CelestialPlanetPhysical celestialPlanet = celestialBody as CelestialPlanetPhysical;
                     m_OrbitPositions = celestialPlanet.GetOrbit( PlanetPositionUtility.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
 

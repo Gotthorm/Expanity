@@ -8,7 +8,7 @@ public class ControlSystem : MonoBehaviour
 {
     public bool Initialize( SpaceShip ship, List<Thruster> thrusters )
     {
-        string shipName = ship.Name;
+        string shipName = ship.name;
 
         Rigidbody shipRigidBody = ship.GetComponent<Rigidbody>();
 

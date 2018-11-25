@@ -5,7 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class VirtualManager : CelestialManagerBase
+public class CelestialManagerVirtual : CelestialManager
 {
     public float m_CloseRange = 1e-05f;
     public float m_FarRange = 1000.0f;
@@ -33,10 +33,10 @@ public class VirtualManager : CelestialManagerBase
     {
         if ( m_Initialized == false )
         {
-            string configPath = CelestialManager.Instance.GetConfigPath();
+            string configPath = CelestialManagerPhysical.Instance.GetConfigPath();
 
             // For each planet we will try to create a virtual version
-            List<CelestialBody> realCelestialPlanets = CelestialManager.Instance.GetCelestialBodies( CelestialBody.CelestialType.Planet );
+            List<CelestialBody> realCelestialPlanets = CelestialManagerPhysical.Instance.GetCelestialBodies( CelestialBody.CelestialType.Planet );
 
             foreach ( CelestialBody realCelestialBody in realCelestialPlanets )
             {
@@ -137,7 +137,7 @@ public class VirtualManager : CelestialManagerBase
 
         if ( null != planet )
         {
-            celestialBody = CelestialManager.Instance.GetCelestialBody( planet.ParentPlanetID );
+            celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( planet.ParentPlanetID );
         }
 
         if ( null != celestialBody )

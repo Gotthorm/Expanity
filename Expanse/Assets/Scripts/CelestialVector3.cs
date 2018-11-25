@@ -51,7 +51,43 @@ public class CelestialVector3
         return System.Math.Sqrt( ( x * x ) + ( y * y ) + ( z * z ) );
     }
 
-    public static implicit operator Vector3( CelestialVector3 v )
+    public CelestialVector3 Normalized()
+    {
+        double length = Length();
+
+        if ( 0 < length )
+        {
+            return new CelestialVector3( x / length, y / length, z / length );
+        }
+        else
+        {
+            return new CelestialVector3();
+        }
+    }
+
+    //    Dot Product
+    //V1.x* V2.x + V1.y* V2.y + V1.z* V2.z
+
+    //Cross Product
+    //cx = aybz− azby
+    //cy = azbx− axbz
+    //cz = axby− aybx
+
+    public static double Dot( CelestialVector3 a, CelestialVector3 b )
+    {
+        return a.x * b.x + a.y * b.y + a.z * b.z;
+    }
+
+    public static CelestialVector3 Cross( CelestialVector3 a, CelestialVector3 b )
+    {
+        double cx = a.y * b.z - a.z * b.y;
+        double cy = a.z * b.x - a.x * b.z;
+        double cz = a.x * b.y - a.y * b.x;
+
+        return new CelestialVector3( cx, cy, cz );
+    }
+
+    public static explicit operator Vector3( CelestialVector3 v )
     {
         return new Vector3( (float)v.x, (float)v.y, (float)v.z );
     }

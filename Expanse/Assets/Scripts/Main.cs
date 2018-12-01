@@ -11,10 +11,13 @@ public class Main : MonoBehaviour
     public SpaceShip m_SpaceShip = null;
 
     [Tooltip( "Name of celestial body that spaceship's initial position is relative to" )]
-    public string m_PositionBase = "";
+    public string m_BasePositionBodyName = "";
 
     [Tooltip( "Spaceship's initial position is relative to the defined celestial body" )]
     public CelestialVector3 m_Position = new CelestialVector3();
+
+    [Tooltip( "Initial light source to be attached to Sol" )]
+    public Light m_MainLight = null;
 
     // Use this for initialization
     void Awake()
@@ -25,17 +28,26 @@ public class Main : MonoBehaviour
             // All planets loaded will start with a base view position of origin
             CelestialManagerPhysical.Instance.Init( Application.dataPath + "/StreamingAssets/Config/CelestialBodies/" );
 
+            if( m_MainLight != null )
+            {
+                CelestialBody sol = CelestialManagerPhysical.Instance.GetCelestialBody( "Sol" );
+                if( sol != null )
+                {
+                    m_MainLight.transform.parent = sol.transform;
+                }
+            }
+
             m_SpaceShip.Init();
 
-            CelestialBody earth = CelestialManagerPhysical.Instance.GetCelestialBody( m_PositionBase );
+            CelestialBody baseBody = CelestialManagerPhysical.Instance.GetCelestialBody( m_BasePositionBodyName );
 
             CelestialVector3 initialPosition = new CelestialVector3();
 
-            if ( null != earth )
+            if ( null != baseBody )
             {
-                CelestialVector3 offset = m_Position + ( m_Position.Normalized() * earth.Radius );
+                CelestialVector3 offset = m_Position + ( m_Position.Normalized() * baseBody.Radius );
 
-                initialPosition = earth.Position + offset;
+                initialPosition = baseBody.Position - offset;
             }
 
             m_SpaceShip.Position = initialPosition;

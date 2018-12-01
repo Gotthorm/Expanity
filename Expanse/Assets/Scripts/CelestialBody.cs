@@ -130,6 +130,18 @@ public class CelestialBody : MonoBehaviour
                             }
                         }
                     }
+                    else if ( loader.m_Type == "Ship" )
+                    {
+                        CelestialShip newShip = gameObject.AddComponent<CelestialShip>();
+
+                        if ( null != newShip )
+                        {
+                            if ( newShip.Initialize( loader ) )
+                            {
+                                return newShip;
+                            }
+                        }
+                    }
                 }
             }
         }

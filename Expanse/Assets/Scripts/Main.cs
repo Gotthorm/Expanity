@@ -7,9 +7,6 @@ public class Main : MonoBehaviour
     [Tooltip( "This must be assigned in the editor" )]
     public Canvas m_Canvas = null;
 
-    [Tooltip( "This must be assigned in the editor" )]
-    public SpaceShip m_SpaceShip = null;
-
     [Tooltip( "Name of celestial body that spaceship's initial position is relative to" )]
     public string m_BasePositionBodyName = "";
 
@@ -18,6 +15,9 @@ public class Main : MonoBehaviour
 
     [Tooltip( "Initial light source to be attached to Sol" )]
     public Light m_MainLight = null;
+
+    [Tooltip( "Parent UI object containing thumbnail views for main ship" )]
+    public GameObject m_UICameraViewsParent = null;
 
     // Use this for initialization
     void Awake()
@@ -37,25 +37,42 @@ public class Main : MonoBehaviour
                 }
             }
 
-            m_SpaceShip.Init();
-
-            CelestialBody baseBody = CelestialManagerPhysical.Instance.GetCelestialBody( m_BasePositionBodyName );
-
-            CelestialVector3 initialPosition = new CelestialVector3();
-
-            if ( null != baseBody )
+            CelestialBody rocinante = CelestialManagerPhysical.Instance.GetCelestialBody( "Rocinante" );
+            if ( rocinante != null )
             {
-                CelestialVector3 offset = m_Position + ( m_Position.Normalized() * baseBody.Radius );
+                m_SpaceShip = rocinante as CelestialShip;
 
-                initialPosition = baseBody.Position - offset;
+                CelestialBody baseBody = CelestialManagerPhysical.Instance.GetCelestialBody( m_BasePositionBodyName );
+
+                if ( null != baseBody && null != m_SpaceShip )
+                {
+                    CelestialVector3 offset = m_Position + ( m_Position.Normalized() * baseBody.Radius );
+
+                    m_SpaceShip.Position = baseBody.Position - offset;
+                }
+
+                // Connect cameras
+                if( m_UICameraViewsParent != null )
+                {
+                    ExternalShipView[] viewList = m_UICameraViewsParent.GetComponentsInChildren<ExternalShipView>();
+
+                    foreach( ExternalShipView view in viewList )
+                    {
+                        // Does ship have this view?
+                        SpaceShipExternalCamera camera = m_SpaceShip.GetExternalCamera( view.name );
+
+                        if ( camera != null )
+                        {
+                            view.m_ViewCamera = camera;
+                        }
+                    }
+                }
             }
-
-            m_SpaceShip.Position = initialPosition;
         }
     }
 
     // Update is called once per frame
-    void Update ()
+    private void Update ()
     {
         CelestialVector3 basePosition = new CelestialVector3();
 
@@ -67,4 +84,6 @@ public class Main : MonoBehaviour
         // Update the position of all celestial bodies relative to the main ship's position
         CelestialManagerPhysical.Instance.Update( basePosition );
     }
+
+    private CelestialShip m_SpaceShip = null;
 }

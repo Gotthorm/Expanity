@@ -21,21 +21,21 @@ public class SpaceShip : MonoBehaviour
     #region Private Interface
 
     // Use this for initialization
-    private void Start ()
-    {
-        // Find all of the thrusters in this ship
-        List<Thruster> thrusterList = new List<Thruster>();
-        CollectThrusters( this.gameObject, thrusterList );
+    //private void Start ()
+    //{
+    //    // Find all of the thrusters in this ship
+    //    List<Thruster> thrusterList = new List<Thruster>();
+    //    CollectThrusters( this.gameObject, thrusterList );
 
-        //GameObject gameObject = new GameObject( "Control System", typeof( ControlSystem ) );
-        //gameObject.transform.SetParent( this.gameObject.transform );
+    //    //GameObject gameObject = new GameObject( "Control System", typeof( ControlSystem ) );
+    //    //gameObject.transform.SetParent( this.gameObject.transform );
 
-        m_ControlSystem = gameObject.GetComponent<ControlSystem>();
-        if ( m_ControlSystem != null )
-        {
-            m_ControlSystem.Initialize( this, thrusterList );
-        }
-    }
+    //    m_ControlSystem = gameObject.GetComponent<ControlSystem>();
+    //    if ( m_ControlSystem != null )
+    //    {
+    //        m_ControlSystem.Initialize( this, thrusterList );
+    //    }
+    //}
 
     // Update is called once per frame
     private void Update ()

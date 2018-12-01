@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ControlSystem : MonoBehaviour
 {
-    public bool Initialize( SpaceShip ship, List<Thruster> thrusters )
+    public bool Initialize( CelestialShip ship, List<Thruster> thrusters )
     {
         string shipName = ship.name;
 

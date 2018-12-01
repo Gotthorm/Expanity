@@ -62,13 +62,20 @@ public class CelestialOrbit : MonoBehaviour
 
                 if ( m_Rebuild )
                 {
-                    CelestialBody celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialPlanet.ParentPlanetID );
-                    CelestialPlanetPhysical celestialPlanet = celestialBody as CelestialPlanetPhysical;
-                    m_OrbitPositions = celestialPlanet.GetOrbit( PlanetPositionUtility.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
+                    CelestialPlanetPhysical celestialPlanet = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialPlanet.ParentPlanetID ) as CelestialPlanetPhysical;
 
-                    m_LineRenderer.positionCount = m_OrbitPositions.Length;
+                    if ( celestialPlanet != null )
+                    {
+                        m_OrbitPositions = celestialPlanet.GetOrbit( PlanetPositionUtility.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
 
-                    m_LineRenderer.SetPositions( m_OrbitPositions );
+                        m_LineRenderer.positionCount = m_OrbitPositions.Length;
+
+                        m_LineRenderer.SetPositions( m_OrbitPositions );
+                    }
+                    else
+                    {
+                        Debug.LogError( "Celestial Orbit:" + name + " failed to find physical version of celestial body:" + m_CelestialPlanet .name );
+                    }
 
                     m_Rebuild = false;
                 }

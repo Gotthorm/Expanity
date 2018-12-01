@@ -143,7 +143,7 @@ public class CelestialManagerVirtual : CelestialManager
         if ( null != celestialBody )
         {
             // Set the virtual position to match the real planet's
-            planet.transform.position = celestialBody.transform.position;
+            planet.Position = celestialBody.Position;
         }
         else
         {

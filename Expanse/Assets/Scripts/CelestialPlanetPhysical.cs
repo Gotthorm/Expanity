@@ -14,7 +14,7 @@ public class CelestialPlanetPhysical : CelestialPlanet
 
         CelestialVector3 position = GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
 
-        SetPosition( position );
+        Position = position;
     }
 
     public List<Vector3> GetOrbit( double currentJulianDate, double resolution )
@@ -132,12 +132,6 @@ public class CelestialPlanetPhysical : CelestialPlanet
         }
 
         return false;
-    }
-
-    protected override void SetPosition( CelestialVector3 position )
-    {
-        // TODO: Apply dynamic scalar instead of celestial units
-        transform.localPosition = (Vector3)( position / GlobalConstants.CelestialUnit );
     }
 
     #region Private Interface

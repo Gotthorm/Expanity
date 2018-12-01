@@ -31,8 +31,8 @@ public class CelestialManagerPhysical : CelestialManager
                 if ( newBody != null )
                 {
                     // Temp hack to keep everything easier to see for now
-                    float celestialScale = 100.0f;
-                    newBody.transform.localScale = new Vector3( celestialScale, celestialScale, celestialScale );
+                    //float celestialScale = 100.0f;
+                    //newBody.transform.localScale = new Vector3( celestialScale, celestialScale, celestialScale );
 
                     m_CelestialBodies.Add( newBody.GetCelestialID(), newBody );
 
@@ -71,6 +71,19 @@ public class CelestialManagerPhysical : CelestialManager
     public void Update( CelestialVector3 basePosition )
     {
         // Update the dynamic scalar values of all Celestial Bodies using given base position
+        foreach( KeyValuePair<uint, CelestialBody> celestialBodyRecord in m_CelestialBodies )
+        {
+            CelestialBody celestialBody = celestialBodyRecord.Value;
+
+            CelestialVector3 position = new CelestialVector3();
+            double scale;
+            GetScaledPosition( basePosition, celestialBody.Position, out position, out scale );
+            float radius = (float)( scale * celestialBody.Radius );
+            float diameter = 2.0f * radius;
+            celestialBody.transform.localScale = new Vector3( diameter, diameter, diameter );
+
+            celestialBody.transform.localPosition = (Vector3)position;
+        }
     }
 
     public static CelestialManagerPhysical Instance
@@ -85,7 +98,33 @@ public class CelestialManagerPhysical : CelestialManager
         }
     }
 
+    // Give the planets position in real data and get back the scaled version
+    private void GetScaledPosition( CelestialVector3 basePosition, CelestialVector3 celestialPosition, out CelestialVector3 scaledPosition, out double scale )
+    {
+        scale = 1.0;
+
+        scaledPosition = celestialPosition - basePosition;
+
+        double distance = scaledPosition.Length();
+
+        double _cosfov2 = 1.0 - System.Math.Cos( m_FieldOfView * 0.5 );
+
+        double f = m_FarClipPlane * _cosfov2;
+        double p = 0.75 * f;
+
+        if ( distance > p )
+        {
+            double s = 1.0 - System.Math.Exp( -p / ( distance - p ) );
+            double dist = p + ( f - p ) * s;
+            scale = dist / distance;
+            scaledPosition = scaledPosition / distance * dist;
+        }
+    }
+
     private string m_ConfigPath = "";
+
+    private float m_FieldOfView = 60.0f;
+    private float m_FarClipPlane = 3000.0f;
 
     private static CelestialManagerPhysical m_Instance = null;
 }

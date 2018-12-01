@@ -22,7 +22,7 @@ public class CelestialPlanetVirtual : CelestialPlanet
 
     protected override void SetPosition( CelestialVector3 position )
     {
-        transform.localPosition = (Vector3)( position / GlobalConstants.CelestialUnit );
+        transform.position = (Vector3)( position / GlobalConstants.CelestialUnit );
     }
 
     //private void ClickSelected( GameObject eventOwner )

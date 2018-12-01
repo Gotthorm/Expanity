@@ -1,26 +1,16 @@
 fileFormatVersion: 2
-guid: 875aef32b8a316543914ccbba65d44b5
-timeCreated: 1543562880
+guid: e96e8bc3a1809274f83054ec920f7d66
+timeCreated: 1543706932
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Camera
-    100002: Lamp
-    100004: //RootNode
-    100006: Tycho
-    400000: Camera
-    400002: Lamp
-    400004: //RootNode
-    400006: Tycho
-    2000000: Camera
+    100000: //RootNode
+    400000: //RootNode
     2100000: No Name
-    2300000: Tycho
-    2300002: //RootNode
-    3300000: Tycho
-    3300002: //RootNode
-    4300000: Tycho
-    10800000: Lamp
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: Cylinder
   externalObjects: {}
   materials:
     importMaterials: 1

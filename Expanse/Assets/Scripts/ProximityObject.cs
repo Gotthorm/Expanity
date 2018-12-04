@@ -78,7 +78,7 @@ public class ProximityObject : MonoBehaviour, IPointerClickHandler
 
     }
 
-    public UInt32 GetCelestialID() { return ( m_CelestialBody != null ) ? m_CelestialBody.GetCelestialID() : 0; }
+    public UInt32 GetCelestialID() { return ( m_CelestialBody != null ) ? m_CelestialBody.ID : 0; }
 
     private CelestialBody m_CelestialBody = null;
 }

@@ -5,7 +5,6 @@
   <!-- Celestial Body required -->
   <Name value="Mercury"/>
   <Type value="Planet"/>
-  <GeometryPrefab value="Prefabs/CelestialBodies/Mercury"/>
   <Radius value="2440.0"/>
   <Orbit value="true"/>
 

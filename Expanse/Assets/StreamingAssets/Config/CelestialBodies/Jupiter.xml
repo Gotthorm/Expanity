@@ -5,7 +5,6 @@
   <!-- Celestial Body required -->
   <Name value="Jupiter"/>
   <Type value="Planet"/>
-  <GeometryPrefab value="Prefabs/CelestialBodies/Jupiter"/>
   <Radius value="69911.0"/>
   <Orbit value="true"/>
 

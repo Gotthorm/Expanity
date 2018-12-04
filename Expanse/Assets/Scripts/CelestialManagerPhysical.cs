@@ -11,16 +11,16 @@ using UnityEngine.EventSystems;
 
 public class CelestialManagerPhysical : CelestialManager
 {
-    public string GetConfigPath() { return m_ConfigPath; }
+    //public string GetConfigPath() { return m_ConfigPath; }
 
     // Use this for initialization
     public void Init( string configPath )
     {
         if ( m_Initialized == false )
         {
-            m_ConfigPath = configPath;
+            //m_ConfigPath = configPath;
 
-            DirectoryInfo info = new DirectoryInfo( m_ConfigPath );
+            DirectoryInfo info = new DirectoryInfo( configPath );
             FileInfo[] fileInfo = info.GetFiles( "*.xml" );
 
             foreach ( FileInfo file in fileInfo )
@@ -34,7 +34,7 @@ public class CelestialManagerPhysical : CelestialManager
                     //float celestialScale = 100.0f;
                     //newBody.transform.localScale = new Vector3( celestialScale, celestialScale, celestialScale );
 
-                    m_CelestialBodies.Add( newBody.GetCelestialID(), newBody );
+                    m_CelestialBodies.Add( newBody.ID, newBody );
 
                     Debug.Log( file );
                 }
@@ -56,7 +56,7 @@ public class CelestialManagerPhysical : CelestialManager
 
             foreach ( CelestialBody body in planets )
             {
-                CelestialPlanetPhysical planet = body as CelestialPlanetPhysical;
+                CelestialPlanet planet = body as CelestialPlanet;
 
                 if ( null != planet )
                 {
@@ -121,7 +121,7 @@ public class CelestialManagerPhysical : CelestialManager
         }
     }
 
-    private string m_ConfigPath = "";
+    //private string m_ConfigPath = "";
 
     private float m_FieldOfView = 60.0f;
     private float m_FarClipPlane = 3000.0f;

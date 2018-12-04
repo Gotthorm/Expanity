@@ -22,6 +22,8 @@ public class Main : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
+        CelestialBodyLoader.PrefabPath = "Prefabs/CelestialBodies/";
+
         // This must be done first.  With no celestial objects, space is EMPTY!!
         {
             // Initialization cannot fail but will log warnings for any data it fails to load

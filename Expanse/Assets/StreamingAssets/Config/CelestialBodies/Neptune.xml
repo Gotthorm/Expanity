@@ -5,7 +5,6 @@
   <!-- Celestial Body required -->
   <Name value="Neptune"/>
   <Type value="Planet"/>
-  <GeometryPrefab value="Prefabs/CelestialBodies/Neptune"/>
   <Radius value="24622.0"/>
   <Orbit value="true"/>
 

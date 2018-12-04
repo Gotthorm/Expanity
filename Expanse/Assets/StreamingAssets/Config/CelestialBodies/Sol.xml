@@ -5,7 +5,6 @@
   <!-- Celestial Body required -->
   <Name value="Sol"/>
   <Type value="Planet"/>
-  <GeometryPrefab value="Prefabs/CelestialBodies/Sol"/>
   <Radius value="695700.0"/>
   <Orbit value="false"/>
 

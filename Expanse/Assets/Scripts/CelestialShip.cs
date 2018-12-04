@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class CelestialShip : CelestialBody
 {
-    public override CelestialType GetCelestialType() { return CelestialType.Ship; }
-
     public override bool Initialize( CelestialBodyLoader loader )
     {
         if ( base.Initialize( loader ) )
         {
+            m_CelestialType = CelestialType.Ship;
+
             return true;
         }
 
@@ -20,7 +20,7 @@ public class CelestialShip : CelestialBody
     {
         SpaceShipExternalCamera camera = null;
 
-        if( m_ExternalCameras.TryGetValue( name.GetHashCode(), out camera ) )
+        if ( m_ExternalCameras.TryGetValue( name.GetHashCode(), out camera ) )
         {
             return camera;
         }
@@ -67,7 +67,7 @@ public class CelestialShip : CelestialBody
     {
         SpaceShipExternalCamera[] cameraList = this.gameObject.GetComponentsInChildren<SpaceShipExternalCamera>();
 
-        foreach( SpaceShipExternalCamera camera in cameraList )
+        foreach ( SpaceShipExternalCamera camera in cameraList )
         {
             m_ExternalCameras.Add( camera.name.GetHashCode(), camera );
         }

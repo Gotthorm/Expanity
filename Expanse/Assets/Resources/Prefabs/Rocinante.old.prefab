@@ -593,7 +593,7 @@ GameObject:
   - component: {fileID: 81661603969155576}
   - component: {fileID: 114442111221821240}
   m_Layer: 0
-  m_Name: Rocinante
+  m_Name: Rocinante.old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

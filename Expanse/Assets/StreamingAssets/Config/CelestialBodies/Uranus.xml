@@ -5,7 +5,6 @@
   <!-- Celestial Body required -->
   <Name value="Uranus"/>
   <Type value="Planet"/>
-  <GeometryPrefab value="Prefabs/CelestialBodies/Uranus"/>
   <Radius value="25362.0"/>
   <Orbit value="true"/>
 

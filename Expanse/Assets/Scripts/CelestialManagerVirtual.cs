@@ -29,60 +29,22 @@ public class CelestialManagerVirtual : CelestialManager
     }
 
     // Use this for initialization
-    public bool Init( Transform parent )
+    public bool Init( Transform parentViewTransform )
     {
         if ( m_Initialized == false )
         {
-            string configPath = CelestialManagerPhysical.Instance.GetConfigPath();
-
             // For each planet we will try to create a virtual version
-            List<CelestialBody> realCelestialPlanets = CelestialManagerPhysical.Instance.GetCelestialBodies( CelestialBody.CelestialType.Planet );
+            List<CelestialBody> celestialBodies = CelestialManagerPhysical.Instance.GetCelestialBodies( CelestialBody.CelestialType.Planet );
 
-            foreach ( CelestialBody realCelestialBody in realCelestialPlanets )
+            foreach ( CelestialBody celestialBody in celestialBodies )
             {
-                CelestialPlanetPhysical realCelestialPlanet = realCelestialBody as CelestialPlanetPhysical;
+                CelestialVirtual virtualBody = CelestialVirtual.Create( celestialBody );
 
-                if ( null != realCelestialPlanet )
-                {
-                    string prefabPath = configPath + "../VirtualCelestialBodies/" + realCelestialPlanet.name + "_Virtual.xml";
+                m_CelestialBodies.Add( virtualBody.ID, virtualBody );
 
-                    FileInfo file = new FileInfo( prefabPath );
+                virtualBody.transform.parent = parentViewTransform;
 
-                    if ( file.Exists )
-                    {
-                        CelestialBody virtualCelestialBody = CelestialBody.Create( file );
-
-                        if ( virtualCelestialBody != null )
-                        {
-                            m_CelestialBodies.Add( virtualCelestialBody.GetCelestialID(), virtualCelestialBody );
-
-                            CelestialPlanetVirtual virtualCelestialPlanet = virtualCelestialBody as CelestialPlanetVirtual;
-
-                            if ( null != virtualCelestialPlanet )
-                            {
-                                virtualCelestialPlanet.transform.parent = parent;
-
-                                virtualCelestialPlanet.ParentPlanetID = realCelestialPlanet.GetCelestialID();
-
-                                virtualCelestialPlanet.Scale = 1000;
-
-                                UpdatePosition( virtualCelestialPlanet );
-                            }
-                            else
-                            {
-                                Debug.LogError( "Virtual Manager failed to add valid CelestialPlanetVirtual: " + file.FullName );
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Debug.LogWarning( "Virtual Manager failed to find: " + file.FullName );
-                    }
-                }
-                else
-                {
-                    Debug.LogError( "Encountered invalid planet object: " + realCelestialBody.name );
-                }
+                UpdatePosition( virtualBody );
             }
 
             m_Initialized = true;
@@ -103,7 +65,7 @@ public class CelestialManagerVirtual : CelestialManager
         {
             CelestialBody closestBody = GetClosestCelestialBody( CelestialBody.CelestialType.Planet, camera.transform.position );
 
-            CelestialPlanetVirtual closestPlanet = closestBody as CelestialPlanetVirtual;
+            CelestialVirtual closestPlanet = closestBody as CelestialVirtual;
 
             if ( null != closestPlanet )
             {
@@ -131,23 +93,21 @@ public class CelestialManagerVirtual : CelestialManager
 
     private void UpdatePosition( CelestialBody body )
     {
-        CelestialBody celestialBody = null;
-
-        CelestialPlanetVirtual planet = body as CelestialPlanetVirtual;
+        CelestialVirtual planet = body as CelestialVirtual;
 
         if ( null != planet )
         {
-            celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( planet.ParentPlanetID );
-        }
+            CelestialBody celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( planet.ParentID );
 
-        if ( null != celestialBody )
-        {
-            // Set the virtual position to match the real planet's
-            planet.Position = celestialBody.Position;
-        }
-        else
-        {
-            Debug.LogWarning( "Unable to update position of " + body .name );
+            if ( null != celestialBody )
+            {
+                // Set the virtual position to match the real planet's
+                planet.Position = celestialBody.Position;
+            }
+            else
+            {
+                Debug.LogWarning( "Unable to update position of " + body.name );
+            }
         }
     }
 

@@ -5,7 +5,6 @@
   <!-- Celestial Body required -->
   <Name value="Mars"/>
   <Type value="Planet"/>
-  <GeometryPrefab value="Prefabs/CelestialBodies/Mars"/>
   <Radius value="3390.0"/>
   <Orbit value="true"/>
 

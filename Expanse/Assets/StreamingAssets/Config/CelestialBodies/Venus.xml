@@ -5,7 +5,6 @@
   <!-- Celestial Body required -->
   <Name value="Venus"/>
   <Type value="Planet"/>
-  <GeometryPrefab value="Prefabs/CelestialBodies/Venus"/>
   <Radius value="6052.0"/>
   <Orbit value="true"/>
 

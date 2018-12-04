@@ -36,7 +36,7 @@ public abstract class CelestialManager
 
         foreach ( KeyValuePair<uint, CelestialBody> celestialBody in m_CelestialBodies )
         {
-            if( CelestialBody.CelestialType.Invalid != ( celestialBody.Value.GetCelestialType() & celestialType ) )
+            if( CelestialBody.CelestialType.Invalid != ( celestialBody.Value.Type & celestialType ) )
             {
                 celestialBodyList.Add( celestialBody.Value );
             }
@@ -61,7 +61,7 @@ public abstract class CelestialManager
         {
             foreach ( KeyValuePair<uint, CelestialBody> celestialBody in m_CelestialBodies )
             {
-                if ( ( celestialBody.Value.GetCelestialType() & celestialType ) != CelestialBody.CelestialType.Invalid )
+                if ( ( celestialBody.Value.Type & celestialType ) != CelestialBody.CelestialType.Invalid )
                 {
                     float distance = ( celestialBody.Value.transform.position - position ).sqrMagnitude;
 

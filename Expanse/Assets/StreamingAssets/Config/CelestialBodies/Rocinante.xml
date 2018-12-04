@@ -4,7 +4,7 @@
   <!-- Celestial Body required -->
   <Name value="Rocinante"/>
   <Type value="Ship"/>
-  <GeometryPrefab value="Prefabs/Rocinante"/>
+  <GeometryPrefab value="Prefabs/CelestialBodies/Rocinante"/>
   <!-- Length of Rocinante is 46 meters -->
   <Radius value="0.023"/>
   <Orbit value="false"/>

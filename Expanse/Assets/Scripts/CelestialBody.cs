@@ -29,8 +29,6 @@ public class CelestialBody : MonoBehaviour
             if ( value > m_MaximumScaleMultiplier )
             {
                 value = m_MaximumScaleMultiplier;
-
-                // Create some sort of visual to indicate body was capped at Max scale?
             }
 
             m_Scale = value;
@@ -45,6 +43,14 @@ public class CelestialBody : MonoBehaviour
         get
         {
             return m_RadiusInKM;
+        }
+    }
+
+    public bool Orbit
+    {
+        get
+        {
+            return m_HasOrbit;
         }
     }
 
@@ -78,17 +84,17 @@ public class CelestialBody : MonoBehaviour
         }
     }
 
-    public bool Orbit
+    public uint ID
     {
-        get
-        {
-            return m_HasOrbit;
-        }
+        get { return m_CelestialID; }
+    }
+
+    public CelestialType Type
+    {
+        get { return m_CelestialType; }
     }
 
     public bool GetIsVisible() { return GetComponent<Renderer>().isVisible; }
-
-    public virtual CelestialType GetCelestialType() { return CelestialType.Invalid; }
 
     public static CelestialBody Create( FileInfo file )
     {
@@ -96,7 +102,7 @@ public class CelestialBody : MonoBehaviour
 
         if ( loader.Load( file ) )
         {
-            UnityEngine.Object prefab = Resources.Load( loader.m_PrefabDataPath, typeof( GameObject ) );
+            UnityEngine.Object prefab = Resources.Load( CelestialBodyLoader.PrefabPath + loader.m_Name, typeof( GameObject ) );
 
             if ( null != prefab )
             {
@@ -108,19 +114,7 @@ public class CelestialBody : MonoBehaviour
 
                     if( loader.m_Type == "Planet" )
                     {
-                        CelestialPlanetPhysical newPlanet = gameObject.AddComponent<CelestialPlanetPhysical>();
-
-                        if ( null != newPlanet )
-                        {
-                            if ( newPlanet.Initialize( loader ) )
-                            {
-                                return newPlanet;
-                            }
-                        }
-                    }
-                    else if ( loader.m_Type == "VirtualPlanet" )
-                    {
-                        CelestialPlanetVirtual newPlanet = gameObject.AddComponent<CelestialPlanetVirtual>();
+                        CelestialPlanet newPlanet = gameObject.AddComponent<CelestialPlanet>();
 
                         if ( null != newPlanet )
                         {
@@ -158,7 +152,7 @@ public class CelestialBody : MonoBehaviour
         {
             foreach ( CelestialBody body in inputList )
             {
-                if ( ( body.GetCelestialType() & type ) != CelestialBody.CelestialType.Invalid )
+                if ( ( body.Type & type ) != CelestialBody.CelestialType.Invalid )
                 {
                     float distance = ( body.transform.position - position ).sqrMagnitude;
 
@@ -184,34 +178,8 @@ public class CelestialBody : MonoBehaviour
         return resultsList;
     }
 
-    public uint GetCelestialID() { return m_CelestialID; }
-
     public virtual bool Initialize( CelestialBodyLoader loader )
     {
-        // Maximum Scale( optional)
-        List<int> intList = null;
-        if ( loader.GetData( m_MaximumScaleLabel, ref intList ) )
-        {
-            if ( intList.Count != 1 )
-            {
-                Debug.LogError( "Error" );
-                return false;
-            }
-            if ( 1 > intList[ 0 ] )
-            {
-                Debug.LogError( "Error" );
-                return false;
-            }
-            m_MaximumScaleMultiplier = (uint)intList[ 0 ];
-        }
-
-        if ( loader.m_Radius <= 0.0 )
-        {
-            Debug.LogError( "Error" );
-            return false;
-        }
-        m_RadiusInKM = loader.m_Radius;
-
         // Has Orbit (optional)
         List<bool> boolList = null;
         if ( loader.GetData( m_OrbitFlagLabel, ref boolList ) )
@@ -223,6 +191,13 @@ public class CelestialBody : MonoBehaviour
             }
             m_HasOrbit = boolList[ 0 ];
         }
+
+        if ( loader.m_Radius <= 0.0 )
+        {
+            Debug.LogError( "Error" );
+            return false;
+        }
+        m_RadiusInKM = loader.m_Radius;
 
         // TODO: This is a sphere shaped calculation so will need to support other types eventually?
         // Initial scale is in game diameter (2 * radius)
@@ -242,6 +217,17 @@ public class CelestialBody : MonoBehaviour
         transform.localPosition = (Vector3)position;
     }
 
+    protected CelestialType m_CelestialType = CelestialType.Invalid;
+
+    protected bool m_HasOrbit = false;
+
+    protected double m_RadiusInKM = 0;
+
+    // The base scale at multiplier value 1
+    protected float m_InitialScale = 1.0f;
+
+    protected uint m_MaximumScaleMultiplier = 1;
+
     #endregion
 
     #region Private Interface
@@ -253,23 +239,14 @@ public class CelestialBody : MonoBehaviour
 
     private float m_Scale = 1.0f;
 
-    // The base scale at multiplier value 1
-    private float m_InitialScale = 1.0f;
-
-    private uint m_MaximumScaleMultiplier = 1;
-
     private float m_VelocityInKMS = 0.0f;
 
-    private double m_RadiusInKM = 0;
     private CelestialVector3 m_PositionInKM = new CelestialVector3( 0.0, 0.0, 0.0 );
 
     private uint m_CelestialID = 0;
 
-    private uint m_VisualUnitsScale = 100;
+    //private uint m_VisualUnitsScale = 100;
 
-    private bool m_HasOrbit = false;
-
-    private const string m_MaximumScaleLabel = "MaximumScale";
     private const string m_OrbitFlagLabel = "Orbit";
 
     private static UInt32 m_CelestialIDGenerator = 1;

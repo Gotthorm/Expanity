@@ -5,7 +5,6 @@
   <!-- Celestial Body required -->
   <Name value="Saturn"/>
   <Type value="Planet"/>
-  <GeometryPrefab value="Prefabs/CelestialBodies/Saturn"/>
   <Radius value="58232.0"/>
   <Orbit value="true"/>
 

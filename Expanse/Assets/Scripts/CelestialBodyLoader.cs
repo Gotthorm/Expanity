@@ -9,7 +9,6 @@ public class CelestialBodyLoader : XmlLoader
     public string m_Name = "";
     public string m_Type = "";
     public double m_Radius = 0.0;
-    public string m_PrefabDataPath = "";
 
     public bool Load( string filePath )
     {
@@ -87,6 +86,8 @@ public class CelestialBodyLoader : XmlLoader
         return false;
     }
 
+    public static string PrefabPath { get; set; }
+
     // Implementation of XmlLoader interface 
     protected override bool Push( XmlReader reader )
     {
@@ -134,15 +135,6 @@ public class CelestialBodyLoader : XmlLoader
                             m_Radius = value;
                             results = true;
                         }
-                    }
-                }
-                break;
-            case m_GeometryPrefabLabel:
-                {
-                    if( 0 < elementValue.Length && 0 == m_PrefabDataPath.Length )
-                    {
-                        m_PrefabDataPath = elementValue;
-                        results = true;
                     }
                 }
                 break;
@@ -210,7 +202,6 @@ public class CelestialBodyLoader : XmlLoader
         m_Name = "";
         m_Type = "";
         m_Radius = 0.0f;
-        m_PrefabDataPath = "";
 
         m_BooleanData.Clear();
         m_FloatData.Clear();
@@ -257,10 +248,6 @@ public class CelestialBodyLoader : XmlLoader
             Debug.LogError( "Error" );
         }
         else if ( 0 == m_Type.Length )
-        {
-            Debug.LogError( "Error" );
-        }
-        else if ( 0 == m_PrefabDataPath.Length )
         {
             Debug.LogError( "Error" );
         }
@@ -521,5 +508,4 @@ public class CelestialBodyLoader : XmlLoader
     private const string m_NameLabel = "Name";
     private const string m_TypeLabel = "Type";
     private const string m_RadiusLabel = "Radius";
-    private const string m_GeometryPrefabLabel = "GeometryPrefab";
 }

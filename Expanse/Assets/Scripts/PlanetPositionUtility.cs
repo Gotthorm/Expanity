@@ -30,6 +30,28 @@ public class PlanetPositionUtility
 
     public static double GetJulianDate( DateTime dateTime )
     {
+        // Julian Date( JD) is the system of time measurement for scientific use by the astronomy community.
+        // It is the interval of time in days and fractions of a day since 4713 BC January - 1 Greenwich noon.
+        // The Julian day begins at Greenwich mean noon, that is at 12:00 Universal Time( UT ).
+        //
+        // To convert a calendar date to Julian Date, perform the following steps:
+        // Y = year
+        // M = month
+        // D = day( includes hours, minutes & seconds as fraction of day )
+        //
+        // If M = 1 or 2, take
+        //      Y = Y – 1
+        //      M = M + 12
+        //
+        // If the date is equal to or after 1582 - Oct - 15( i.e.the date is in the Gregorian calendar ), calculate
+        //      A = INT( Y / 100 )
+        //      B = 2 – A + INT( A / 4 )
+        // 
+        // If the date is before 1582 - Oct - 15( i.e.the date is in the Julian calendar ), it is not necessary to calculate A and B.
+        //
+        // The Julian date is then
+        // JD = INT( 365.25 × Y ) + INT( 30.6001 × ( M + 1 ) ) + D + 1720994.5 + B
+
         int year = dateTime.Year;
 
         int month = dateTime.Month;
@@ -47,7 +69,7 @@ public class PlanetPositionUtility
         int b = 0;
 
         // If the date is equal to or after 1582-Oct-15 it is in the gregorian calendar
-        if ( dateTime > new DateTime( 1582, 10, 15 ) )
+        if ( dateTime >= new DateTime( 1582, 10, 15 ) )
         { 
             // Adjust for the gregorian calendar
             int a = year / 100;
@@ -112,6 +134,50 @@ public class PlanetPositionUtility
         // b is ecliptic latitude
         // sin b = sin u × sin inclinationOnPlaneOfEcliptic
         eclipticLatitude = Math.Asin( Math.Sin( argumentOfLatitude ) * Math.Sin( inclinationOnPlaneOfEcliptic ) ) * GlobalConstants.RadiansToDegrees;
+    }
+
+    public static void GetLunaHeliocentricEclipticalCoordinates( double julianDate, out double radiusVector, out double eclipticalLongitude, out double eclipticLatitude )
+    {
+        // Calculate time in Julian centuries of 36525 ephemeris days from the epoch 1900 January 0.5 ET
+        double t = ( julianDate - 2415020.0 ) / 36525.0;
+
+        // Moon's mean longitude: 
+        double L = GlobalHelpers.RotationClamp( 270.434164 + 481267.8831 * t, GlobalConstants.MaxDegrees );
+
+        // Sun's mean anomaly: 
+        double M = GlobalHelpers.RotationClamp( 358.475833 + 35999.0498 * t, GlobalConstants.MaxDegrees );
+
+        // Moon's mean anomaly: 
+        double M1 = GlobalHelpers.RotationClamp( 296.104608 + 477198.8491 * t, GlobalConstants.MaxDegrees );
+
+        // Moon's mean elongation: 
+        double D = GlobalHelpers.RotationClamp( 350.737486 + 445267.1142 * t, GlobalConstants.MaxDegrees );
+
+        // Mean distance of Moon from its ascending node:
+        double F = GlobalHelpers.RotationClamp( 11.250889 + 483202.0251 * t, GlobalConstants.MaxDegrees );
+
+        eclipticalLongitude = L + 6.288750 * Math.Sin( M1 * GlobalConstants.DegreesToRadians )
+                                + 1.274018 * Math.Sin( ( 2 * D - M1 ) * GlobalConstants.DegreesToRadians )
+                                + 0.658309 * Math.Sin( ( 2 * D ) * GlobalConstants.DegreesToRadians )
+                                + 0.213616 * Math.Sin( ( 2 * M1 ) * GlobalConstants.DegreesToRadians )
+                                - 0.185596 * Math.Sin( M * GlobalConstants.DegreesToRadians )
+                                - 0.114336 * Math.Sin( ( 2 * F ) * GlobalConstants.DegreesToRadians );
+
+        eclipticLatitude =  5.128189 * Math.Sin( F * GlobalConstants.DegreesToRadians )
+                                + 0.280606 * Math.Sin( ( M1 + F ) * GlobalConstants.DegreesToRadians )
+                                + 0.277693 * Math.Sin( ( M1 - F ) * GlobalConstants.DegreesToRadians )
+                                + 0.173238 * Math.Sin( ( 2 * D - F ) * GlobalConstants.DegreesToRadians )
+                                + 0.055413 * Math.Sin( ( 2 * D + F - M1 ) * GlobalConstants.DegreesToRadians )
+                                + 0.046272 * Math.Sin( ( 2 * D - F - M1 ) * GlobalConstants.DegreesToRadians );
+
+        double p = 0.950724 + 0.051818 * Math.Cos( M1 * GlobalConstants.DegreesToRadians )
+                            + 0.009531 * Math.Cos( ( 2 * D - M1 ) * GlobalConstants.DegreesToRadians )
+                            + 0.007843 * Math.Cos( ( 2 * D ) * GlobalConstants.DegreesToRadians )
+                            + 0.002824 * Math.Cos( ( 2 * M1 ) * GlobalConstants.DegreesToRadians )
+                            + 0.000857 * Math.Cos( ( 2D + M1 ) * GlobalConstants.DegreesToRadians );
+
+        // The radius will be in AU units
+        radiusVector = ( 6378.14 / ( Math.Sin( p * GlobalConstants.DegreesToRadians ) * GlobalConstants.AstronomicalUnit ) );
     }
 
     public static CelestialVector3 GetPositionFromHeliocentricEclipticalCoordinates( double radiusVector, double eclipticalLongitude, double eclipticLatitude )

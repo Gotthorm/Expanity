@@ -1,0 +1,42 @@
+<!-- Mars configuration -->
+<!-- Celestial data copied from http://www.braeunig.us/space/plntpos.htm -->
+
+<CelestialBody>
+  <!-- Celestial Body required -->
+  <Name value="Mars"/>
+  <Type value="Planet"/>
+  <Radius value="3390.0"/>
+  <Orbit value="true"/>
+
+  <!-- Planet Specific -->
+  <MeanLongitude value="293.737334 19141.69551 0.0003107"/>
+  <SemiMajorAxisOfOrbit value="1.5236883"/>
+  <EccentricityOfOrbit value="0.09331290 0.000092064 -0.000000077"/>
+  <InclinationOnPlaneOfEcliptic value="1.850333 -0.0006750 0.0000126"/>
+  <ArgumentOfPerihelion value="285.431761 1.0697667 0.0001313 0.00000414"/>
+  <LongitudeOfAscendingNode value="48.786442 0.7709917 -0.0000014 -0.00000533"/>
+</CelestialBody>
+
+<!--
+EPOCH 1898, AUGUST 31.5, GREENWICH MEAN TIME.
+Mean Anomaly	221°	35'	45.	"6
+Perihelion Distance of Ascending Node	177	37	56.	0
+Longitude of Ascending Node	303	31	57.	1
+Inclination of Orbit to Ecliptic	10	50	11.	8
+Angle whose Sin is the Eccentricity	12	52	9.	8
+Mean Daily Motion	2015.	"2326
+Logarithm of Semi-major Axis	0.1637876
+Period of Revolution around Sun	643d	.10
+
+Mean anomaly
+71.280°
+
+Longitude of ascending node
+304.32°
+
+Argument of perihelion
+178.82°
+
+Eccentricity	0.2226
+
+-->

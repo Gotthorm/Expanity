@@ -69,6 +69,17 @@ public class CelestialPlanet : CelestialBody
         CelestialVector3 position = PlanetPositionUtility.GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
 
         Position = position;
+
+        if( name == "Earth" )
+        {
+            PlanetPositionUtility.GetLunaHeliocentricEclipticalCoordinates( julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
+
+            position = PlanetPositionUtility.GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
+            position += Position;
+
+            Debug.Log( "Earth(" + Position.x.ToString( ".00" ) + ", " + Position.y.ToString( ".00" ) + ", " + Position.z.ToString( ".00" ) );
+            Debug.Log( "Moon(" + position.x.ToString( ".00" ) + ", " + position.y.ToString( ".00" ) + ", " + position.z.ToString( ".00" ) );
+        }
     }
 
     public List<Vector3> GetOrbit( double currentJulianDate, double resolution )

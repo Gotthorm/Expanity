@@ -45,7 +45,12 @@ public class CelestialManagerPhysical : CelestialManager
             }
 
             // Calculate the JD corresponding to 1976 - July - 20, 12:00 UT.
-            //DateTime desiredTime = new DateTime( 1976, 7, 20, 12, 0, 0 );
+            //DateTime desiredTimeTest = new DateTime( 1976, 7, 20, 12, 0, 0 );
+            //double julianDateTest = PlanetPositionUtility.GetJulianDate( desiredTimeTest );
+
+            // Calculate the JD corresponding to 1968 - December - 12, 12:00 UT.
+            //DateTime desiredTime = new DateTime( 1968, 12, 24, 10, 0, 0 );
+
             //DateTime desiredTime = new DateTime( 2018, 2, 26, 12, 0, 0 );
             //DateTime desiredTime = new DateTime( 2000, 1, 1, 0, 0, 0 );
             DateTime desiredTime = DateTime.Now;

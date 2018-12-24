@@ -84,7 +84,7 @@ public class TacticalView : MonoBehaviour
             }
 
             // Find all of the planets
-            List<CelestialBody> planets = m_VirtualManager.GetCelestialBodies( CelestialBody.CelestialType.Planet );
+            List<CelestialBody> planets = m_VirtualManager.GetCelestialBodies( CelestialBody.CelestialType.All );
             foreach ( CelestialBody celestialBody in planets )
             {
                 // Create HUD element
@@ -137,7 +137,22 @@ public class TacticalView : MonoBehaviour
         CelestialBodyHUD newHUD = null;
 
         // Load the HUD
-        UnityEngine.Object prefab = Resources.Load( "Prefabs/Celestial HUD", typeof( GameObject ) );
+        UnityEngine.Object prefab = null;
+
+        switch( celestialBody.Type )
+        {
+            case CelestialBody.CelestialType.Ship:
+                {
+                    prefab = Resources.Load( "Prefabs/Celestial Ship HUD", typeof( GameObject ) );
+                }
+                break;
+            case CelestialBody.CelestialType.Planet:
+            default:
+                {
+                    prefab = Resources.Load( "Prefabs/Celestial Planet HUD", typeof( GameObject ) );
+                }
+                break;
+        }
 
         if ( null != prefab )
         {
@@ -188,18 +203,37 @@ public class TacticalView : MonoBehaviour
 
         CelestialBody celestialBody = celestialBodyHUD.GetOwner();
 
-        Vector3 distanceVector = m_ViewCamera.transform.position - celestialBody.transform.position;
-        float distance = distanceVector.magnitude;
+        if( celestialBody != null )
+        {
+            Vector3 distanceVector = m_ViewCamera.transform.position - celestialBody.transform.position;
+            float distance = distanceVector.magnitude;
 
-        string distanceString = GlobalHelpers.MakeSpaceDistanceString( distance );
-        //string infoText = m_Category + Environment.NewLine;
-        string infoText = System.Environment.NewLine;
-        infoText += celestialBody.Radius.ToString() + " km" + System.Environment.NewLine;
-        infoText += distanceString;
-        infoText += celestialBody.Velocity.ToString() + " km/s" + System.Environment.NewLine;
-        infoText += celestialBody.Scale.ToString( ".#" ) + "X" + System.Environment.NewLine;
+            string distanceString = GlobalHelpers.MakeSpaceDistanceString( distance );
+            string infoText = "";
 
-        celestialBodyHUD.m_InfoText.text = infoText;
+            switch ( celestialBody.Type )
+            {
+                case CelestialBody.CelestialType.Ship:
+                    {
+                        infoText = "Ship" + System.Environment.NewLine;
+                        infoText += "Corvette" + System.Environment.NewLine;
+                        infoText += distanceString;
+                        infoText += celestialBody.Velocity.ToString() + " km/s" + System.Environment.NewLine;
+                    }
+                    break;
+                case CelestialBody.CelestialType.Planet:
+                default:
+                    {
+                        infoText = "Planet" + System.Environment.NewLine;
+                        infoText += celestialBody.Radius.ToString() + " km" + System.Environment.NewLine;
+                        infoText += distanceString;
+                        infoText += celestialBody.Velocity.ToString() + " km/s" + System.Environment.NewLine;
+                        infoText += celestialBody.Scale.ToString( ".#" ) + "X" + System.Environment.NewLine;
+                    }
+                    break;
+            }
+            celestialBodyHUD.m_InfoText.text = infoText;
+        }
     }
 
     private void SelectHUD(CelestialBodyHUD celestialBodyHUD, bool notifyProximityPanel)

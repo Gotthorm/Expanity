@@ -181,15 +181,10 @@ public class CelestialBody : MonoBehaviour
     public virtual bool Initialize( CelestialBodyLoader loader )
     {
         // Has Orbit (optional)
-        List<bool> boolList = null;
+        string boolList = null;
         if ( loader.GetData( m_OrbitFlagLabel, ref boolList ) )
         {
-            if ( boolList.Count != 1 )
-            {
-                Debug.LogError( "Error" );
-                return false;
-            }
-            m_HasOrbit = boolList[ 0 ];
+            m_HasOrbit = boolList.Length > 0;
         }
 
         if ( loader.m_Radius <= 0.0 )

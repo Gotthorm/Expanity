@@ -33,8 +33,8 @@ public class CelestialManagerVirtual : CelestialManager
     {
         if ( m_Initialized == false )
         {
-            // For each planet we will try to create a virtual version
-            List<CelestialBody> celestialBodies = CelestialManagerPhysical.Instance.GetCelestialBodies( CelestialBody.CelestialType.Planet );
+            // For each celestial body we will try to create a virtual version
+            List<CelestialBody> celestialBodies = CelestialManagerPhysical.Instance.GetCelestialBodies( CelestialBody.CelestialType.All );
 
             foreach ( CelestialBody celestialBody in celestialBodies )
             {
@@ -53,23 +53,25 @@ public class CelestialManagerVirtual : CelestialManager
         return m_Initialized;
     }
 
-    public void Update( CelestialCamera camera )
+    public void Update( CelestialCamera celestialCamera )
     {
-        foreach( KeyValuePair<uint, CelestialBody> celestialBody in m_CelestialBodies )
+        foreach( KeyValuePair<uint, CelestialBody> celestialBodyRecord in m_CelestialBodies )
         {
-            UpdatePosition( celestialBody.Value );
+            CelestialBody celestialBody = celestialBodyRecord.Value;
+
+            UpdatePosition( celestialBody );
         }
 
         // Find the closest body to the camera and adjust the scale
-        if ( m_AutoScale && camera != null )
+        if ( m_AutoScale && celestialCamera != null )
         {
-            CelestialBody closestBody = GetClosestCelestialBody( CelestialBody.CelestialType.Planet, camera.transform.position );
+            CelestialBody closestBody = GetClosestCelestialBody( CelestialBody.CelestialType.Planet, celestialCamera.transform.position );
 
             CelestialVirtual closestPlanet = closestBody as CelestialVirtual;
 
             if ( null != closestPlanet )
             {
-                float distance = ( camera.transform.position - closestPlanet.transform.position ).magnitude;
+                float distance = ( celestialCamera.transform.position - closestPlanet.transform.position ).magnitude;
 
                 if ( distance < float.MaxValue )
                 {

@@ -122,7 +122,7 @@ public class CelestialCamera : MonoBehaviour
             // Dragging motions are only active with the right mouse button depressed
             if ( Input.GetMouseButton( 1 ) )
             {
-                Debug.LogWarning("Mouse right clicked in view panel");
+                //Debug.LogWarning("Mouse right clicked in view panel");
 
                 if ( Cursor.lockState != CursorLockMode.Locked )
                 {
@@ -226,6 +226,11 @@ public class CelestialCamera : MonoBehaviour
             {
                 // Determine the current radius of the target 
                 float currentTargetRadius = targetCelestial.CelestialRadius * targetCelestial.Scale;
+
+                if( targetCelestial.Type == CelestialBody.CelestialType.Ship )
+                {
+                    currentTargetRadius = 0.01f;
+                }
 
                 // Based on the target's current radius we will calculate an "ideal" viewing position of the target
                 targetPosition = originalTargetPosition;

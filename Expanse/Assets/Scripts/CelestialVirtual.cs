@@ -14,20 +14,43 @@ public class CelestialVirtual : CelestialBody
     public static CelestialVirtual Create( CelestialBody celestialBody )
     {
         string name = celestialBody.name;
-        string prefabPath = CelestialBodyLoader.PrefabPath + celestialBody.name + "_Virtual";
         double radius = celestialBody.Radius;
 
-        UnityEngine.Object prefab = Resources.Load( prefabPath, typeof( GameObject ) );
+        GameObject gameObject = null;
+        CelestialVirtual celestialVirtual = null;
 
-        if ( null != prefab )
+        if ( celestialBody.Type == CelestialType.Ship )
         {
-            GameObject gameObject = UnityEngine.Object.Instantiate( prefab ) as GameObject;
+            gameObject = new GameObject( name );
+
+            celestialVirtual = gameObject.AddComponent<CelestialVirtual>();
+
+            celestialVirtual.m_CelestialType = celestialBody.Type;
+            celestialVirtual.m_ParentID = celestialBody.ID;
+            celestialVirtual.m_RadiusInKM = celestialBody.Radius;
+
+            celestialVirtual.m_InitialScale = 1;
+
+            celestialVirtual.m_HasOrbit = false;
+
+            celestialVirtual.m_MaximumScaleMultiplier = 1U;
+            celestialVirtual.Scale = 1;
+        }
+        else
+        {
+            string prefabPath = CelestialBodyLoader.PrefabPath + celestialBody.name + "_Virtual";
+            UnityEngine.Object prefab = Resources.Load( prefabPath, typeof( GameObject ) );
+
+            if ( null != prefab )
+            {
+                gameObject = UnityEngine.Object.Instantiate( prefab ) as GameObject;
+            }
 
             if ( null != gameObject )
             {
                 gameObject.name = name;
 
-                CelestialVirtual celestialVirtual = gameObject.AddComponent<CelestialVirtual>();
+                celestialVirtual = gameObject.AddComponent<CelestialVirtual>();
 
                 celestialVirtual.m_CelestialType = celestialBody.Type;
                 celestialVirtual.m_ParentID = celestialBody.ID;
@@ -39,14 +62,12 @@ public class CelestialVirtual : CelestialBody
 
                 celestialVirtual.m_HasOrbit = celestialBody.Orbit;
 
-                celestialVirtual.m_MaximumScaleMultiplier = (name != "Sol") ? 100U : 10U;
+                celestialVirtual.m_MaximumScaleMultiplier = ( name != "Sol" ) ? 100U : 10U;
                 celestialVirtual.Scale = 100;
-
-                return celestialVirtual;
             }
         }
 
-        return null;
+        return celestialVirtual;
     }
 
     protected override void SetPosition( CelestialVector3 position )

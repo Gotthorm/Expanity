@@ -15,7 +15,7 @@ public class CelestialBodyHUD : MonoBehaviour
     public Text m_TitleLabel = null;
     public Text m_InfoLabel = null;
     public Text m_InfoText = null;
-    public Image m_PointerImage = null;
+    public CelestialIcon m_Icon = null;
 
     public void SetOwner( CelestialBody owner )
     {
@@ -34,7 +34,7 @@ public class CelestialBodyHUD : MonoBehaviour
         Color currentColor = selected ? Color.yellow : Color.red;
 
         m_TitleLabel.color = currentColor;
-        m_PointerImage.color = currentColor;
+        m_Icon.Color = currentColor;
         m_InfoLabel.color = currentColor;
         m_InfoText.color = currentColor;
 
@@ -113,6 +113,8 @@ public class CelestialBodyHUD : MonoBehaviour
 
             // Add the canvas space offset and apply the new position.
             transform.localPosition = viewportPoint + m_ScreenOffset;
+
+            m_Icon.UpdateState( m_Owner, m_Camera );
 
             //// If the celestial body is visible, ensure the HUD element is active and updated
             //// Otherwise disable it 

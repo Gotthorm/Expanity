@@ -23,6 +23,8 @@ public class CelestialManagerPhysical : CelestialManager
             DirectoryInfo info = new DirectoryInfo( configPath );
             FileInfo[] fileInfo = info.GetFiles( "*.xml" );
 
+            GameObject celestialBodyParent = new GameObject( "Celestial Bodies" );
+
             foreach ( FileInfo file in fileInfo )
             {
                 // Load
@@ -33,6 +35,10 @@ public class CelestialManagerPhysical : CelestialManager
                     // Temp hack to keep everything easier to see for now
                     //float celestialScale = 100.0f;
                     //newBody.transform.localScale = new Vector3( celestialScale, celestialScale, celestialScale );
+                    if ( newBody.transform.parent == null )
+                    {
+                        newBody.transform.parent = celestialBodyParent.transform;
+                    }
 
                     m_CelestialBodies.Add( newBody.ID, newBody );
 

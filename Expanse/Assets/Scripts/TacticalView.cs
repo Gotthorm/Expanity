@@ -74,7 +74,7 @@ public class TacticalView : MonoBehaviour
     // Use this for initialization
     private void Start ()
     {
-        if ( m_VirtualManager.Init( transform ) )
+        if ( m_VirtualManager.Init() )
         {
             // Setup the view camera to a default position
             CelestialBody body = m_VirtualManager.GetCelestialBody( "Earth" );

@@ -29,20 +29,25 @@ public class CelestialManagerVirtual : CelestialManager
     }
 
     // Use this for initialization
-    public bool Init( Transform parentViewTransform )
+    public bool Init()
     {
-        if ( m_Initialized == false )
+        if( m_Initialized == false )
         {
+            GameObject celestialBodyParent = new GameObject( "Virtual Celestial Bodies" );
+
             // For each celestial body we will try to create a virtual version
             List<CelestialBody> celestialBodies = CelestialManagerPhysical.Instance.GetCelestialBodies( CelestialBody.CelestialType.All );
 
-            foreach ( CelestialBody celestialBody in celestialBodies )
+            foreach( CelestialBody celestialBody in celestialBodies )
             {
                 CelestialVirtual virtualBody = CelestialVirtual.Create( celestialBody );
 
                 m_CelestialBodies.Add( virtualBody.ID, virtualBody );
 
-                virtualBody.transform.parent = parentViewTransform;
+                if( virtualBody.transform.parent == null )
+                {
+                    virtualBody.transform.parent = celestialBodyParent.transform;
+                }
 
                 UpdatePosition( virtualBody );
             }

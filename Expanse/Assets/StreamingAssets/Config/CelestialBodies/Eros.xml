@@ -3,8 +3,8 @@
 
 <CelestialBody>
   <!-- Celestial Body required -->
-  <Name value="Mars"/>
-  <Type value="Planet"/>
+  <Name value="Eros"/>
+  <Type value="Asteroid"/>
   <Radius value="3390.0"/>
   <Orbit value="true"/>
 

@@ -6,7 +6,7 @@
   <Name value="Venus"/>
   <Type value="Planet"/>
   <Radius value="6052.0"/>
-  <Orbit value="true"/>
+  <Orbit value="Sol"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="342.767053 58519.21191 0.0003097"/>

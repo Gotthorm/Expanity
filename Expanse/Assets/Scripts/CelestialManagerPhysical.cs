@@ -20,10 +20,10 @@ public class CelestialManagerPhysical : CelestialManager
         {
             //m_ConfigPath = configPath;
 
+            Dictionary<string, uint> celestialBodyIds = new Dictionary<string, uint>();
+
             DirectoryInfo info = new DirectoryInfo( configPath );
             FileInfo[] fileInfo = info.GetFiles( "*.xml" );
-
-            GameObject celestialBodyParent = new GameObject( "Celestial Bodies" );
 
             foreach ( FileInfo file in fileInfo )
             {
@@ -35,12 +35,9 @@ public class CelestialManagerPhysical : CelestialManager
                     // Temp hack to keep everything easier to see for now
                     //float celestialScale = 100.0f;
                     //newBody.transform.localScale = new Vector3( celestialScale, celestialScale, celestialScale );
-                    if ( newBody.transform.parent == null )
-                    {
-                        newBody.transform.parent = celestialBodyParent.transform;
-                    }
-
-                    m_CelestialBodies.Add( newBody.ID, newBody );
+ 
+                    m_CelestialBodies.Add( newBody.CelestialID, newBody );
+                    celestialBodyIds.Add( newBody.name, newBody.CelestialID );
 
                     Debug.Log( file );
                 }
@@ -50,36 +47,74 @@ public class CelestialManagerPhysical : CelestialManager
                 }
             }
 
-            // Calculate the JD corresponding to 1976 - July - 20, 12:00 UT.
-            //DateTime desiredTimeTest = new DateTime( 1976, 7, 20, 12, 0, 0 );
-            //double julianDateTest = PlanetPositionUtility.GetJulianDate( desiredTimeTest );
+            GameObject celestialBodyParent = new GameObject( "Celestial Bodies" );
 
-            // Calculate the JD corresponding to 1968 - December - 12, 12:00 UT.
-            //DateTime desiredTime = new DateTime( 1968, 12, 24, 10, 0, 0 );
+            // Set up the celestial hierarchy now that all bodies have been instantiated
+            List<CelestialBody> bodies = GetCelestialBodies( CelestialBody.CelestialType.All );
 
-            //DateTime desiredTime = new DateTime( 2018, 2, 26, 12, 0, 0 );
-            //DateTime desiredTime = new DateTime( 2000, 1, 1, 0, 0, 0 );
-            DateTime desiredTime = DateTime.Now;
-
-            double julianDate = PlanetPositionUtility.GetJulianDate( desiredTime );
-
-            List<CelestialBody> planets = GetCelestialBodies( CelestialBody.CelestialType.Planet );
-
-            foreach ( CelestialBody body in planets )
+            foreach ( CelestialBody body in bodies )
             {
-                CelestialPlanet planet = body as CelestialPlanet;
-
-                if ( null != planet )
+                if ( body.OrbitParentName.Length > 0 )
                 {
-                    planet.UpdatePosition( julianDate );
+                    uint bodyID;
+                    if ( celestialBodyIds.TryGetValue( body.OrbitParentName, out bodyID ) )
+                    {
+                        CelestialBody parentBody;
+                        if ( m_CelestialBodies.TryGetValue( bodyID, out parentBody ) )
+                        {
+                            body.OrbitParentID = parentBody.CelestialID;
+                        }
+                        else
+                        {
+                            Debug.LogError( "Failed to find orbit parent: " + bodyID.ToString() );
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError( "Failed to find orbit parent: " + body.OrbitParentName );
+                    }
                 }
+
+                // For organization we parent all bodies to a dummy object
+                body.transform.parent = celestialBodyParent.transform;
             }
+
+            UpdatePositions();
 
             m_Initialized = true;
         }
     }
 
-    public void Update( CelestialVector3 basePosition )
+    public void UpdatePositions()
+    {
+        // Calculate the JD corresponding to 1976 - July - 20, 12:00 UT.
+        //DateTime desiredTimeTest = new DateTime( 1976, 7, 20, 12, 0, 0 );
+        //double julianDateTest = PlanetPositionUtility.GetJulianDate( desiredTimeTest );
+
+        // Calculate the JD corresponding to 1968 - December - 12, 12:00 UT.
+        //DateTime desiredTime = new DateTime( 1968, 12, 24, 10, 0, 0 );
+
+        //DateTime desiredTime = new DateTime( 2018, 2, 26, 12, 0, 0 );
+        //DateTime desiredTime = new DateTime( 2000, 1, 1, 0, 0, 0 );
+        DateTime desiredTime = DateTime.Now;
+
+        // Update the positions of all bodies if enough time has elapsed since last update
+        if( desiredTime.Subtract( m_LastTimeProcessed ).Seconds > 0 )
+        {
+            double julianDate = PlanetPositionUtility.GetJulianDate( desiredTime );
+
+            List<CelestialBody> bodies = GetCelestialBodies( CelestialBody.CelestialType.Planet | CelestialBody.CelestialType.Moon );
+
+            foreach ( CelestialBody body in bodies )
+            {
+                body.UpdatePosition( julianDate );
+            }
+
+            m_LastTimeProcessed = desiredTime;
+        }
+    }
+
+    public void UpdateDynamicScale( CelestialVector3 basePosition )
     {
         // Update the dynamic scalar values of all Celestial Bodies using given base position
         foreach( KeyValuePair<uint, CelestialBody> celestialBodyRecord in m_CelestialBodies )
@@ -136,6 +171,7 @@ public class CelestialManagerPhysical : CelestialManager
 
     private float m_FieldOfView = 60.0f;
     private float m_FarClipPlane = 3000.0f;
+    private DateTime m_LastTimeProcessed = new DateTime();
 
     private static CelestialManagerPhysical m_Instance = null;
 }

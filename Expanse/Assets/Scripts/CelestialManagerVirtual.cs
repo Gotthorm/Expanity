@@ -35,19 +35,20 @@ public class CelestialManagerVirtual : CelestialManager
         {
             GameObject celestialBodyParent = new GameObject( "Virtual Celestial Bodies" );
 
+            Dictionary<string, uint> celestialBodyIds = new Dictionary<string, uint>();
+
             // For each celestial body we will try to create a virtual version
-            List<CelestialBody> celestialBodies = CelestialManagerPhysical.Instance.GetCelestialBodies( CelestialBody.CelestialType.All );
+            List<CelestialBody> celestialPhysicalBodies = CelestialManagerPhysical.Instance.GetCelestialBodies( CelestialBody.CelestialType.All );
 
-            foreach( CelestialBody celestialBody in celestialBodies )
+            foreach( CelestialBody celestialPhysicalBody in celestialPhysicalBodies )
             {
-                CelestialVirtual virtualBody = CelestialVirtual.Create( celestialBody );
+                CelestialVirtual virtualBody = CelestialVirtual.Create( celestialPhysicalBody );
 
-                m_CelestialBodies.Add( virtualBody.ID, virtualBody );
+                m_CelestialBodies.Add( virtualBody.CelestialID, virtualBody );
+                celestialBodyIds.Add( virtualBody.name, virtualBody.CelestialID );
 
-                if( virtualBody.transform.parent == null )
-                {
-                    virtualBody.transform.parent = celestialBodyParent.transform;
-                }
+                // For organization we parent all bodies to a dummy object
+                virtualBody.transform.parent = celestialBodyParent.transform;
 
                 UpdatePosition( virtualBody );
             }
@@ -104,7 +105,7 @@ public class CelestialManagerVirtual : CelestialManager
 
         if ( null != planet )
         {
-            CelestialBody celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( planet.ParentID );
+            CelestialBody celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( planet.OwnerID );
 
             if ( null != celestialBody )
             {

@@ -12,7 +12,7 @@ public class CelestialOrbit : MonoBehaviour
     public float m_MinRange = 1.0f;
     public float m_MaxRange = 30000.0f;
 
-    public static CelestialOrbit Create( CelestialVirtual celestialPlanet )
+    public static CelestialOrbit Create( CelestialVirtual celestialBody )
     {
         CelestialOrbit orbit = null;
 
@@ -20,11 +20,11 @@ public class CelestialOrbit : MonoBehaviour
 
         if ( null != gameObject )
         {
-            gameObject.name = celestialPlanet.name + "_Orbit";
+            gameObject.name = celestialBody.name + "_Orbit";
 
             orbit = gameObject.AddComponent<CelestialOrbit>();
 
-            orbit.m_CelestialPlanet = celestialPlanet;
+            orbit.m_CelestialBody = celestialBody;
 
             int layerID = LayerMask.NameToLayer( "Virtual Universe" );
             if( layerID != -1 )
@@ -53,7 +53,7 @@ public class CelestialOrbit : MonoBehaviour
     // Update is called once per frame
     private void LateUpdate ()
     {
-        if ( null != m_CelestialPlanet )
+        if ( null != m_CelestialBody )
         {
             Camera camera = Camera.main;
             if ( camera != null )
@@ -62,7 +62,7 @@ public class CelestialOrbit : MonoBehaviour
 
                 if ( m_Rebuild )
                 {
-                    CelestialPlanet celestialPlanet = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialPlanet.ParentID ) as CelestialPlanet;
+                    CelestialBody celestialPlanet = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialBody.OwnerID );
 
                     if ( celestialPlanet != null )
                     {
@@ -74,13 +74,13 @@ public class CelestialOrbit : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogError( "Celestial Orbit:" + name + " failed to find physical version of celestial body:" + m_CelestialPlanet .name );
+                        Debug.LogError( "Celestial Orbit:" + name + " failed to find physical version of celestial body:" + m_CelestialBody.name );
                     }
 
                     m_Rebuild = false;
                 }
 
-                if ( m_OrbitPositions.Length > 0 )
+                if ( m_OrbitPositions != null && m_OrbitPositions.Length > 0 )
                 {
                     Vector3 closestApproximateOrbitPosition = GetClosestApproximateOrbitPosition( cameraPosition, m_OrbitPositions );
 
@@ -177,7 +177,7 @@ public class CelestialOrbit : MonoBehaviour
     // Calculating the orbital period around the sun
     // orbitalPeriodInYears = Sqr( averageAU * averageAU * averageAU );
 
-    private CelestialVirtual m_CelestialPlanet = null;
+    private CelestialVirtual m_CelestialBody = null;
 
     private LineRenderer m_LineRenderer = null;
 

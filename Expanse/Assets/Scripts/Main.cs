@@ -76,6 +76,8 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     private void Update ()
     {
+        CelestialManagerPhysical.Instance.UpdatePositions();
+
         CelestialVector3 basePosition = new CelestialVector3();
 
         if( null != m_SpaceShip )
@@ -84,7 +86,7 @@ public class Main : MonoBehaviour
         }
 
         // Update the position of all celestial bodies relative to the main ship's position
-        CelestialManagerPhysical.Instance.Update( basePosition );
+        CelestialManagerPhysical.Instance.UpdateDynamicScale( basePosition );
     }
 
     private CelestialShip m_SpaceShip = null;

@@ -6,7 +6,7 @@
   <Name value="Earth"/>
   <Type value="Planet"/>
   <Radius value="6371.0"/>
-  <Orbit value="true"/>
+  <Orbit value="Sol"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="99.69668 36000.76892 0.0003025"/>

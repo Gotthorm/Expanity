@@ -6,7 +6,7 @@
   <Name value="Mercury"/>
   <Type value="Planet"/>
   <Radius value="2440.0"/>
-  <Orbit value="true"/>
+  <Orbit value="Sol"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="178.179078 149474.07078 0.0003011"/>

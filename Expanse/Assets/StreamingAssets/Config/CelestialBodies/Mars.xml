@@ -6,7 +6,7 @@
   <Name value="Mars"/>
   <Type value="Planet"/>
   <Radius value="3390.0"/>
-  <Orbit value="true"/>
+  <Orbit value="Sol"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="293.737334 19141.69551 0.0003107"/>

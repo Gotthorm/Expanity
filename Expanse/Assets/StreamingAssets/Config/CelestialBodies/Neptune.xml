@@ -6,7 +6,7 @@
   <Name value="Neptune"/>
   <Type value="Planet"/>
   <Radius value="24622.0"/>
-  <Orbit value="true"/>
+  <Orbit value="Sol"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="84.457994 219.885914 0.0003205 -0.00000060"/>

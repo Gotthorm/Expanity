@@ -6,7 +6,7 @@
   <Name value="Uranus"/>
   <Type value="Planet"/>
   <Radius value="25362.0"/>
-  <Orbit value="true"/>
+  <Orbit value="Sol"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="244.1974707 429.863546 0.0003160 -0.00000060"/>

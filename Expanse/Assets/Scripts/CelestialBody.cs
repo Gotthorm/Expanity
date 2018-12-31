@@ -46,11 +46,31 @@ public class CelestialBody : MonoBehaviour
         }
     }
 
-    public bool Orbit
+    public bool HasOrbit
     {
         get
         {
-            return m_HasOrbit;
+            return ( m_OrbitParentID != 0 );
+        }
+    }
+
+    public uint OrbitParentID
+    {
+        get
+        {
+            return m_OrbitParentID;
+        }
+        set
+        {
+            m_OrbitParentID = value;
+        }
+    }
+
+    public string OrbitParentName
+    {
+        get
+        {
+            return m_OrbitParentName;
         }
     }
 
@@ -84,7 +104,7 @@ public class CelestialBody : MonoBehaviour
         }
     }
 
-    public uint ID
+    public uint CelestialID
     {
         get { return m_CelestialID; }
     }
@@ -136,6 +156,18 @@ public class CelestialBody : MonoBehaviour
                             }
                         }
                     }
+                    else if( loader.m_Type == "Moon" )
+                    {
+                        CelestialMoon newMoon = gameObject.AddComponent<CelestialMoon>();
+
+                        if ( null != newMoon )
+                        {
+                            if ( newMoon.Initialize( loader ) )
+                            {
+                                return newMoon;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -181,11 +213,8 @@ public class CelestialBody : MonoBehaviour
     public virtual bool Initialize( CelestialBodyLoader loader )
     {
         // Has Orbit (optional)
-        string boolList = null;
-        if ( loader.GetData( m_OrbitFlagLabel, ref boolList ) )
-        {
-            m_HasOrbit = boolList.Length > 0;
-        }
+        m_OrbitParentName = "";
+        loader.GetData( m_OrbitFlagLabel, ref m_OrbitParentName );
 
         if ( loader.m_Radius <= 0.0 )
         {
@@ -203,19 +232,29 @@ public class CelestialBody : MonoBehaviour
         return true;
     }
 
+    public virtual List<Vector3> GetOrbit( double currentJulianDate, double resolution )
+    {
+        return null;
+    }
+
+    public virtual void UpdatePosition( double julianDate )
+    {
+
+    }
+
     #region Protected Interface
 
     // This is the position in space using real units
     protected virtual void SetPosition( CelestialVector3 position )
     {
         m_PositionInKM = position;
-        transform.localPosition = (Vector3)position;
+
+        //transform.localPosition = (Vector3)position;
     }
 
     protected CelestialType m_CelestialType = CelestialType.Invalid;
 
-    protected bool m_HasOrbit = false;
-
+    protected string m_OrbitParentName = "";
     protected double m_RadiusInKM = 0;
 
     // The base scale at multiplier value 1
@@ -239,6 +278,7 @@ public class CelestialBody : MonoBehaviour
     private CelestialVector3 m_PositionInKM = new CelestialVector3( 0.0, 0.0, 0.0 );
 
     private uint m_CelestialID = 0;
+    private uint m_OrbitParentID = 0;
 
     //private uint m_VisualUnitsScale = 100;
 

@@ -6,7 +6,7 @@
   <Name value="Jupiter"/>
   <Type value="Planet"/>
   <Radius value="69911.0"/>
-  <Orbit value="true"/>
+  <Orbit value="Sol"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="238.049257 3036.301986 0.0003347 -0.00000165"/>

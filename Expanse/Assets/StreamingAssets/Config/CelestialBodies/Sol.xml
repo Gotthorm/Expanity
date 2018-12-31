@@ -6,7 +6,6 @@
   <Name value="Sol"/>
   <Type value="Planet"/>
   <Radius value="695700.0"/>
-  <Orbit value="false"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="0.0 0.0 0.0"/>

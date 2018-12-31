@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33740149936762410}
   - component: {fileID: 23863423230525030}
   - component: {fileID: 135338224830441886}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: Luna_Virtual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

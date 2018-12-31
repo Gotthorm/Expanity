@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class CelestialVirtual : CelestialBody
 {
-    public uint ParentID
+    public uint OwnerID
     {
-        get { return m_ParentID; }
+        get { return m_OwnerID; }
     }
 
     public static CelestialVirtual Create( CelestialBody celestialBody )
@@ -26,12 +26,12 @@ public class CelestialVirtual : CelestialBody
             celestialVirtual = gameObject.AddComponent<CelestialVirtual>();
 
             celestialVirtual.m_CelestialType = celestialBody.Type;
-            celestialVirtual.m_ParentID = celestialBody.ID;
+            celestialVirtual.m_OwnerID = celestialBody.CelestialID;
             celestialVirtual.m_RadiusInKM = celestialBody.Radius;
 
             celestialVirtual.m_InitialScale = 1;
 
-            celestialVirtual.m_HasOrbit = false;
+            celestialVirtual.m_OrbitParentName = "";
 
             celestialVirtual.m_MaximumScaleMultiplier = 1U;
             celestialVirtual.Scale = 1;
@@ -53,14 +53,15 @@ public class CelestialVirtual : CelestialBody
                 celestialVirtual = gameObject.AddComponent<CelestialVirtual>();
 
                 celestialVirtual.m_CelestialType = celestialBody.Type;
-                celestialVirtual.m_ParentID = celestialBody.ID;
+                celestialVirtual.m_OwnerID = celestialBody.CelestialID;
                 celestialVirtual.m_RadiusInKM = celestialBody.Radius;
 
                 // TODO: This is a sphere shaped calculation so will need to support other types eventually?
                 // Initial scale is in game diameter (2 * radius)
                 celestialVirtual.m_InitialScale = celestialVirtual.CelestialRadius * 2;
 
-                celestialVirtual.m_HasOrbit = celestialBody.Orbit;
+                celestialVirtual.m_OrbitParentName = celestialBody.OrbitParentName;
+                celestialVirtual.OrbitParentID = celestialBody.OrbitParentID;
 
                 celestialVirtual.m_MaximumScaleMultiplier = ( name != "Sol" ) ? 100U : 10U;
                 celestialVirtual.Scale = 100;
@@ -72,8 +73,11 @@ public class CelestialVirtual : CelestialBody
 
     protected override void SetPosition( CelestialVector3 position )
     {
+        base.SetPosition( position );
+
         transform.position = (Vector3)( position / GlobalConstants.CelestialUnit );
     }
 
-    private uint m_ParentID = 0;
+    // The ID of the real physical body that this virtual body represents
+    private uint m_OwnerID = 0;
 }

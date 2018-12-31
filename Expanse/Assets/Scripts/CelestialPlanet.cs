@@ -58,7 +58,7 @@ public class CelestialPlanet : CelestialBody
         return false;
     }
 
-    public void UpdatePosition( double julianDate )
+    public override void UpdatePosition( double julianDate )
     {
         double radiusVector;
         double eclipticalLongitude;
@@ -68,21 +68,20 @@ public class CelestialPlanet : CelestialBody
 
         CelestialVector3 position = PlanetPositionUtility.GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
 
-        Position = position;
-
-        if( name == "Earth" )
+        if( OrbitParentID != 0 )
         {
-            PlanetPositionUtility.GetLunaHeliocentricEclipticalCoordinates( julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
+            CelestialBody parentBody = CelestialManagerPhysical.Instance.GetCelestialBody( OrbitParentID );
 
-            position = PlanetPositionUtility.GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
-            position += Position;
-
-            Debug.Log( "Earth(" + Position.x.ToString( ".00" ) + ", " + Position.y.ToString( ".00" ) + ", " + Position.z.ToString( ".00" ) );
-            Debug.Log( "Moon(" + position.x.ToString( ".00" ) + ", " + position.y.ToString( ".00" ) + ", " + position.z.ToString( ".00" ) );
+            if( parentBody != null )
+            {
+                position += parentBody.Position;
+            }
         }
+
+        Position = position;
     }
 
-    public List<Vector3> GetOrbit( double currentJulianDate, double resolution )
+    public override List<Vector3> GetOrbit( double currentJulianDate, double resolution )
     {
         // One day in JD is equal to 1.0
 
@@ -114,7 +113,6 @@ public class CelestialPlanet : CelestialBody
 
             while ( true )
             {
-                PlanetPositionUtility.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
                 double newDifference = Math.Abs( initialRotation - eclipticalLongitude );
 
                 if ( closing )
@@ -136,16 +134,18 @@ public class CelestialPlanet : CelestialBody
                 orbit.Add( (Vector3)( position / GlobalConstants.CelestialUnit ) );
 
                 julianDate += julianDaysPerPosition;
+
+                PlanetPositionUtility.GetHeliocentricEclipticalCoordinates( m_MeanEquinoxData, julianDate, out radiusVector, out eclipticalLongitude, out eclipticLatitude );
             }
         }
 
         return orbit;
     }
 
-    public float GetAverageOrbitDistance()
-    {
-        return m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ][ 0 ] * ( GlobalConstants.AstronomicalUnit / GlobalConstants.CelestialUnit );
-    }
+    //public float GetAverageOrbitDistance()
+    //{
+    //    return m_MeanEquinoxData[ (int)PlanetPositionUtility.OrbitalElements.SEMI_MAJOR_AXIS_OF_ORBIT ][ 0 ] * ( GlobalConstants.AstronomicalUnit / GlobalConstants.CelestialUnit );
+    //}
 
     #region Private Interface
 

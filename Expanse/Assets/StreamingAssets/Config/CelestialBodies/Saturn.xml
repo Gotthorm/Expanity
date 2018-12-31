@@ -6,7 +6,7 @@
   <Name value="Saturn"/>
   <Type value="Planet"/>
   <Radius value="58232.0"/>
-  <Orbit value="true"/>
+  <Orbit value="Sol"/>
 
   <!-- Planet Specific -->
   <MeanLongitude value="266.564377 1223.509884 0.0003245 -0.0000058"/>

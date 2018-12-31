@@ -15,7 +15,7 @@ public class TacticalView : MonoBehaviour
 
         foreach ( CelestialBodyHUD celestialHUD in m_HUDList)
         {
-            if( celestialHUD.GetOwner().ID == celestialBody.ID )
+            if( celestialHUD.GetOwner().CelestialID == celestialBody.CelestialID )
             {
                 SelectHUD( celestialHUD, false );
                 break;
@@ -103,7 +103,7 @@ public class TacticalView : MonoBehaviour
                 }
 
                 // Create orbit
-                if ( celestialBody.Orbit )
+                if ( celestialBody.HasOrbit )
                 {
                     CelestialOrbit orbit = CelestialOrbit.Create( celestialBody as CelestialVirtual );
                     orbit.transform.SetParent( this.gameObject.transform );
@@ -256,7 +256,7 @@ public class TacticalView : MonoBehaviour
 
             if ( m_ProximityPanel != null && notifyProximityPanel )
             {
-                m_ProximityPanel.SelectProximityObject( m_SelectedBodyHUD.GetOwner().ID );
+                m_ProximityPanel.SelectProximityObject( m_SelectedBodyHUD.GetOwner().CelestialID );
             }
         }
     }

@@ -68,11 +68,13 @@ public class CelestialPlanet : CelestialBody
 
         CelestialVector3 position = PlanetPositionUtility.GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
 
-        if( OrbitParentID != 0 )
+        LocalPosition = position;
+
+        if ( OrbitParentID != 0 )
         {
             CelestialBody parentBody = CelestialManagerPhysical.Instance.GetCelestialBody( OrbitParentID );
 
-            if( parentBody != null )
+            if ( parentBody != null )
             {
                 position += parentBody.Position;
             }

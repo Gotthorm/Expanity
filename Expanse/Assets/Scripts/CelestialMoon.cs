@@ -28,6 +28,8 @@ public class CelestialMoon : CelestialBody
 
         CelestialVector3 position = PlanetPositionUtility.GetPositionFromHeliocentricEclipticalCoordinates( radiusVector, eclipticalLongitude, eclipticLatitude );
 
+        LocalPosition = position;
+
         if ( OrbitParentID != 0 )
         {
             CelestialBody parentBody = CelestialManagerPhysical.Instance.GetCelestialBody( OrbitParentID );

@@ -26,11 +26,25 @@ public class CelestialOrbit : MonoBehaviour
 
             orbit.m_CelestialBody = celestialBody;
 
+            orbit.UpdatePosition();
+
             int layerID = LayerMask.NameToLayer( "Virtual Universe" );
             if( layerID != -1 )
             {
                 gameObject.layer = layerID;
             }
+        }
+
+        orbit.m_LineRenderer.useWorldSpace = false;
+
+        // Adjust the resolution based on the type of body
+        if(celestialBody.Type == CelestialBody.CelestialType.Planet)
+        {
+            m_ResolutionScale = 200.0;
+        }
+        else
+        {
+            m_ResolutionScale = 60.0;
         }
 
         return orbit;
@@ -60,6 +74,8 @@ public class CelestialOrbit : MonoBehaviour
             {
                 Vector3 cameraPosition = camera.transform.position;
 
+                UpdatePosition();
+
                 if ( m_Rebuild )
                 {
                     CelestialBody celestialPlanet = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialBody.OwnerID );
@@ -82,9 +98,11 @@ public class CelestialOrbit : MonoBehaviour
 
                 if ( m_OrbitPositions != null && m_OrbitPositions.Length > 0 )
                 {
-                    Vector3 closestApproximateOrbitPosition = GetClosestApproximateOrbitPosition( cameraPosition, m_OrbitPositions );
+                    Vector3 localCameraPosition = cameraPosition - transform.position;
 
-                    float distance = ( closestApproximateOrbitPosition - cameraPosition ).magnitude;
+                    Vector3 closestApproximateOrbitPosition = GetClosestApproximateOrbitPosition( localCameraPosition, m_OrbitPositions );
+
+                    float distance = ( closestApproximateOrbitPosition - localCameraPosition ).magnitude;
 
                     //Debug.Log( "CameraPosition(" + cameraPosition.ToString(".00") + ") ClosestPointOnOrbit(" + m_OrbitPositions[ closestPositionIndex ].ToString(".00") + ") Distance(" + distance.ToString(".00") + ")" );
 
@@ -94,6 +112,19 @@ public class CelestialOrbit : MonoBehaviour
                     m_LineRenderer.startWidth = lineWidth;
                     m_LineRenderer.endWidth = lineWidth;
                 }
+            }
+        }
+    }
+
+    private void UpdatePosition()
+    {
+        if ( m_CelestialBody.OrbitParentID != 0 )
+        {
+            CelestialBody celestialPlanet = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialBody.OrbitParentID );
+
+            if ( celestialPlanet != null )
+            {
+                transform.position = (Vector3)( celestialPlanet.Position / GlobalConstants.CelestialUnit );
             }
         }
     }

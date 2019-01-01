@@ -87,6 +87,19 @@ public class CelestialBody : MonoBehaviour
         }
     }
 
+    public CelestialVector3 LocalPosition
+    {
+        get
+        {
+            return m_LocalPositionInKM;
+        }
+
+        set
+        {
+            m_LocalPositionInKM = value;
+        }
+    }
+
     // This is the radius in game units
     public float CelestialRadius
     {
@@ -276,6 +289,7 @@ public class CelestialBody : MonoBehaviour
     private float m_VelocityInKMS = 0.0f;
 
     private CelestialVector3 m_PositionInKM = new CelestialVector3( 0.0, 0.0, 0.0 );
+    private CelestialVector3 m_LocalPositionInKM = new CelestialVector3( 0.0, 0.0, 0.0 );
 
     private uint m_CelestialID = 0;
     private uint m_OrbitParentID = 0;

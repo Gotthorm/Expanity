@@ -106,7 +106,7 @@ public class TacticalView : MonoBehaviour
                 if ( celestialBody.HasOrbit )
                 {
                     CelestialOrbit orbit = CelestialOrbit.Create( celestialBody as CelestialVirtual );
-                    orbit.transform.SetParent( this.gameObject.transform );
+                    orbit.transform.SetParent( celestialBody.transform.parent );
                     m_CelestialOrbits.Add( orbit );
                 }
             }

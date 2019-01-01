@@ -63,6 +63,7 @@ public class PlanetPositionUtility
 
         double day = dateTime.Day;
         double dayFraction = dateTime.Second + ( dateTime.Minute + dateTime.Hour * 60 ) * 60;
+        dayFraction += dateTime.Millisecond / 1000.0;
         dayFraction /= GlobalConstants.SecondsIn24Hours;
         day += dayFraction;
 

@@ -76,13 +76,6 @@ public class TacticalView : MonoBehaviour
     {
         if ( m_VirtualManager.Init() )
         {
-            // Setup the view camera to a default position
-            CelestialBody body = m_VirtualManager.GetCelestialBody( "Earth" );
-            if ( body )
-            {
-                m_ViewCamera.SetTargetedObject( body );
-            }
-
             // Find all of the planets
             List<CelestialBody> planets = m_VirtualManager.GetCelestialBodies( CelestialBody.CelestialType.All );
             foreach ( CelestialBody celestialBody in planets )
@@ -109,6 +102,22 @@ public class TacticalView : MonoBehaviour
                     orbit.transform.SetParent( celestialBody.transform.parent );
                     m_CelestialOrbits.Add( orbit );
                 }
+            }
+
+            // Set default filter
+            if ( m_ProximityPanel != null )
+            {
+                m_ProximityPanel.ToggleFilter_Planets();
+            }
+
+            // Set default scale
+            SetAutoScale( false );
+
+            // Setup the view camera to a default position
+            CelestialBody body = m_VirtualManager.GetCelestialBody( "Earth" );
+            if ( body )
+            {
+                m_ViewCamera.SetTargetedObject( body );
             }
         }
         else
@@ -192,19 +201,23 @@ public class TacticalView : MonoBehaviour
 
     private void UpdateHUDElement( CelestialBodyHUD celestialBodyHUD, bool active )
     {
-        if ( celestialBodyHUD.GetIsVisible() && active )
-        {
-            celestialBodyHUD.gameObject.SetActive( true );
-        }
-        else
-        {
-            celestialBodyHUD.gameObject.SetActive( false );
-        }
+        bool isActive = false;
 
         CelestialBody celestialBody = celestialBodyHUD.GetOwner();
 
-        if( celestialBody != null )
+        if ( celestialBody != null )
         {
+
+            // Is HUD element's parent control active AND is it in the current view?
+            if ( celestialBodyHUD.GetIsVisible() && active )
+            {
+                // Is HUD element's type active in the proximity control?
+                if ( m_ProximityPanel.CelestialTypeIsActive( celestialBody.Type ) )
+                {
+                    isActive = true;
+                }
+            }
+
             Vector3 distanceVector = m_ViewCamera.transform.position - celestialBody.transform.position;
             float distance = distanceVector.magnitude;
 
@@ -234,6 +247,8 @@ public class TacticalView : MonoBehaviour
             }
             celestialBodyHUD.m_InfoText.text = infoText;
         }
+
+        celestialBodyHUD.gameObject.SetActive( isActive );
     }
 
     private void SelectHUD(CelestialBodyHUD celestialBodyHUD, bool notifyProximityPanel)

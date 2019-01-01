@@ -99,6 +99,11 @@ public class ProximityControlPanel : MonoBehaviour
         }
     }
 
+    public bool CelestialTypeIsActive( CelestialBody.CelestialType type )
+    {
+        return ( ( type & m_CelestialFilter ) != CelestialBody.CelestialType.Invalid );
+    }
+
     private void Awake()
     {
         foreach ( ProximityObject proximityObject in m_TextBoxList )

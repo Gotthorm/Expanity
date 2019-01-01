@@ -88,29 +88,21 @@ public class CelestialManagerPhysical : CelestialManager
     public void UpdatePositions()
     {
         // Calculate the JD corresponding to 1976 - July - 20, 12:00 UT.
-        //DateTime desiredTimeTest = new DateTime( 1976, 7, 20, 12, 0, 0 );
-        //double julianDateTest = PlanetPositionUtility.GetJulianDate( desiredTimeTest );
+        // DateTime desiredTime = new DateTime( 1976, 7, 20, 12, 0, 0 );
 
         // Calculate the JD corresponding to 1968 - December - 12, 12:00 UT.
-        //DateTime desiredTime = new DateTime( 1968, 12, 24, 10, 0, 0 );
+        // DateTime desiredTime = new DateTime( 1968, 12, 24, 10, 0, 0 );
 
-        //DateTime desiredTime = new DateTime( 2018, 2, 26, 12, 0, 0 );
-        //DateTime desiredTime = new DateTime( 2000, 1, 1, 0, 0, 0 );
+        // Calculate the JD corresponding to now
         DateTime desiredTime = DateTime.Now;
 
-        // Update the positions of all bodies if enough time has elapsed since last update
-        if( desiredTime.Subtract( m_LastTimeProcessed ).Seconds > 0 )
+        double julianDate = PlanetPositionUtility.GetJulianDate( desiredTime );
+
+        List<CelestialBody> bodies = GetCelestialBodies( CelestialBody.CelestialType.Planet | CelestialBody.CelestialType.Moon );
+
+        foreach ( CelestialBody body in bodies )
         {
-            double julianDate = PlanetPositionUtility.GetJulianDate( desiredTime );
-
-            List<CelestialBody> bodies = GetCelestialBodies( CelestialBody.CelestialType.Planet | CelestialBody.CelestialType.Moon );
-
-            foreach ( CelestialBody body in bodies )
-            {
-                body.UpdatePosition( julianDate );
-            }
-
-            m_LastTimeProcessed = desiredTime;
+            body.UpdatePosition( julianDate );
         }
     }
 
@@ -171,7 +163,6 @@ public class CelestialManagerPhysical : CelestialManager
 
     private float m_FieldOfView = 60.0f;
     private float m_FarClipPlane = 3000.0f;
-    private DateTime m_LastTimeProcessed = new DateTime();
 
     private static CelestialManagerPhysical m_Instance = null;
 }

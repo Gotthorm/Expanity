@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class CelestialClickable : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IDragHandler
 {
+    public bool m_EnableClick = true;
+    public bool m_EnableDrag = true;
+
     public delegate void CallbackDelegate( GameObject eventOwner );
     public CallbackDelegate SetSelected = null;
     public CallbackDelegate SetTargeted = null;

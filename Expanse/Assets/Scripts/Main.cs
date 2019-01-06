@@ -44,16 +44,7 @@ public class Main : MonoBehaviour
             {
                 m_SpaceShip = rocinante as CelestialShip;
 
-                CelestialBody baseBody = CelestialManagerPhysical.Instance.GetCelestialBody( m_BasePositionBodyName );
-
-                if ( null != baseBody && null != m_SpaceShip )
-                {
-                    CelestialVector3 offset = m_Position + ( m_Position.Normalized() * baseBody.Radius );
-
-                    m_SpaceShip.Position = baseBody.Position - offset;
-                }
-
-                // Connect cameras
+                // Connect cameras to the spaceship
                 if( m_UICameraViewsParent != null )
                 {
                     ExternalShipView[] viewList = m_UICameraViewsParent.GetComponentsInChildren<ExternalShipView>();
@@ -73,21 +64,50 @@ public class Main : MonoBehaviour
         }
     }
 
+    // This script has a -100 script execution order to ensure its "Start" and "Update" are executed before all others.
+    // This is set in: Edit => Project Settings => Script Execution Order
+
+    private void Start()
+    {
+        // Ensure all of the celestial bodies have their initial positions set
+        CelestialManagerPhysical.Instance.Update();
+
+        m_BaseBody = CelestialManagerPhysical.Instance.GetCelestialBody( m_BasePositionBodyName );
+
+        UpdateShipPosition();
+    }
+
     // Update is called once per frame
     private void Update ()
     {
-        CelestialManagerPhysical.Instance.UpdatePositions();
+        CelestialManagerPhysical.Instance.Update();
 
-        CelestialVector3 basePosition = new CelestialVector3();
-
-        if( null != m_SpaceShip )
-        {
-            basePosition = m_SpaceShip.Position;
-        }
+        UpdateShipPosition();
 
         // Update the position of all celestial bodies relative to the main ship's position
-        CelestialManagerPhysical.Instance.UpdateDynamicScale( basePosition );
+        CelestialManagerPhysical.Instance.UpdateDynamicScale( m_BasePosition );
     }
 
+    private void UpdateShipPosition()
+    {
+        // Update the spaceship's position
+        if ( null != m_BaseBody && null != m_SpaceShip )
+        {
+            CelestialVector3 offset = m_Position + ( m_Position.Normalized() * m_BaseBody.Radius );
+
+            m_SpaceShip.Position = m_BaseBody.Position - offset;
+
+            m_BasePosition = m_SpaceShip.Position;
+        }
+    }
+
+    // This is a temporary global reference to the main ship that represents the point of view of the player.
     private CelestialShip m_SpaceShip = null;
+
+    // This is a hack for the ship to base its relative position from.
+    // This will be removed once the ship has its own positional update implemented.
+    private CelestialBody m_BaseBody = null;
+
+    // 
+    private CelestialVector3 m_BasePosition = new CelestialVector3();
 }

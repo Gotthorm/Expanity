@@ -77,6 +77,7 @@ public class CelestialCamera : MonoBehaviour
 
     public void DisableClickMissDetectionForThisFrame()
     {
+        Debug.Log( "DisableClickMissDetectionForThisFrame" );
         m_ClickMissDisabled = true;
     }
 
@@ -107,6 +108,7 @@ public class CelestialCamera : MonoBehaviour
         // Test for an unselect event
         if ( Input.GetMouseButtonUp( 0 ) && m_ClickMissDetected )
         {
+            Debug.Log( "Unselect Object" );
             SetSelectedObject( null, false );
         }
 
@@ -117,93 +119,106 @@ public class CelestialCamera : MonoBehaviour
             UpdateTargetedTransition();
         }
         // Test that the mouse cursor is in our window
-        else if ( MouseScreenCheck() )
+        else
         {
-            // Dragging motions are only active with the right mouse button depressed
-            if ( Input.GetMouseButton( 1 ) )
+            if ( null != m_Target )
             {
-                //Debug.LogWarning("Mouse right clicked in view panel");
+                UpdateTargetedView();
+            }
 
-                if ( Cursor.lockState != CursorLockMode.Locked )
+            if ( MouseScreenCheck() )
+            {
+                // Dragging motions are only active with the right mouse button depressed
+                if ( Input.GetMouseButton( 1 ) )
                 {
-                    Cursor.lockState = CursorLockMode.Locked;
-                }
-                if ( Cursor.visible )
-                {
-                    Cursor.visible = false;
-                }
+                    //Debug.LogWarning("Mouse right clicked in view panel");
 
-                float mouseX = Input.GetAxis( "Mouse X" ) * m_RotateSpeed;
-                float mouseY = Input.GetAxis( "Mouse Y" ) * -m_RotateSpeed;
+                    if ( Cursor.lockState != CursorLockMode.Locked )
+                    {
+                        Cursor.lockState = CursorLockMode.Locked;
+                    }
+                    if ( Cursor.visible )
+                    {
+                        Cursor.visible = false;
+                    }
 
-                if ( m_Target == null )
-                {
-                    UpdateFreeView( mouseX, mouseY );
+                    float mouseX = Input.GetAxis( "Mouse X" ) * m_RotateSpeed;
+                    float mouseY = Input.GetAxis( "Mouse Y" ) * -m_RotateSpeed;
+
+                    if ( m_Target == null )
+                    {
+                        UpdateFreeView( mouseX, mouseY );
+                    }
+                    else
+                    {
+                        float distance = 0.0f;
+                        if ( Input.GetKey( KeyCode.W ) )
+                        {
+                            distance -= m_MoveSpeed;
+                        }
+                        if ( Input.GetKey( KeyCode.S ) )
+                        {
+                            distance += m_MoveSpeed;
+                        }
+
+                        UpdateTargetedView( mouseX, mouseY, distance );
+                    }
                 }
                 else
                 {
-                    float distance = 0.0f;
-                    if ( Input.GetKey( KeyCode.W ) )
+                    if ( Cursor.lockState == CursorLockMode.Locked )
                     {
-                        distance -= m_MoveSpeed;
+                        Cursor.lockState = CursorLockMode.None;
                     }
-                    if ( Input.GetKey( KeyCode.S ) )
+                    if ( Cursor.visible == false )
                     {
-                        distance += m_MoveSpeed;
+                        Cursor.visible = true;
                     }
 
-                    UpdateTargetedView( mouseX, mouseY, distance );
-                }
-             }
-            else
-            {
-                if ( Cursor.lockState == CursorLockMode.Locked )
-                {
-                    Cursor.lockState = CursorLockMode.None;
-                }
-                if( Cursor.visible == false )
-                {
-                    Cursor.visible = true;
-                }
-
-                // Detect a mouse down miss
-                if ( Input.GetMouseButtonDown( 0 ) )
-                {
-                    if ( m_ClickMissDisabled == false )
+                    // Detect a mouse down miss
+                    if ( Input.GetMouseButtonDown( 0 ) )
                     {
-                        m_ClickMissDetected = true;
+                        if ( m_ClickMissDisabled == false )
+                        {
+                            Debug.Log( "Click Miss Detected" );
+                            m_ClickMissDetected = true;
+                        }
+                        else
+                        {
+                            Debug.Log( "Click Miss bypassed" );
+                        }
                     }
-                }
-                else if( m_Target != null )
-                {
-                    float mouseWheelValue = Input.GetAxis( "Mouse ScrollWheel" );
-                    if ( 0.0f != mouseWheelValue )
+                    else if ( m_Target != null )
                     {
-                        float distance = mouseWheelValue * -m_RotationDistance;
-                        UpdateTargetedView( 0, 0, distance );
+                        float mouseWheelValue = Input.GetAxis( "Mouse ScrollWheel" );
+                        if ( 0.0f != mouseWheelValue )
+                        {
+                            float distance = mouseWheelValue * -m_RotationDistance;
+                            UpdateTargetedView( 0, 0, distance );
+                        }
+                    }
+                    {
+                        // We want to calculate a final drag distanced that is auto scaled by the current view.
+                        // Therefore if you clicked on a planet very far away, the drag scalar would be huge
+                        // I think I need to determine the closest visible object to the camera as base.
+
+                        // Left mouse button drag
+                        //Debug.Log("Left mouse button drag");
+
+                        //float mouseX = Input.GetAxis( "Mouse X" ) * -m_DragSpeed;
+                        //float mouseY = Input.GetAxis( "Mouse Y" ) * -m_DragSpeed;
+
+                        //// Multiply mouseX by camera right vector
+                        //Vector3 offsetX = this.transform.right * mouseX;
+
+                        //// Multiply mouseY by camera up vector
+                        //Vector3 offsetY = this.transform.up * mouseY;
+
+                        //this.transform.position += (offsetX + offsetY);
                     }
                 }
-                {
-                    // We want to calculate a final drag distanced that is auto scaled by the current view.
-                    // Therefore if you clicked on a planet very far away, the drag scalar would be huge
-                    // I think I need to determine the closest visible object to the camera as base.
-
-                    // Left mouse button drag
-                    //Debug.Log("Left mouse button drag");
-
-                    //float mouseX = Input.GetAxis( "Mouse X" ) * -m_DragSpeed;
-                    //float mouseY = Input.GetAxis( "Mouse Y" ) * -m_DragSpeed;
-
-                    //// Multiply mouseX by camera right vector
-                    //Vector3 offsetX = this.transform.right * mouseX;
-
-                    //// Multiply mouseY by camera up vector
-                    //Vector3 offsetY = this.transform.up * mouseY;
-
-                    //this.transform.position += (offsetX + offsetY);
-                }
+                m_ClickMissDisabled = false;
             }
-            m_ClickMissDisabled = false;
         }
 
         // Update our distance to the closest celestial body
@@ -371,6 +386,18 @@ public class CelestialCamera : MonoBehaviour
         Vector3 position = rotation * negDistance + m_Target.position;
 
         //transform.rotation = rotation;
+        transform.position = position;
+
+        transform.LookAt( m_Target );
+    }
+
+    private void UpdateTargetedView()
+    {
+        Quaternion rotation = transform.rotation;
+
+        Vector3 negDistance = new Vector3( 0.0f, 0.0f, -m_RotationDistance );
+        Vector3 position = rotation * negDistance + m_Target.position;
+
         transform.position = position;
 
         transform.LookAt( m_Target );

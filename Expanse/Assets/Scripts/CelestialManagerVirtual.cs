@@ -53,6 +53,33 @@ public class CelestialManagerVirtual : CelestialManager
                 UpdatePosition( virtualBody );
             }
 
+            // Set up the celestial hierarchy now that all bodies have been instantiated
+            List<CelestialBody> bodies = GetCelestialBodies( CelestialBody.CelestialType.All );
+
+            foreach ( CelestialBody body in bodies )
+            {
+                if ( body.OrbitParentName.Length > 0 )
+                {
+                    uint bodyID;
+                    if ( celestialBodyIds.TryGetValue( body.OrbitParentName, out bodyID ) )
+                    {
+                        CelestialBody parentBody;
+                        if ( m_CelestialBodies.TryGetValue( bodyID, out parentBody ) )
+                        {
+                            body.OrbitParentID = parentBody.CelestialID;
+                        }
+                        else
+                        {
+                            Debug.LogError( "Failed to find orbit parent: " + bodyID.ToString() );
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogError( "Failed to find orbit parent: " + body.OrbitParentName );
+                    }
+                }
+            }
+
             m_Initialized = true;
         }
 
@@ -101,17 +128,40 @@ public class CelestialManagerVirtual : CelestialManager
 
     private void UpdatePosition( CelestialBody body )
     {
-        CelestialVirtual planet = body as CelestialVirtual;
+        CelestialVirtual virtualBody = body as CelestialVirtual;
 
-        if ( null != planet )
+        if ( null != virtualBody )
         {
-            CelestialBody celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( planet.OwnerID );
+            CelestialBody celestialBody = CelestialManagerPhysical.Instance.GetCelestialBody( virtualBody.OwnerID );
 
             if ( null != celestialBody )
             {
-                // Set the virtual position to match the real planet's
-                planet.LocalPosition = celestialBody.LocalPosition;
-                planet.Position = celestialBody.Position;
+                CelestialPlanetoid planetoid = celestialBody as CelestialPlanetoid;
+
+                if ( null != planetoid )
+                {
+                    CelestialVector3 position = planetoid.CalculatePosition( CelestialTime.Instance.Current );
+
+                    virtualBody.LocalPosition = position;
+
+                    if ( body.OrbitParentID != 0 )
+                    {
+                        CelestialBody parentBody = GetCelestialBody( body.OrbitParentID );
+
+                        if ( parentBody != null )
+                        {
+                            position += parentBody.Position;
+                        }
+                    }
+
+                    virtualBody.Position = position;
+                }
+                else
+                {
+                    // Set the virtual position to match the real planet's
+                    virtualBody.LocalPosition = celestialBody.LocalPosition;
+                    virtualBody.Position = celestialBody.Position;
+                }
             }
             else
             {

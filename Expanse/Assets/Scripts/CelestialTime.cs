@@ -44,6 +44,7 @@ public class CelestialTime : MonoBehaviour
     public void IncreaseCurrentTimeRelease()
     {
         m_Increasing = false;
+        m_CurrentIncrement = m_MinIncrement;
     }
 
     public void DecreaseCurrentTimePress()
@@ -58,6 +59,7 @@ public class CelestialTime : MonoBehaviour
     public void DecreaseCurrentTimeRelease()
     {
         m_Decreasing = false;
+        m_CurrentIncrement = m_MinIncrement;
     }
 
     public void SyncCurrentClicked()
@@ -68,6 +70,8 @@ public class CelestialTime : MonoBehaviour
     private void Awake()
     {
         m_Instance = this;
+        m_Actual = PlanetPositionUtility.GetJulianDate( System.DateTime.Now );
+        m_Current = m_Actual;
     }
 
     private void Update()
@@ -76,9 +80,19 @@ public class CelestialTime : MonoBehaviour
         {
             m_PressDuration += Time.deltaTime;
 
-            if( m_PressDuration > 1.0f )
+            // Treat press like a single click until the button is held more than a certain duration
+            if( m_PressDuration > 0.5f )
             {
-                m_Current += ( m_Increasing ) ? m_IncrementUnit : -m_IncrementUnit;
+                m_CurrentIncrement += (uint)(100U * Time.deltaTime);
+
+                if( m_CurrentIncrement > m_MaxIncrement )
+                {
+                    m_CurrentIncrement = m_MaxIncrement;
+                }
+
+                double increment = m_IncrementUnit * ( m_CurrentIncrement * m_CurrentIncrement );
+
+                m_Current += ( m_Increasing ) ? increment : -increment;
             }
         }
 
@@ -107,6 +121,9 @@ public class CelestialTime : MonoBehaviour
     private bool m_Synced = true;
     private bool m_Increasing = false;
     private bool m_Decreasing = false;
-    private double m_IncrementUnit = 0.00001;
+    private const float m_IncrementUnit = 0.00001f;
     private float m_PressDuration = 0.0f;
+    private const uint m_MinIncrement = 1U;
+    private const uint m_MaxIncrement = 4000U;
+    private uint m_CurrentIncrement = m_MinIncrement;
 }

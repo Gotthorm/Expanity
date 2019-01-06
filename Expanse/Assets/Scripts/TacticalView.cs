@@ -85,22 +85,40 @@ public class TacticalView : MonoBehaviour
 
                 m_HUDList.Add( celestialBodyHUD );
 
-                // Set the celestial body as interactable
-                CelestialClickable clickableObject = celestialBody.gameObject.GetComponent<CelestialClickable>();
-                if ( clickableObject != null )
-                {
-                    clickableObject.SetSelected = ClickSelected;
-                    clickableObject.SetTargeted = ClickTargeted;
-                    clickableObject.DisableClickMiss = ClickDisableMiss;
-                    clickableObject.MouseDrag = ClickDrag;
-                }
-
                 // Create orbit
-                if ( celestialBody.HasOrbit )
+
+                // Only virtual bodies have visual orbits
+                CelestialVirtual celestialVirtual = celestialBody as CelestialVirtual;
+
+                if ( celestialBody.HasOrbit && null != celestialVirtual )
                 {
-                    CelestialOrbit orbit = CelestialOrbit.Create( celestialBody as CelestialVirtual );
+                    CelestialBody virtualParent = m_VirtualManager.GetCelestialBody( celestialBody.OrbitParentID );
+
+                    // The orbit needs the id of the physical owner and a reference to the virtual parent
+                    CelestialOrbit orbit = CelestialOrbit.Create( celestialVirtual.OwnerID, virtualParent );
+
+                    // Use the same grouping parent as the virtual owner
                     orbit.transform.SetParent( celestialBody.transform.parent );
+
                     m_CelestialOrbits.Add( orbit );
+                }
+            }
+
+            // Setup the HUD objects to notify us when clicked
+            CelestialClickable[] clickableGUIObjects = GetComponentsInChildren<CelestialClickable>();
+
+            foreach ( CelestialClickable clickableGUIObject in clickableGUIObjects )
+            {
+                if ( clickableGUIObject.m_EnableClick )
+                {
+                    clickableGUIObject.SetSelected = ClickSelected;
+                    clickableGUIObject.SetTargeted = ClickTargeted;
+                }
+                clickableGUIObject.DisableClickMiss = ClickDisableMiss;
+
+                if ( clickableGUIObject.m_EnableDrag )
+                {
+                    clickableGUIObject.MouseDrag = ClickDrag;
                 }
             }
 
@@ -129,6 +147,7 @@ public class TacticalView : MonoBehaviour
 	// Update is called once per frame
 	private void Update ()
     {
+        // Update virtual celestial bodies
         m_VirtualManager.Update( m_ViewCamera );
 
         bool active = GetComponentInParent<ScreenPanel>().Enabled;
@@ -178,21 +197,7 @@ public class TacticalView : MonoBehaviour
 
                 newHUD.SetOwner( celestialBody );
 
-                // Setup the HUD objects to notify us when clicked
-                CelestialClickable[] clickableGUIObjects = newHUD.GetComponentsInChildren<CelestialClickable>();
-
-                foreach ( CelestialClickable clickableGUIObject in clickableGUIObjects )
-                {
-                    //clickableGUIObject.ParentToNotify = this.gameObject;
-                    //clickableGUIObject.myDelegate = ChildHUDClicked;
-                    clickableGUIObject.SetSelected      = ClickSelected;
-                    clickableGUIObject.SetTargeted      = ClickTargeted;
-                    clickableGUIObject.DisableClickMiss = ClickDisableMiss;
-                    clickableGUIObject.MouseDrag        = ClickDrag;
-                }
-
                 newHUD.SetCamera(m_ViewCamera.GetComponent<Camera>());
-                //celestialBody.Unselect();
             }
         }
 
@@ -307,7 +312,7 @@ public class TacticalView : MonoBehaviour
     private void ClickDisableMiss( GameObject eventOwner )
     {
         Debug.Log( "TacticalView: Object click disable miss: " + eventOwner.name + " on celestial body: " + this.gameObject.name );
-        //m_Camera.DisableClickMissDetectionForThisFrame();
+        m_ViewCamera.DisableClickMissDetectionForThisFrame();
     }
 
     private void ClickDrag( GameObject eventOwner )

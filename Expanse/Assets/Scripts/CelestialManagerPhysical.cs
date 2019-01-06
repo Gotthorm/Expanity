@@ -79,31 +79,13 @@ public class CelestialManagerPhysical : CelestialManager
                 body.transform.parent = celestialBodyParent.transform;
             }
 
-            UpdatePositions();
-
             m_Initialized = true;
         }
     }
 
-    public void UpdatePositions()
+    public void Update()
     {
-        // Calculate the JD corresponding to 1976 - July - 20, 12:00 UT.
-        // DateTime desiredTime = new DateTime( 1976, 7, 20, 12, 0, 0 );
-
-        // Calculate the JD corresponding to 1968 - December - 12, 12:00 UT.
-        // DateTime desiredTime = new DateTime( 1968, 12, 24, 10, 0, 0 );
-
-        // Calculate the JD corresponding to now
-        DateTime desiredTime = DateTime.Now;
-
-        double julianDate = PlanetPositionUtility.GetJulianDate( desiredTime );
-
-        List<CelestialBody> bodies = GetCelestialBodies( CelestialBody.CelestialType.Planet | CelestialBody.CelestialType.Moon );
-
-        foreach ( CelestialBody body in bodies )
-        {
-            body.UpdatePosition( julianDate );
-        }
+        UpdatePositions();
     }
 
     public void UpdateDynamicScale( CelestialVector3 basePosition )
@@ -133,6 +115,16 @@ public class CelestialManagerPhysical : CelestialManager
                 m_Instance = new CelestialManagerPhysical();
             }
             return m_Instance;
+        }
+    }
+
+    private void UpdatePositions()
+    {
+        List<CelestialBody> bodies = GetCelestialBodies( CelestialBody.CelestialType.Planet | CelestialBody.CelestialType.Moon );
+
+        foreach ( CelestialBody body in bodies )
+        {
+            body.UpdatePosition( CelestialTime.Instance.Actual );
         }
     }
 

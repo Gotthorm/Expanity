@@ -12,39 +12,46 @@ public class CelestialOrbit : MonoBehaviour
     public float m_MinRange = 1.0f;
     public float m_MaxRange = 30000.0f;
 
-    public static CelestialOrbit Create( CelestialVirtual celestialBody )
+    public static CelestialOrbit Create( uint physicalOwnerID, CelestialBody virtualParent )
     {
         CelestialOrbit orbit = null;
 
-        GameObject gameObject = new GameObject();
+        CelestialBody physicalOwner = CelestialManagerPhysical.Instance.GetCelestialBody( physicalOwnerID );
 
-        if ( null != gameObject )
+        if ( null != physicalOwner )
         {
-            gameObject.name = celestialBody.name + "_Orbit";
+            GameObject gameObject = new GameObject();
 
-            orbit = gameObject.AddComponent<CelestialOrbit>();
-
-            orbit.m_CelestialBody = celestialBody;
-
-            orbit.UpdatePosition();
-
-            int layerID = LayerMask.NameToLayer( "Virtual Universe" );
-            if( layerID != -1 )
+            if ( null != gameObject )
             {
-                gameObject.layer = layerID;
+                gameObject.name = physicalOwner.name + "_Orbit";
+
+                orbit = gameObject.AddComponent<CelestialOrbit>();
+
+                orbit.m_PhysicalOwnerID = physicalOwnerID;
+
+                orbit.m_VirtualParent = virtualParent;
+
+                orbit.UpdatePosition();
+
+                int layerID = LayerMask.NameToLayer( "Virtual Universe" );
+                if ( layerID != -1 )
+                {
+                    gameObject.layer = layerID;
+                }
             }
-        }
 
-        orbit.m_LineRenderer.useWorldSpace = false;
+            orbit.m_LineRenderer.useWorldSpace = false;
 
-        // Adjust the resolution based on the type of body
-        if(celestialBody.Type == CelestialBody.CelestialType.Planet)
-        {
-            m_ResolutionScale = 200.0;
-        }
-        else
-        {
-            m_ResolutionScale = 60.0;
+            // Adjust the resolution based on the type of body
+            if ( physicalOwner.Type == CelestialBody.CelestialType.Planet )
+            {
+                m_ResolutionScale = 200.0;
+            }
+            else
+            {
+                m_ResolutionScale = 60.0;
+            }
         }
 
         return orbit;
@@ -67,7 +74,7 @@ public class CelestialOrbit : MonoBehaviour
     // Update is called once per frame
     private void LateUpdate ()
     {
-        if ( null != m_CelestialBody )
+        if ( 0 != m_PhysicalOwnerID )
         {
             Camera camera = Camera.main;
             if ( camera != null )
@@ -78,19 +85,28 @@ public class CelestialOrbit : MonoBehaviour
 
                 if ( m_Rebuild )
                 {
-                    CelestialBody celestialPlanet = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialBody.OwnerID );
+                    CelestialBody physicalOwnerBody = CelestialManagerPhysical.Instance.GetCelestialBody( m_PhysicalOwnerID );
 
-                    if ( celestialPlanet != null )
+                    if ( physicalOwnerBody != null )
                     {
-                        m_OrbitPositions = celestialPlanet.GetOrbit( PlanetPositionUtility.GetJulianDate( DateTime.Now ), m_ResolutionScale ).ToArray();
+                        CelestialPlanetoid physicalOwnerPlanetoid = physicalOwnerBody as CelestialPlanetoid;
 
-                        m_LineRenderer.positionCount = m_OrbitPositions.Length;
+                        if ( physicalOwnerPlanetoid != null )
+                        {
+                            m_OrbitPositions = physicalOwnerPlanetoid.GetOrbit( CelestialTime.Instance.Current, m_ResolutionScale ).ToArray();
 
-                        m_LineRenderer.SetPositions( m_OrbitPositions );
+                            m_LineRenderer.positionCount = m_OrbitPositions.Length;
+
+                            m_LineRenderer.SetPositions( m_OrbitPositions );
+                        }
+                        else
+                        {
+                            Debug.LogError( "Celestial Orbit:" + name + " failed to find planetoid version of celestial body:" + physicalOwnerBody.name );
+                        }
                     }
                     else
                     {
-                        Debug.LogError( "Celestial Orbit:" + name + " failed to find physical version of celestial body:" + m_CelestialBody.name );
+                        Debug.LogError( "Celestial Orbit:" + name + " contains an invalid owner ID" );
                     }
 
                     m_Rebuild = false;
@@ -118,14 +134,9 @@ public class CelestialOrbit : MonoBehaviour
 
     private void UpdatePosition()
     {
-        if ( m_CelestialBody.OrbitParentID != 0 )
+        if ( null != m_VirtualParent )
         {
-            CelestialBody celestialPlanet = CelestialManagerPhysical.Instance.GetCelestialBody( m_CelestialBody.OrbitParentID );
-
-            if ( celestialPlanet != null )
-            {
-                transform.position = (Vector3)( celestialPlanet.Position / GlobalConstants.CelestialUnit );
-            }
+            transform.position = (Vector3)( m_VirtualParent.Position / GlobalConstants.CelestialUnit );
         }
     }
 
@@ -205,16 +216,12 @@ public class CelestialOrbit : MonoBehaviour
         return startIndex;
     }
 
-    // Calculating the orbital period around the sun
-    // orbitalPeriodInYears = Sqr( averageAU * averageAU * averageAU );
-
-    private CelestialVirtual m_CelestialBody = null;
+    private uint m_PhysicalOwnerID = 0;
+    private CelestialBody m_VirtualParent = null;
 
     private LineRenderer m_LineRenderer = null;
 
     private Vector3[] m_OrbitPositions = null;
-
-    //private Camera m_Camera = null;
 
     private bool m_Rebuild = true;
     private static double m_ResolutionScale = 200;

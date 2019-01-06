@@ -61,7 +61,6 @@ public class CelestialVirtual : CelestialBody
                 celestialVirtual.m_InitialScale = celestialVirtual.CelestialRadius * 2;
 
                 celestialVirtual.m_OrbitParentName = celestialBody.OrbitParentName;
-                celestialVirtual.OrbitParentID = celestialBody.OrbitParentID;
 
                 celestialVirtual.m_MaximumScaleMultiplier = ( name != "Sol" ) ? 100U : 10U;
                 celestialVirtual.Scale = 100;
